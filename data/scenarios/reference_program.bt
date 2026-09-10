@@ -1,0 +1,20 @@
+# Reference program for the unprotected left turn.
+#
+# NOT the frozen baseline. This is a hand-written program used to validate the
+# DSL -> py_trees -> CARLA pipeline. The frozen baseline is LLM-synthesized
+# (build plan, 25 Aug) and lands in baseline_program.bt.
+#
+# Deliberately imperfect, so the falsifier has something to find:
+#   - the gap test sits exactly on tau_yield with no margin
+#   - nothing re-checks the path once committed
+#   - there is no escape from a deadlock if no acceptable gap ever appears
+
+Selector()
+  Sequence()
+    TrafficLightIsGreen()
+    OncomingGapExceeds(gap_s=3.0)
+    CommitTurn(v_mps=5.0, accel_mps2=1.5)
+  Sequence()
+    DistanceToStopLineBelow(dist_m=12.0)
+    HoldAtStopLine(decel_mps2=2.0)
+  Cruise(v_mps=8.0, accel_mps2=1.2)

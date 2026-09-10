@@ -1,0 +1,221 @@
+# ============================================================================
+# Falsifier search space — bounds WITH the justification for each bound.
+# ============================================================================
+# "0 to 30 m/s" is not a defensible bound. Every range below carries the
+# reason it is that range. Spec 01_TECHNICAL_SPEC_v2.md §6.
+# ============================================================================
+
+version: 2
+updated: 2026-08-24
+
+parameters:
+
+  n_oncoming:
+    type: integer
+    range: [1, 3]
+    nominal: 1          # fewest conflicting vehicles
+    justification: >
+      One vehicle is the minimal yield conflict; three saturates the oncoming
+      through-lane over the ego's decision window at the upper speed bound.
+      More vehicles would queue rather than add independent conflicts.
+
+  v_oncoming:
+    type: float
+    units: m/s
+    range: [6.0, 16.0]
+    nominal: 6.0          # slowest oncoming approach
+    justification: >
+      Approximately the 5th–95th percentile of urban arterial approach speeds.
+      6 m/s (22 km/h) is a slow urban approach; 16 m/s (58 km/h) is the upper
+      end for a signalised urban junction. Bounds are speeds, not a symmetric
+      interval about a mean, because the physical constraint is the road type.
+
+  headway:
+    type: float
+    units: s
+    range: [1.5, 8.0]
+    nominal: 8.0          # largest gap to the oncoming lead
+    justification: >
+      The time-to-conflict-zone the ego faces at its yield decision point.
+      Chosen to straddle tau_yield = 3.0 s with margin on both sides, so the
+      falsifier can find the boundary rather than only sample one side of it.
+      1.5 s is below any plausible accepted gap; 8.0 s is comfortably safe.
+    note: >
+      SEMANTICS CHANGED 24 Aug. This is now the gap phased against the EGO's
+      arrival, not a fixed spawn distance. Under the previous rule the lead
+      vehicle spawned at a constant 60 m regardless of headway, making the
+      parameter a no-op (measured correlation with rho: -0.039). See
+      docs/sensitivity_analysis.md.
+
+  aggressiveness:
+    type: float
+    range: [0.0, 1.0]
+    nominal: 0.0          # oncoming yields fully, at the 4.0 m/s^2 ceiling
+    justification: >
+      Willingness of an oncoming vehicle to decelerate for the ego.
+      1.0 = will not yield, holds v_oncoming. 0.0 = yields fully, decelerating
+      at the plausibility ceiling of 4.0 m/s^2. Restored 24 Aug: without it the
+      only parameter carrying signal was v_oncoming, which collapses every
+      counterexample boundary onto a single axis and makes boundary search
+      degenerate.
+
+  light_offset:
+    type: float
+    units: s
+    range: [0.0, 10.0]
+    nominal: 10.0          # most green remaining on approach
+    added: 2026-08-30
+    rephased: 2026-08-31
+    semantics: >
+      SECONDS OF GREEN REMAINING WHEN THE EGO IS 25 m FROM THE JUNCTION, not
+      seconds after episode start. The signal phase clock starts when the ego
+      first crosses light_trigger_dist_m; from that instant the light holds
+      green for light_offset seconds, then yellow for 3.0 s, then red for
+      6.0 s, then green again.
+    justification: >
+      Phased against the EGO rather than the episode clock because the absolute
+      form was coupled to program speed. Measured 30 Aug: the hand-written
+      reference program reached the conflict zone at a median 11.00 s while an
+      LLM-synthesized candidate took 15.20 s -- four seconds later, because a
+      competent program waits behind the lead vehicle and for an oncoming gap.
+      A bound tuned against the first was catastrophically wrong for the
+      second: narrowing the range to [6.0, 13.0] was predicted to cut the
+      red-conflict rate to 29% and actually raised it to ~86%, pushing every
+      candidate's violation rate UP (best went 55% -> 68%).
+      Under the new semantics the three candidates measured agree closely --
+      trigger-to-conflict-zone transit medians of 6.58, 5.45 and 6.45 s against
+      a four-second spread in absolute arrival -- so the parameter now means
+      the same thing for every program.
+      It also makes the CERTIFICATE actionable, which is the point that matters
+      for the paper: "fails when under 2 s of green remain on approach" is
+      something the LLM can act on; "fails when light_offset <= 7" is not,
+      because it cannot relate that to anything the program controls.
+      This is the same defect `headway` carried before 24 Aug and takes the
+      same fix.
+    range_justification: >
+      Lower bound 0.0: the light is held green until the trigger fires, so the
+      spec 3 entry condition (circular green at t = 0) holds for every sample,
+      and 0.0 means "turns yellow the instant you arrive at 25 m".
+      Upper bound 10.0 chosen from the measured transit distribution (pooled
+      n = 68, median 6.23 s, p5 4.90, p95 13.12). Simulating that distribution
+      against candidate ranges gives the red-conflict fraction directly:
+          [0, 8]  -> 37.1%     [0, 10] -> 30.2%     [0, 12] -> 25.6%
+          [0, 14] -> 22.2%     [0, 16] -> 19.7%     [0, 18] -> 17.5%
+      10.0 targets ~30%, so C3 still binds often enough to discriminate without
+      dominating rho as it did at ~50%.
+
+  lead_gap_s:
+    type: float
+    units: s
+    range: [2.3, 4.3]
+    nominal: 4.3          # most room to the lead vehicle
+    added: 2026-08-30
+    justification: >
+      Initial TIME gap from the ego to a lead vehicle in the ego's own lane,
+      restored with C4. Expressed as a time so it is directly comparable with
+      tau_resp and reads in a certificate the way headway does for C2.
+      Lower bound derived from the contract itself: at the entry-condition
+      speed cap of 8 m/s with a lead at the same speed, RSS Lemma 2 gives
+      d_min = 8(0.75) + 0.5(4)(0.75^2) + (8+3)^2/8 - 8^2/16 = 18.25 m, i.e.
+      2.28 s. Rounding to 2.3 s means the ego begins each episode just at the
+      RSS boundary, so a violation is reachable but is not handed to the
+      falsifier for free at spawn.
+      Upper bound is set by GEOMETRY, not by the contract. The ego spawns
+      55.1 m from the conflict-zone centre and the route runs at 1 m per step,
+      so a gap of g seconds places the lead at roughly 55.1 - 8g metres from
+      the junction. At 4.3 s the lead starts ~21 m back, far enough that it
+      approaches and stops at the line DURING the episode. Measured at 5.5 s
+      it spawned 6.8 m from the centre -- already inside the junction, which
+      is not a plausible initial condition for a vehicle that has not yet
+      committed, and spec 6.2 requires plausibility to be enforced at sample
+      time rather than filtered afterwards.
+    note: >
+      The lead is ALWAYS PRESENT, parameterised continuously, rather than
+      gated by a binary lead_present. This follows the precedent in spec v2
+      6.1 for the pedestrian: keeping only the continuous quantity removes a
+      binary factor while preserving the interaction that stresses the
+      manoeuvre. It also keeps boundary search well-defined, since a boolean
+      axis cannot be binary-searched and boundary search is a non-negotiable
+      certificate property (7.2).
+
+# --- nominal reference configuration, for delta debugging -------------------
+# Certificate property 7.1 (MINIMAL) reverts each parameter to `nominal` one at
+# a time and drops the ones that do not affect the violation (Zeller &
+# Hildebrandt, IEEE TSE 2002). Delta debugging is only sound if the nominal
+# configuration is itself NON-VIOLATING -- otherwise reverting a parameter can
+# CREATE a violation and the algorithm concludes "irrelevant" about a parameter
+# that mattered. So each nominal above is the benign end of its own axis, and
+# the all-nominal configuration is MEASURED against the frozen baseline at the
+# start of every campaign rather than assumed; the measured rho is recorded in
+# data/results/falsification_summary.json.
+#
+# ⚠️ `headway` is the one axis where "benign" is not unambiguous. Measured over
+# 300 traces (docs/sensitivity_analysis.md) it correlates +0.555 with C1 and
+# -0.435 with C2 -- a large gap is safer for C2 (the ego is not caught in the
+# conflict zone) and HARSHER for C1 (the ego commits immediately and passes
+# close to the oncoming vehicle). 8.0 is chosen as the C2-benign end, because
+# C2 is the yield contract this manoeuvre is actually about, and because the
+# all-nominal check above verifies empirically that it does not violate.
+nominal_justification: >
+  Each parameter's nominal is the benign end of its own range. The all-nominal
+  configuration is verified violation-free by measurement at campaign start;
+  if that check ever fails, delta debugging is unsound and the campaign stops
+  rather than emitting certificates built on it.
+
+# --- dropped ----------------------------------------------------------------
+dropped:
+  ped_phase_offset:
+    dropped_on: 2026-08-24
+    reason: >
+      No pedestrian was ever spawned, so the parameter was inert. Measured
+      correlation with rho over 300 traces: -0.031, i.e. nothing. It was
+      occupying a quarter of the search space and contributing no signal.
+      Reinstating it requires walker spawning plus crosswalk-phase logic; it is
+      out of scope for E1.
+
+# --- plausibility constraints, enforced AT SAMPLE TIME ----------------------
+# Following Scenic (Fremont et al., PLDI 2019): declarative and enforced when
+# sampling, not checked afterwards.
+#
+# Rationale (AdvSim, CVPR 2021): an unconstrained optimiser finds physically
+# absurd failures. Without these the falsifier produces a 40 m/s oncoming
+# vehicle, the LLM patches to a twelve-second gap requirement, the regression
+# suite passes, and instruction completion collapses. That is the most likely
+# way this project fails quietly.
+plausibility:
+  non_ego_max_accel_mps2: 4.0
+  non_ego_max_brake_mps2: 8.0
+  non_ego_max_jerk_mps3: 5.0
+  no_spawn_overlap: true
+  oncoming_obey_own_signal: true
+
+# --- held-out region --------------------------------------------------------
+# An INTERIOR hole in the space, not an exterior margin, so the held-out test
+# measures interpolation rather than extrapolation. The falsifier must never
+# sample here; evaluation draws from here exclusively.
+held_out:
+  v_oncoming: [11.0, 13.0]
+  headway: [3.0, 4.5]
+  justification: >
+    Centred on tau_yield = 3.0 s and on the mid-range oncoming speed, i.e. the
+    region where the yield decision is hardest. A held-out region in an easy
+    corner would not test generalisation of the repair.
+
+# --- sampling ---------------------------------------------------------------
+sampling:
+  method: uniform_random_with_rho_ranked_local_refinement
+  refinement_fraction: 0.3
+  refinement_radius_frac: 0.15
+
+# --- campaign sizes (revised 24 Aug, given measured RTF ~40) ----------------
+sizes:
+  K_counterexamples: 20
+  seeds: 3
+  regression_suite: 30
+  held_out_suite: 30
+  justification: >
+    Raised from K=8 / 1 seed / 5 regression. At a measured 3.3-4.0 episodes per
+    second across three CARLA instances, the whole E1 campaign is minutes of
+    wall-clock, so the earlier sizes were constrained by an assumption about
+    simulation cost that measurement did not support. K=20 with 3 seeds still
+    does not support a significance claim; report trends and say so.

@@ -1,0 +1,52 @@
+# Unprotected left turn on a circular green.
+# Priority order: finish what you started > take a real gap > wait > follow the lead safely.
+
+Selector
+
+  # 1. Already inside the conflict zone: NEVER abandon the turn. No gates here.
+  Sequence
+    InConflictZone
+    CommitTurn(v_mps=6.0, accel_mps2=2.0)
+
+  # 2. Nose already past the stop line: keep going unless something is right in front.
+  Sequence
+    DistanceToStopLineBelow(dist_m=0.0)
+    PathIsClear(dist_m=8.0)
+    CommitTurn(v_mps=6.0, accel_mps2=2.0)
+
+  # 3. Normal go decision: near the line, lawful green, generous oncoming gap, path clear.
+  #    6.0 s required against a 3.0 s contract leaves reaction margin.
+  Sequence
+    DistanceToStopLineBelow(dist_m=8.0)
+    TrafficLightIsGreen
+    PathIsClear(dist_m=12.0)
+    OncomingGapExceeds(gap_s=6.0)
+    CommitTurn(v_mps=6.0, accel_mps2=1.8)
+
+  # 4. Deadlock escape: stationary a long time, still green, take a smaller but legal gap.
+  Sequence
+    DistanceToStopLineBelow(dist_m=6.0)
+    WaitedLongerThan(t_s=12.0)
+    TrafficLightIsGreen
+    PathIsClear(dist_m=8.0)
+    OncomingGapExceeds(gap_s=4.2)
+    CommitTurn(v_mps=5.0, accel_mps2=1.8)
+
+  # 5. No acceptable gap, or red/yellow: sit on the stop line (only if the lane ahead is free).
+  Sequence
+    DistanceToStopLineBelow(dist_m=18.0)
+    PathIsClear(dist_m=18.0)
+    HoldAtStopLine(decel_mps2=2.0)
+
+  # 6. Approach and lead-vehicle following, graded so RSS distance is preserved.
+  Selector
+    Sequence
+      PathIsClear(dist_m=30.0)
+      Cruise(v_mps=8.0, accel_mps2=1.5)
+    Sequence
+      PathIsClear(dist_m=20.0)
+      Cruise(v_mps=5.0, accel_mps2=1.2)
+    Sequence
+      PathIsClear(dist_m=12.0)
+      Cruise(v_mps=2.5, accel_mps2=1.0)
+    Decelerate(v_mps=0.0, decel_mps2=2.5)

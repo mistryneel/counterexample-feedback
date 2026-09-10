@@ -1,0 +1,76 @@
+# ============================================================================
+# FROZEN BASELINE PROGRAM -- PATCHED (gap thresholds for junction entry).
+# ============================================================================
+# Repair note: the counterexample was a rolling entry taken on a gap that only
+# just cleared the branch-D threshold (oncoming headway 6.535 s vs a 6.5 s
+# test). The gap closed while the ego was still crossing and the bounding boxes
+# overlapped by 0.32 m. The fix raises the gap required to START the turn and
+# makes the crossing itself quicker (higher commit speed, accel still inside the
+# 3.0 m/s^2 comfort contract), so the ego spends less time in the conflict zone.
+# Structure, ordering and every other branch are unchanged.
+# ============================================================================
+
+# Unprotected left turn at a signalised four-way junction.
+# Priority order: finish what you started > decide from a stop >
+# finish a rolling entry > enter on green with a real gap > stop at the line >
+# back off behind the lead > cruise the approach.
+
+Selector
+
+  # --- A. Already inside the conflict zone: never abandon the turn. ---
+  Sequence
+    InConflictZone
+    CommitTurn(v_mps=7.5, accel_mps2=2.5)
+
+  # --- B. Stopped at (or just over) the stop line: this is the decision point. ---
+  Sequence
+    EgoSpeedBelow(v_mps=1.0)
+    DistanceToStopLineBelow(dist_m=4.0)
+    Selector
+      # Normal go: green, a gap well beyond the 3.0 s contract, path physically clear.
+      Sequence
+        TrafficLightIsGreen
+        OncomingGapExceeds(gap_s=7.0)
+        PathIsClear(dist_m=16.0)
+        CommitTurn(v_mps=7.5, accel_mps2=2.5)
+      # Deadlock escape: nobody ever gives a big gap, so take a smaller but still legal one.
+      Sequence
+        TrafficLightIsGreen
+        WaitedLongerThan(t_s=12.0)
+        OncomingGapExceeds(gap_s=4.2)
+        PathIsClear(dist_m=14.0)
+        CommitTurn(v_mps=7.0, accel_mps2=2.5)
+      # Otherwise sit still, gently.
+      HoldAtStopLine(decel_mps2=2.0)
+
+  # --- C. Past the stop line and still rolling: committed, drive through. ---
+  # (The stopped-past-the-line case is caught by B above, so this only fires while moving.)
+  Sequence
+    DistanceToStopLineBelow(dist_m=0.0)
+    CommitTurn(v_mps=7.5, accel_mps2=2.5)
+
+  # --- D. Rolling entry: green, generous gap, clear path, close to the line. ---
+  Sequence
+    TrafficLightIsGreen
+    DistanceToStopLineBelow(dist_m=14.0)
+    OncomingGapExceeds(gap_s=8.5)
+    PathIsClear(dist_m=20.0)
+    CommitTurn(v_mps=7.5, accel_mps2=2.5)
+
+  # --- E. Near the junction, road ahead clear: settle onto the stop line and wait. ---
+  Sequence
+    DistanceToStopLineBelow(dist_m=18.0)
+    PathIsClear(dist_m=20.0)
+    HoldAtStopLine(decel_mps2=2.0)
+
+  # --- F. Near the junction but something (lead or crossing traffic) is in the way. ---
+  Sequence
+    DistanceToStopLineBelow(dist_m=30.0)
+    Decelerate(v_mps=1.0, decel_mps2=2.0)
+
+  # --- G. Open approach: cruise, but keep an RSS-safe buffer behind the lead. ---
+  Selector
+    Sequence
+      PathIsClear(dist_m=28.0)
+      Cruise(v_mps=7.0, accel_mps2=1.5)
+    Decelerate(v_mps=4.0, decel_mps2=1.5)

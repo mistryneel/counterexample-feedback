@@ -1,0 +1,52 @@
+# Unprotected left turn at a signalised four-way junction.
+# Priority order: finish what you started > commit on a real gap >
+# deadlock escape > wait at the line > follow the lead safely.
+
+Selector
+
+  # 1. Already inside the conflict zone: never abandon the turn, clear it.
+  Sequence
+    InConflictZone
+    CommitTurn(v_mps=7.0, accel_mps2=2.0)
+
+  # 2. Normal commit: lawful green (or already past the line), at the line,
+  #    turn path clear of the lead, and a generous oncoming gap.
+  Sequence
+    Selector
+      TrafficLightIsGreen
+      DistanceToStopLineBelow(dist_m=0.0)
+    DistanceToStopLineBelow(dist_m=7.0)
+    EgoSpeedBelow(v_mps=9.0)
+    PathIsClear(dist_m=15.0)
+    OncomingGapExceeds(gap_s=5.5)
+    CommitTurn(v_mps=7.0, accel_mps2=2.0)
+
+  # 3. Deadlock escape: stationary a long time, still green, take a smaller
+  #    but still contract-safe gap (4.0 s > the 3.0 s limit).
+  Sequence
+    WaitedLongerThan(t_s=12.0)
+    TrafficLightIsGreen
+    DistanceToStopLineBelow(dist_m=7.0)
+    PathIsClear(dist_m=12.0)
+    OncomingGapExceeds(gap_s=4.0)
+    CommitTurn(v_mps=6.0, accel_mps2=2.0)
+
+  # 4. At the junction but no acceptable gap, or not green: hold at the line.
+  #    Only if the lead has already moved off the line ahead of us.
+  Sequence
+    DistanceToStopLineBelow(dist_m=15.0)
+    PathIsClear(dist_m=11.0)
+    HoldAtStopLine(decel_mps2=2.0)
+
+  # 5. Approach, keeping an RSS-safe distance behind the lead vehicle.
+  Selector
+    Sequence
+      PathIsClear(dist_m=26.0)
+      Cruise(v_mps=8.0, accel_mps2=1.5)
+    Sequence
+      PathIsClear(dist_m=16.0)
+      Decelerate(v_mps=4.0, decel_mps2=2.0)
+    Sequence
+      PathIsClear(dist_m=9.0)
+      Decelerate(v_mps=1.5, decel_mps2=2.5)
+    EmergencyStop(decel_mps2=2.8)

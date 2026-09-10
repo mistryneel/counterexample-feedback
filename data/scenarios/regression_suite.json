@@ -1,0 +1,806 @@
+{
+  "seed": 20260831,
+  "git_commit": "e86fe344fde921339ce241df74739304600ccfd4",
+  "built": "2026-08-31T22:48:42+00:00",
+  "program": "data/scenarios/baseline_program.bt",
+  "program_sha256_16": "59218be8676bd5e5",
+  "held_out_region": {
+    "v_oncoming": [
+      11.0,
+      13.0
+    ],
+    "headway": [
+      3.0,
+      4.5
+    ]
+  },
+  "suite": "regression",
+  "region": "searched",
+  "filter": "baseline rho >= 0",
+  "n": 30,
+  "draws_made": 34,
+  "draws_rejected": 4,
+  "baseline_scvr": 0.0,
+  "scenarios": [
+    {
+      "params": {
+        "n_oncoming": 1,
+        "v_oncoming": 15.8469,
+        "headway": 7.3602,
+        "aggressiveness": 0.2959,
+        "light_offset": 6.7355,
+        "lead_gap_s": 3.1824
+      },
+      "param_hash": "7e2357af55eb0897",
+      "baseline_rho": 1.0,
+      "baseline_per_contract": {
+        "C1": 1.709271,
+        "C2": 27.0,
+        "C3": 5.9,
+        "C4": 6.836345,
+        "C5": 1.0
+      },
+      "baseline_status": "ok",
+      "baseline_phases_reached": [
+        "P1_approach",
+        "P2_yield_clear",
+        "P3_commit",
+        "P4_settle"
+      ]
+    },
+    {
+      "params": {
+        "n_oncoming": 3,
+        "v_oncoming": 15.1032,
+        "headway": 6.3428,
+        "aggressiveness": 0.8394,
+        "light_offset": 6.3455,
+        "lead_gap_s": 4.0942
+      },
+      "param_hash": "f88c0209961348a9",
+      "baseline_rho": 1.0,
+      "baseline_per_contract": {
+        "C1": 1.717401,
+        "C2": 2.049266,
+        "C3": 5.5,
+        "C4": 11.881346,
+        "C5": 1.0
+      },
+      "baseline_status": "ok",
+      "baseline_phases_reached": [
+        "P1_approach",
+        "P2_yield_clear",
+        "P3_commit",
+        "P4_settle"
+      ]
+    },
+    {
+      "params": {
+        "n_oncoming": 2,
+        "v_oncoming": 14.2886,
+        "headway": 6.2332,
+        "aggressiveness": 0.6855,
+        "light_offset": 3.172,
+        "lead_gap_s": 2.7561
+      },
+      "param_hash": "8686e631f7e43ac7",
+      "baseline_rho": 1.0,
+      "baseline_per_contract": {
+        "C1": 1.708982,
+        "C2": 27.0,
+        "C3": 2.5,
+        "C4": 16.28582,
+        "C5": 1.0
+      },
+      "baseline_status": "ok",
+      "baseline_phases_reached": [
+        "P1_approach",
+        "P2_yield_clear",
+        "P3_commit",
+        "P4_settle"
+      ]
+    },
+    {
+      "params": {
+        "n_oncoming": 2,
+        "v_oncoming": 8.625,
+        "headway": 5.6114,
+        "aggressiveness": 0.1536,
+        "light_offset": 7.3964,
+        "lead_gap_s": 3.0583
+      },
+      "param_hash": "7edad5db77581927",
+      "baseline_rho": 1.0,
+      "baseline_per_contract": {
+        "C1": 1.417809,
+        "C2": 27.0,
+        "C3": 6.95,
+        "C4": 8.955266,
+        "C5": 1.0
+      },
+      "baseline_status": "ok",
+      "baseline_phases_reached": [
+        "P1_approach",
+        "P2_yield_clear",
+        "P3_commit",
+        "P4_settle"
+      ]
+    },
+    {
+      "params": {
+        "n_oncoming": 3,
+        "v_oncoming": 15.8494,
+        "headway": 6.5047,
+        "aggressiveness": 0.9955,
+        "light_offset": 8.0921,
+        "lead_gap_s": 2.9596
+      },
+      "param_hash": "4a5c6c60375501ec",
+      "baseline_rho": 1.0,
+      "baseline_per_contract": {
+        "C1": 1.714002,
+        "C2": 27.0,
+        "C3": 30.0,
+        "C4": 9.872448,
+        "C5": 1.0
+      },
+      "baseline_status": "ok",
+      "baseline_phases_reached": [
+        "P1_approach",
+        "P2_yield_clear",
+        "P3_commit",
+        "P4_settle"
+      ]
+    },
+    {
+      "params": {
+        "n_oncoming": 2,
+        "v_oncoming": 13.792,
+        "headway": 6.936,
+        "aggressiveness": 0.0983,
+        "light_offset": 3.8028,
+        "lead_gap_s": 2.9734
+      },
+      "param_hash": "b59bbf047706c79b",
+      "baseline_rho": 1.0,
+      "baseline_per_contract": {
+        "C1": 1.729306,
+        "C2": 27.0,
+        "C3": 3.25,
+        "C4": 9.752347,
+        "C5": 1.0
+      },
+      "baseline_status": "ok",
+      "baseline_phases_reached": [
+        "P1_approach",
+        "P2_yield_clear",
+        "P3_commit",
+        "P4_settle"
+      ]
+    },
+    {
+      "params": {
+        "n_oncoming": 3,
+        "v_oncoming": 8.0704,
+        "headway": 4.2897,
+        "aggressiveness": 0.323,
+        "light_offset": 9.5514,
+        "lead_gap_s": 2.784
+      },
+      "param_hash": "9a42449665b9448f",
+      "baseline_rho": 1.0,
+      "baseline_per_contract": {
+        "C1": 1.342719,
+        "C2": 5.254548,
+        "C3": 30.0,
+        "C4": 15.657272,
+        "C5": 1.0
+      },
+      "baseline_status": "ok",
+      "baseline_phases_reached": [
+        "P1_approach",
+        "P2_yield_clear",
+        "P3_commit",
+        "P4_settle"
+      ]
+    },
+    {
+      "params": {
+        "n_oncoming": 3,
+        "v_oncoming": 12.0633,
+        "headway": 6.4842,
+        "aggressiveness": 0.0833,
+        "light_offset": 6.487,
+        "lead_gap_s": 2.8477
+      },
+      "param_hash": "422c983f67669bb0",
+      "baseline_rho": 1.0,
+      "baseline_per_contract": {
+        "C1": 1.444822,
+        "C2": 3.139166,
+        "C3": 5.65,
+        "C4": 17.392046,
+        "C5": 1.0
+      },
+      "baseline_status": "ok",
+      "baseline_phases_reached": [
+        "P1_approach",
+        "P2_yield_clear",
+        "P3_commit",
+        "P4_settle"
+      ]
+    },
+    {
+      "params": {
+        "n_oncoming": 2,
+        "v_oncoming": 14.9565,
+        "headway": 2.0573,
+        "aggressiveness": 0.0268,
+        "light_offset": 3.3177,
+        "lead_gap_s": 3.0953
+      },
+      "param_hash": "290db34e1eb6a3f2",
+      "baseline_rho": 1.0,
+      "baseline_per_contract": {
+        "C1": 1.642453,
+        "C2": 27.0,
+        "C3": 2.55,
+        "C4": 6.299294,
+        "C5": 1.0
+      },
+      "baseline_status": "ok",
+      "baseline_phases_reached": [
+        "P1_approach",
+        "P2_yield_clear",
+        "P3_commit",
+        "P4_settle"
+      ]
+    },
+    {
+      "params": {
+        "n_oncoming": 1,
+        "v_oncoming": 11.128,
+        "headway": 2.3077,
+        "aggressiveness": 0.967,
+        "light_offset": 2.2086,
+        "lead_gap_s": 3.2056
+      },
+      "param_hash": "f08922d924d9db9f",
+      "baseline_rho": 1.0,
+      "baseline_per_contract": {
+        "C1": 1.537781,
+        "C2": 27.0,
+        "C3": 1.7,
+        "C4": 5.708557,
+        "C5": 1.0
+      },
+      "baseline_status": "ok",
+      "baseline_phases_reached": [
+        "P1_approach",
+        "P2_yield_clear",
+        "P3_commit",
+        "P4_settle"
+      ]
+    },
+    {
+      "params": {
+        "n_oncoming": 2,
+        "v_oncoming": 10.5638,
+        "headway": 1.9106,
+        "aggressiveness": 0.1132,
+        "light_offset": 6.4893,
+        "lead_gap_s": 3.5324
+      },
+      "param_hash": "aedd0bd2df88ce85",
+      "baseline_rho": 1.0,
+      "baseline_per_contract": {
+        "C1": 1.503096,
+        "C2": 27.0,
+        "C3": 6.3,
+        "C4": 6.057889,
+        "C5": 1.0
+      },
+      "baseline_status": "ok",
+      "baseline_phases_reached": [
+        "P1_approach",
+        "P2_yield_clear",
+        "P3_commit",
+        "P4_settle"
+      ]
+    },
+    {
+      "params": {
+        "n_oncoming": 3,
+        "v_oncoming": 6.1506,
+        "headway": 2.6091,
+        "aggressiveness": 0.1012,
+        "light_offset": 6.6402,
+        "lead_gap_s": 2.3429
+      },
+      "param_hash": "efd5545f3b532aa7",
+      "baseline_rho": 0.942945,
+      "baseline_per_contract": {
+        "C1": 0.942945,
+        "C2": 27.0,
+        "C3": 6.65,
+        "C4": 10.864997,
+        "C5": 1.0
+      },
+      "baseline_status": "ok",
+      "baseline_phases_reached": [
+        "P1_approach",
+        "P2_yield_clear",
+        "P3_commit",
+        "P4_settle"
+      ]
+    },
+    {
+      "params": {
+        "n_oncoming": 2,
+        "v_oncoming": 6.2462,
+        "headway": 2.3084,
+        "aggressiveness": 0.8106,
+        "light_offset": 4.7712,
+        "lead_gap_s": 4.1101
+      },
+      "param_hash": "986a685b7f1bd400",
+      "baseline_rho": 1.0,
+      "baseline_per_contract": {
+        "C1": 1.352574,
+        "C2": 6.553674,
+        "C3": 4.05,
+        "C4": 10.431682,
+        "C5": 1.0
+      },
+      "baseline_status": "ok",
+      "baseline_phases_reached": [
+        "P1_approach",
+        "P2_yield_clear",
+        "P3_commit",
+        "P4_settle"
+      ]
+    },
+    {
+      "params": {
+        "n_oncoming": 2,
+        "v_oncoming": 14.1468,
+        "headway": 2.2581,
+        "aggressiveness": 0.4857,
+        "light_offset": 5.1682,
+        "lead_gap_s": 4.1638
+      },
+      "param_hash": "0c9996c9a4574da1",
+      "baseline_rho": 1.0,
+      "baseline_per_contract": {
+        "C1": 1.600712,
+        "C2": 27.0,
+        "C3": 4.35,
+        "C4": 10.701983,
+        "C5": 1.0
+      },
+      "baseline_status": "ok",
+      "baseline_phases_reached": [
+        "P1_approach",
+        "P2_yield_clear",
+        "P3_commit",
+        "P4_settle"
+      ]
+    },
+    {
+      "params": {
+        "n_oncoming": 1,
+        "v_oncoming": 11.9987,
+        "headway": 1.8824,
+        "aggressiveness": 0.0822,
+        "light_offset": 7.8045,
+        "lead_gap_s": 4.2183
+      },
+      "param_hash": "70e1305cf9b4180b",
+      "baseline_rho": 1.0,
+      "baseline_per_contract": {
+        "C1": 1.497215,
+        "C2": 27.0,
+        "C3": 30.0,
+        "C4": 8.452934,
+        "C5": 1.0
+      },
+      "baseline_status": "ok",
+      "baseline_phases_reached": [
+        "P1_approach",
+        "P2_yield_clear",
+        "P3_commit",
+        "P4_settle"
+      ]
+    },
+    {
+      "params": {
+        "n_oncoming": 1,
+        "v_oncoming": 6.7473,
+        "headway": 5.235,
+        "aggressiveness": 0.9886,
+        "light_offset": 5.413,
+        "lead_gap_s": 3.8676
+      },
+      "param_hash": "5a9f9e5375762fe2",
+      "baseline_rho": 1.0,
+      "baseline_per_contract": {
+        "C1": 1.35013,
+        "C2": 2.767654,
+        "C3": 4.55,
+        "C4": 10.141577,
+        "C5": 1.0
+      },
+      "baseline_status": "ok",
+      "baseline_phases_reached": [
+        "P1_approach",
+        "P2_yield_clear",
+        "P3_commit",
+        "P4_settle"
+      ]
+    },
+    {
+      "params": {
+        "n_oncoming": 3,
+        "v_oncoming": 8.9228,
+        "headway": 3.3685,
+        "aggressiveness": 0.4417,
+        "light_offset": 4.4938,
+        "lead_gap_s": 4.2927
+      },
+      "param_hash": "f281f09891f3d825",
+      "baseline_rho": 1.0,
+      "baseline_per_contract": {
+        "C1": 1.386513,
+        "C2": 27.0,
+        "C3": 3.65,
+        "C4": 11.806776,
+        "C5": 1.0
+      },
+      "baseline_status": "ok",
+      "baseline_phases_reached": [
+        "P1_approach",
+        "P2_yield_clear",
+        "P3_commit",
+        "P4_settle"
+      ]
+    },
+    {
+      "params": {
+        "n_oncoming": 2,
+        "v_oncoming": 14.3341,
+        "headway": 4.1152,
+        "aggressiveness": 0.2842,
+        "light_offset": 3.64,
+        "lead_gap_s": 3.9957
+      },
+      "param_hash": "34b5da1506509357",
+      "baseline_rho": 1.0,
+      "baseline_per_contract": {
+        "C1": 1.651833,
+        "C2": 11.553598,
+        "C3": 2.75,
+        "C4": 10.772636,
+        "C5": 1.0
+      },
+      "baseline_status": "ok",
+      "baseline_phases_reached": [
+        "P1_approach",
+        "P2_yield_clear",
+        "P3_commit",
+        "P4_settle"
+      ]
+    },
+    {
+      "params": {
+        "n_oncoming": 3,
+        "v_oncoming": 9.6159,
+        "headway": 4.6085,
+        "aggressiveness": 0.3832,
+        "light_offset": 8.4199,
+        "lead_gap_s": 2.3213
+      },
+      "param_hash": "96276f2ef6ab9a80",
+      "baseline_rho": 1.0,
+      "baseline_per_contract": {
+        "C1": 1.431265,
+        "C2": 27.0,
+        "C3": 30.0,
+        "C4": 15.266107,
+        "C5": 1.0
+      },
+      "baseline_status": "ok",
+      "baseline_phases_reached": [
+        "P1_approach",
+        "P2_yield_clear",
+        "P3_commit",
+        "P4_settle"
+      ]
+    },
+    {
+      "params": {
+        "n_oncoming": 2,
+        "v_oncoming": 6.2758,
+        "headway": 4.3767,
+        "aggressiveness": 0.6062,
+        "light_offset": 2.76,
+        "lead_gap_s": 3.695
+      },
+      "param_hash": "acfe351678280c02",
+      "baseline_rho": 0.007373,
+      "baseline_per_contract": {
+        "C1": 0.007373,
+        "C2": 27.0,
+        "C3": 1.95,
+        "C4": 8.963707,
+        "C5": 1.0
+      },
+      "baseline_status": "ok",
+      "baseline_phases_reached": [
+        "P1_approach",
+        "P2_yield_clear",
+        "P3_commit",
+        "P4_settle"
+      ]
+    },
+    {
+      "params": {
+        "n_oncoming": 3,
+        "v_oncoming": 8.9003,
+        "headway": 7.5537,
+        "aggressiveness": 0.7714,
+        "light_offset": 5.1087,
+        "lead_gap_s": 4.2721
+      },
+      "param_hash": "ec31ccdab807f691",
+      "baseline_rho": 0.822447,
+      "baseline_per_contract": {
+        "C1": 1.345777,
+        "C2": 0.822447,
+        "C3": 4.3,
+        "C4": 11.7825,
+        "C5": 1.0
+      },
+      "baseline_status": "ok",
+      "baseline_phases_reached": [
+        "P1_approach",
+        "P2_yield_clear",
+        "P3_commit",
+        "P4_settle"
+      ]
+    },
+    {
+      "params": {
+        "n_oncoming": 1,
+        "v_oncoming": 6.9709,
+        "headway": 5.1915,
+        "aggressiveness": 0.9274,
+        "light_offset": 1.5604,
+        "lead_gap_s": 4.1221
+      },
+      "param_hash": "e53f2cebfa1ef150",
+      "baseline_rho": 0.75,
+      "baseline_per_contract": {
+        "C1": 1.37066,
+        "C2": 3.366832,
+        "C3": 0.75,
+        "C4": 11.161151,
+        "C5": 1.0
+      },
+      "baseline_status": "ok",
+      "baseline_phases_reached": [
+        "P1_approach",
+        "P2_yield_clear",
+        "P3_commit",
+        "P4_settle"
+      ]
+    },
+    {
+      "params": {
+        "n_oncoming": 2,
+        "v_oncoming": 7.1332,
+        "headway": 2.4722,
+        "aggressiveness": 0.5848,
+        "light_offset": 7.2127,
+        "lead_gap_s": 2.9876
+      },
+      "param_hash": "20c5ecc431d25307",
+      "baseline_rho": 1.0,
+      "baseline_per_contract": {
+        "C1": 1.377282,
+        "C2": 5.52273,
+        "C3": 6.95,
+        "C4": 8.358489,
+        "C5": 1.0
+      },
+      "baseline_status": "ok",
+      "baseline_phases_reached": [
+        "P1_approach",
+        "P2_yield_clear",
+        "P3_commit",
+        "P4_settle"
+      ]
+    },
+    {
+      "params": {
+        "n_oncoming": 1,
+        "v_oncoming": 12.1265,
+        "headway": 6.7955,
+        "aggressiveness": 0.5762,
+        "light_offset": 3.3984,
+        "lead_gap_s": 4.1451
+      },
+      "param_hash": "dd3c7fdb83401066",
+      "baseline_rho": 1.0,
+      "baseline_per_contract": {
+        "C1": 1.65088,
+        "C2": 3.346222,
+        "C3": 2.55,
+        "C4": 11.875888,
+        "C5": 1.0
+      },
+      "baseline_status": "ok",
+      "baseline_phases_reached": [
+        "P1_approach",
+        "P2_yield_clear",
+        "P3_commit",
+        "P4_settle"
+      ]
+    },
+    {
+      "params": {
+        "n_oncoming": 2,
+        "v_oncoming": 10.2633,
+        "headway": 2.4463,
+        "aggressiveness": 0.0934,
+        "light_offset": 1.2973,
+        "lead_gap_s": 2.7443
+      },
+      "param_hash": "3338467f1cc61481",
+      "baseline_rho": 0.65,
+      "baseline_per_contract": {
+        "C1": 1.496043,
+        "C2": 27.0,
+        "C3": 0.65,
+        "C4": 15.040172,
+        "C5": 1.0
+      },
+      "baseline_status": "ok",
+      "baseline_phases_reached": [
+        "P1_approach",
+        "P2_yield_clear",
+        "P3_commit",
+        "P4_settle"
+      ]
+    },
+    {
+      "params": {
+        "n_oncoming": 2,
+        "v_oncoming": 14.5692,
+        "headway": 5.5696,
+        "aggressiveness": 0.2203,
+        "light_offset": 3.6872,
+        "lead_gap_s": 3.7278
+      },
+      "param_hash": "bb5ed346e42cf1e5",
+      "baseline_rho": 1.0,
+      "baseline_per_contract": {
+        "C1": 1.64494,
+        "C2": 2.636789,
+        "C3": 2.9,
+        "C4": 9.516203,
+        "C5": 1.0
+      },
+      "baseline_status": "ok",
+      "baseline_phases_reached": [
+        "P1_approach",
+        "P2_yield_clear",
+        "P3_commit",
+        "P4_settle"
+      ]
+    },
+    {
+      "params": {
+        "n_oncoming": 1,
+        "v_oncoming": 14.0653,
+        "headway": 6.4288,
+        "aggressiveness": 0.1148,
+        "light_offset": 3.281,
+        "lead_gap_s": 3.4813
+      },
+      "param_hash": "6e0cc3e8bb95648e",
+      "baseline_rho": 1.0,
+      "baseline_per_contract": {
+        "C1": 1.648858,
+        "C2": 27.0,
+        "C3": 2.4,
+        "C4": 8.214337,
+        "C5": 1.0
+      },
+      "baseline_status": "ok",
+      "baseline_phases_reached": [
+        "P1_approach",
+        "P2_yield_clear",
+        "P3_commit",
+        "P4_settle"
+      ]
+    },
+    {
+      "params": {
+        "n_oncoming": 3,
+        "v_oncoming": 6.5207,
+        "headway": 7.4781,
+        "aggressiveness": 0.312,
+        "light_offset": 0.692,
+        "lead_gap_s": 2.3107
+      },
+      "param_hash": "0c319bd6bde3533c",
+      "baseline_rho": -0.0,
+      "baseline_per_contract": {
+        "C1": 1.286322,
+        "C2": 10.701204,
+        "C3": -0.0,
+        "C4": 13.561155,
+        "C5": 1.0
+      },
+      "baseline_status": "ok",
+      "baseline_phases_reached": [
+        "P1_approach",
+        "P2_yield_clear",
+        "P3_commit",
+        "P4_settle"
+      ]
+    },
+    {
+      "params": {
+        "n_oncoming": 1,
+        "v_oncoming": 9.9481,
+        "headway": 4.8809,
+        "aggressiveness": 0.9327,
+        "light_offset": 2.4588,
+        "lead_gap_s": 3.1498
+      },
+      "param_hash": "d95f4f6d3c20145e",
+      "baseline_rho": 1.0,
+      "baseline_per_contract": {
+        "C1": 1.481609,
+        "C2": 3.07582,
+        "C3": 1.65,
+        "C4": 6.827887,
+        "C5": 1.0
+      },
+      "baseline_status": "ok",
+      "baseline_phases_reached": [
+        "P1_approach",
+        "P2_yield_clear",
+        "P3_commit",
+        "P4_settle"
+      ]
+    },
+    {
+      "params": {
+        "n_oncoming": 1,
+        "v_oncoming": 15.0196,
+        "headway": 2.1859,
+        "aggressiveness": 0.1143,
+        "light_offset": 8.9708,
+        "lead_gap_s": 3.0442
+      },
+      "param_hash": "34ee175314d60d97",
+      "baseline_rho": 1.0,
+      "baseline_per_contract": {
+        "C1": 1.652539,
+        "C2": 27.0,
+        "C3": 30.0,
+        "C4": 2.152016,
+        "C5": 1.0
+      },
+      "baseline_status": "ok",
+      "baseline_phases_reached": [
+        "P1_approach",
+        "P2_yield_clear",
+        "P3_commit",
+        "P4_settle"
+      ]
+    }
+  ]
+}

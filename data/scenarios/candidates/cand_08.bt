@@ -1,0 +1,62 @@
+# Unprotected left turn at a signalised four-way junction.
+# Priority order: finish what you started > lawful gap-accepting turn >
+# deadlock escape > hold at line > creep > approach > slow > stop.
+
+Selector
+
+  # 1. Already inside the conflict zone: NEVER abandon the turn mid-junction.
+  #    No gating conditions here on purpose -- clearing is always safer.
+  Sequence
+    InConflictZone
+    CommitTurn(v_mps=6.5, accel_mps2=2.0)
+
+  # 2. Normal gap acceptance: at the line, green ball, turn path clear,
+  #    oncoming needs well over the 3.0 s the yield contract demands
+  #    (6.0 s at entry leaves ~3 s of margin after ~2.5 s of crossing).
+  Sequence
+    DistanceToStopLineBelow(dist_m=7.0)
+    TrafficLightIsGreen
+    PathIsClear(dist_m=22.0)
+    OncomingGapExceeds(gap_s=6.0)
+    EgoSpeedBelow(v_mps=8.0)
+    CommitTurn(v_mps=6.5, accel_mps2=2.0)
+
+  # 3. Deadlock escape: stationary at the line for a long time and still no
+  #    generous gap. Relax the gap slightly, but still keep C2 positive and
+  #    still refuse to enter on red.
+  Sequence
+    DistanceToStopLineBelow(dist_m=6.0)
+    WaitedLongerThan(t_s=10.0)
+    TrafficLightIsGreen
+    PathIsClear(dist_m=18.0)
+    OncomingGapExceeds(gap_s=5.0)
+    CommitTurn(v_mps=6.0, accel_mps2=2.0)
+
+  # 4. Cannot go yet (red, or no gap): stop at the line and wait.
+  #    PathIsClear guards against parking on top of the stopped lead vehicle.
+  Sequence
+    DistanceToStopLineBelow(dist_m=18.0)
+    PathIsClear(dist_m=12.0)
+    HoldAtStopLine(decel_mps2=2.0)
+
+  # 5. Stuck well short of the line (lead vehicle waiting ahead): edge up
+  #    once it has moved on, without entering the conflict zone.
+  Sequence
+    WaitedLongerThan(t_s=4.0)
+    PathIsClear(dist_m=10.0)
+    DistanceToStopLineBelow(dist_m=30.0)
+    Creep(v_mps=2.0, accel_mps2=1.0)
+
+  # 6. Free approach: green and a big RSS-sized buffer to the lead vehicle.
+  Sequence
+    PathIsClear(dist_m=30.0)
+    TrafficLightIsGreen
+    Cruise(v_mps=6.5, accel_mps2=1.5)
+
+  # 7. Closing on the lead, or the light is not green: shed speed gently.
+  Sequence
+    PathIsClear(dist_m=18.0)
+    Decelerate(v_mps=3.0, decel_mps2=2.0)
+
+  # 8. Fallback: something is close ahead -- come to a comfortable stop.
+  Decelerate(v_mps=0.0, decel_mps2=2.5)

@@ -1,0 +1,31 @@
+# CALIBRATION PROBE, not a baseline candidate. Hand-written to answer one
+# question: is the 20-40% violation band reachable at all under the six-
+# parameter space and five contracts? The frozen baseline must be
+# LLM-synthesized (build plan, 25 Aug).
+#
+# Uses every guard the vocabulary offers:
+#   InConflictZone first  -- once committed, FINISH. Re-evaluating the light
+#                            mid-turn would stop the ego inside the junction,
+#                            which is worse for C3 than completing.
+#   TrafficLightIsGreen   -- C3
+#   PathIsClear           -- C4, distance to the lead
+#   OncomingGapExceeds    -- C2, with margin above tau_yield = 3.0
+#   WaitedLongerThan      -- deadlock escape
+
+Selector()
+  Sequence()
+    InConflictZone()
+    CommitTurn(v_mps=6.0, accel_mps2=1.5)
+  Sequence()
+    TrafficLightIsGreen()
+    PathIsClear(dist_m=18.0)
+    OncomingGapExceeds(gap_s=4.5)
+    CommitTurn(v_mps=6.0, accel_mps2=1.5)
+  Sequence()
+    WaitedLongerThan(t_s=12.0)
+    TrafficLightIsGreen()
+    CommitTurn(v_mps=5.0, accel_mps2=1.2)
+  Sequence()
+    DistanceToStopLineBelow(dist_m=15.0)
+    HoldAtStopLine(decel_mps2=2.0)
+  Cruise(v_mps=6.0, accel_mps2=1.0)

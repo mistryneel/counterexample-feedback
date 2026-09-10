@@ -1,0 +1,182 @@
+{
+  "status": "DONE",
+  "timestamp": "2026-08-31T19:49:41+00:00",
+  "git_commit": "4d5b76130574d2075cc8e957a5c0822960d2e131",
+  "wall_clock_s": 422.0,
+  "K_target": 20,
+  "K_admitted": 20,
+  "seed": 20260831,
+  "program": "/home/npk/Projects/cv_research/data/scenarios/baseline_program.bt",
+  "program_sha256_16": "59218be8676bd5e5",
+  "probe": "/home/npk/Projects/cv_research/data/scenarios/conservative_probe.bt",
+  "probe_sha256_16": "45827bd6217b0e29",
+  "active_contracts": [
+    "C1",
+    "C2",
+    "C3",
+    "C4",
+    "C5"
+  ],
+  "nominal_check": {
+    "params": {
+      "n_oncoming": 1,
+      "v_oncoming": 6.0,
+      "headway": 8.0,
+      "aggressiveness": 0.0,
+      "light_offset": 10.0,
+      "lead_gap_s": 4.3
+    },
+    "rho": 1.0,
+    "argmin_contract": "C5",
+    "per_contract": {
+      "C1": 2.377026,
+      "C2": 27.0,
+      "C3": 30.0,
+      "C4": 8.108494,
+      "C5": 1.0
+    },
+    "violation_free": true,
+    "status": "ok"
+  },
+  "violated_contracts": {
+    "C1": 10,
+    "C2": 9,
+    "C3": 1,
+    "C4": 0,
+    "C5": 0
+  },
+  "distinct_blamed_nodes": 1,
+  "blamed_nodes": {
+    "CommitTurn:Selector/Sequence/CommitTurn": 20
+  },
+  "H_node_given_contract_bits": 0.0,
+  "blame_detail": {
+    "C2": {
+      "n": 9,
+      "distinct_nodes": 1,
+      "H_bits": 0.0,
+      "nodes": {
+        "CommitTurn:Selector/Sequence/CommitTurn": 9
+      }
+    },
+    "C1": {
+      "n": 10,
+      "distinct_nodes": 1,
+      "H_bits": 0.0,
+      "nodes": {
+        "CommitTurn:Selector/Sequence/CommitTurn": 10
+      }
+    },
+    "C3": {
+      "n": 1,
+      "distinct_nodes": 1,
+      "H_bits": 0.0,
+      "nodes": {
+        "CommitTurn:Selector/Sequence/CommitTurn": 1
+      }
+    }
+  },
+  "rollouts": {
+    "rollouts_falsification": 161,
+    "rollouts_minimization": 148,
+    "rollouts_boundary": 193,
+    "rollouts_avoidability": 29,
+    "rollouts_total": 531,
+    "cache_hits": {
+      "falsification": 0,
+      "minimization": 33,
+      "boundary": 34,
+      "avoidability": 0
+    },
+    "cache_hits_total": 67,
+    "cache_hit_rate": 0.112
+  },
+  "rollouts_verification": 20,
+  "rollouts_per_admitted": 26.6,
+  "held_out_refusals": 0,
+  "unscoreable_episodes": 0,
+  "rejected": [
+    {
+      "param_hash": "fabe027af0a7fe27",
+      "minimal_param_hash": "003cdfb2f75a6a94",
+      "reason": "unavoidable",
+      "contract": "C3",
+      "probe_rho_on_contract": -0.7,
+      "probe_rho": -0.7
+    },
+    {
+      "param_hash": "e48e9f6e894dd8e8",
+      "minimal_param_hash": "3fef943e088ce512",
+      "reason": "unavoidable",
+      "contract": "C3",
+      "probe_rho_on_contract": -0.35,
+      "probe_rho": -0.35
+    },
+    {
+      "param_hash": "1998e57aeecaa904",
+      "minimal_param_hash": "17e1dc9eac387485",
+      "reason": "unavoidable",
+      "contract": "C3",
+      "probe_rho_on_contract": -1.0,
+      "probe_rho": -1.238787
+    },
+    {
+      "param_hash": "a3af601b36de8568",
+      "minimal_param_hash": "e3458a895a65ba20",
+      "reason": "unavoidable",
+      "contract": "C3",
+      "probe_rho_on_contract": -0.55,
+      "probe_rho": -0.55
+    },
+    {
+      "param_hash": "dcd59ff003adb927",
+      "minimal_param_hash": "17e1dc9eac387485",
+      "reason": "unavoidable",
+      "contract": "C3",
+      "probe_rho_on_contract": -1.0,
+      "probe_rho": -1.596946
+    },
+    {
+      "param_hash": "f20c4ee6452dd243",
+      "minimal_param_hash": "0165864880080aba",
+      "reason": "unavoidable",
+      "contract": "C3",
+      "probe_rho_on_contract": -0.95,
+      "probe_rho": -0.95
+    },
+    {
+      "param_hash": "cdcbc0ce131275b5",
+      "minimal_param_hash": "e8884c8990ddc186",
+      "reason": "unavoidable",
+      "contract": "C3",
+      "probe_rho_on_contract": -0.8,
+      "probe_rho": -0.8
+    },
+    {
+      "param_hash": "38394dd65bff2caf",
+      "minimal_param_hash": "cefc02772af351e9",
+      "reason": "unavoidable",
+      "contract": "C2",
+      "probe_rho_on_contract": -1.740583,
+      "probe_rho": -1.740583
+    },
+    {
+      "param_hash": "c51e4e29dc8058eb",
+      "minimal_param_hash": "7025a051e51d52a4",
+      "reason": "unavoidable",
+      "contract": "C3",
+      "probe_rho_on_contract": -0.7,
+      "probe_rho": -0.7
+    }
+  ],
+  "n_rejected_unavoidable": 9,
+  "unavoidable_rate": 0.3103,
+  "information_duplicates": 7,
+  "distinct_information_keys": 13,
+  "contracts_failing_reproducibility": [
+    "C2",
+    "C3",
+    "C4"
+  ],
+  "reproducibility_failures": []
+}

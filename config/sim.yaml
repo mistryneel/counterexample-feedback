@@ -1,0 +1,259 @@
+# ============================================================================
+# Simulator configuration — CARLA 0.9.16
+# ============================================================================
+# Every value here is load-bearing for determinism. Do not change one without
+# re-running the determinism gate (docs/determinism_report.md).
+#
+# Machine-specific overrides (host, port, container name) belong in
+# config/local.yaml, which is git-ignored. See config/local.yaml.example.
+# ============================================================================
+
+server:
+  host: "127.0.0.1"
+  port: 2000               # CARLA RPC port. Streaming port is implicitly port+1.
+  timeout_s: 30.0          # client.set_timeout(). Generous: map load can be slow.
+  connect_retries: 30      # health_check / start_carla poll budget
+  connect_retry_delay_s: 2.0
+
+world:
+  map: "Town05"
+  # Verified 2026-08-23 against https://carla.readthedocs.io/en/0.9.16/core_map/
+  # Town05 ships in the BASE package; AdditionalMaps (14.8 GB) is not required.
+  # This is re-verified at runtime by health_check.py listing available maps.
+
+  reload_between_episodes: false
+  # SET TO FALSE ON EVIDENCE, 23 Aug 2026. This deviates from the CARLA docs
+  # (adv_synchrony_timestep), which state that reproducible physics requires
+  # "world reloading between repetitions". Two measured reasons:
+  #
+  #   1. CRASH. client.reload_world() causes CARLA 0.9.16 to segfault
+  #      (signal 11) roughly 3-4 s AFTER the client disconnects. Isolated by
+  #      bisection: disabling the Traffic Manager did not help, disabling the
+  #      traffic-light freeze did not help, disabling reload DID. Reproduced
+  #      on every trial with reload and on none without.
+  #   2. COST. Reload dropped the real-time factor from ~43 to ~12.5, i.e. it
+  #      was consuming roughly 70% of the wall-clock budget.
+  #
+  # Determinism WITHOUT reload is therefore verified empirically instead of
+  # assumed -- see docs/determinism_report.md stages 3.4 and 3.5. Between
+  # episodes the backend destroys every spawned actor explicitly and re-freezes
+  # the signals, so the carried-over world state is the static map only.
+  # If 3.4/3.5 had failed, the correct response would have been to restore
+  # reload and work around the crash, not to keep the speed.
+
+# ---------------------------------------------------------------------------
+# Timing. The single most important block in this file.
+# ---------------------------------------------------------------------------
+timing:
+  synchronous_mode: true
+  fixed_delta_seconds: 0.05      # 20 Hz. Fixed by spec §3.
+  no_rendering_mode: true        # server-side: skip rendering entirely
+  episode_horizon_s: 40.0        # spec §3 said 30 s; RAISED 30 Aug with C3
+  # A program that correctly stops for a red phase must still have time to
+  # complete the turn afterwards. Measured: a clean episode runs ~23.9 s, and
+  # waiting out a 6 s red pushes that past 30 s, so the old horizon would have
+  # scored correct yielding as a timeout failure. The horizon is a measurement
+  # artefact, not a contract, and 40 s costs ~33% more simulation on a campaign
+  # that already finishes in minutes.
+  # expected ticks per episode = episode_horizon_s / fixed_delta_seconds = 800
+
+# ---------------------------------------------------------------------------
+# Physics substepping — the silent determinism trap.
+# ---------------------------------------------------------------------------
+# CARLA 0.9.16 docs (adv_synchrony_timestep), quoted verbatim:
+#   "The condition to be fulfilled is:
+#      fixed_delta_seconds <= max_substep_delta_time * max_substeps"
+#   "The substep delta time should at least be below 0.01666 and ideally
+#    below 0.01."
+#   Defaults are "a maximum of 10 physics substeps with a maximum physical
+#    delta time of 0.01".
+#
+# Check with the values below:
+#   max_substep_delta_time * max_substeps = 0.01 * 10 = 0.10
+#   fixed_delta_seconds                   = 0.05
+#   0.05 <= 0.10  -> CONDITION HOLDS, with 2x headroom.
+#
+# If this condition is violated CARLA does NOT raise. Physics silently becomes
+# non-deterministic and every rho downstream is quietly wrong. health_check.py
+# asserts it on every run and exits non-zero on failure.
+# ---------------------------------------------------------------------------
+physics:
+  substepping: true
+  max_substep_delta_time: 0.01
+  max_substeps: 10
+
+# ---------------------------------------------------------------------------
+# Determinism / seeding.
+# ---------------------------------------------------------------------------
+# CARLA docs (adv_traffic_manager): "the seed must be set for every
+# simulation ... each time the world is reloaded, the seed must be set again"
+# and "The CARLA server and the TM must be in synchronous mode BEFORE
+# enabling deterministic mode". carla_backend.py enforces both orderings.
+# ---------------------------------------------------------------------------
+seeds:
+  python: 20260823
+  numpy: 20260823
+  traffic_manager: 20260823
+  tm_port: 8000            # placeholder; overridden in config/local.yaml.
+                           # See config/local.yaml.example.
+
+traffic_manager:
+  enabled: true
+  synchronous_mode: true
+  hybrid_physics_mode: false
+  # Deliberately OFF. Hybrid physics disables physics for autopilot vehicles
+  # outside a radius. That makes oncoming-vehicle dynamics depend on distance
+  # to ego, which is exactly the quantity the falsifier is searching over.
+  # Cheaper, but it would corrupt the experiment.
+
+quality:
+  level: "Low"             # -quality-level=Low
+  render_off_screen: true  # -RenderOffScreen
+  no_sound: true           # -nosound
+
+weather:
+  preset: "ClearNoon"      # spec D11: fixed for all experiments, never varied
+
+logging:
+  trace_dir: "data/traces"
+  format: "parquet"
+  compression: "snappy"
+  float_dtype: "float64"
+  # float64 throughout. float32 would introduce rounding at ~1e-7 relative,
+  # which is the same order as the determinism tolerance we are trying to
+  # measure. Storage is not a constraint (1.4 TB free).
+
+# ---------------------------------------------------------------------------
+# Scenario geometry and the hardcoded controller (23 Aug placeholder).
+# ---------------------------------------------------------------------------
+# The controller here is a stand-in for the behaviour tree. Lateral control is
+# a fixed pure-pursuit path follower; only the LONGITUDINAL branch is decision
+# logic, and that is what py_trees replaces on 24 Aug.
+# ---------------------------------------------------------------------------
+scenario:
+  ego_blueprint: "vehicle.tesla.model3"
+  oncoming_blueprint: "vehicle.audi.tt"
+  spawn_z_offset_m: 0.3        # lift above the road surface so spawn does not
+                               # collide with the mesh
+  settle_ticks: 10             # ticks discarded before t=0, so the first rows
+                               # are not spawn-drop transients
+
+  approach_m: 40.0             # route length before the junction entry
+  exit_m: 30.0                 # route length past the junction (P4 settle room)
+  route_step_m: 1.0
+
+  # --- oncoming platoon phasing -------------------------------------------
+  # The lead vehicle is placed so that it reaches the conflict zone
+  # `headway` seconds after the ego arrives at its yield decision point:
+  #     d_lead_from_cz = v_oncoming * (t_ego_to_decision_s + headway)
+  # so `headway` IS the gap the ego faces, directly comparable with tau_yield.
+  # See docs/sensitivity_analysis.md for why the previous fixed-distance rule
+  # made headway a no-op.
+  t_ego_to_decision_s: 4.95
+  # MEASURED, not assumed: 4.950 s with standard deviation 0.000 across 300
+  # traces under the hardcoded controller. RE-MEASURE WHEN THE BEHAVIOUR TREE
+  # DRIVES THE APPROACH -- the tree can change the approach speed profile.
+  # `achieved_gap_s` is logged per episode so drift is visible.
+
+  oncoming_stopline_to_cz_m: 19.85   # measured from junction.yaml geometry
+  oncoming_max_spawn_back_m: 140.0
+  # Clean single-lane upstream extent of road 7 -> road 10. Beyond ~170 m the
+  # walk enters upstream junctions. Spawns needing more are CLAMPED and flagged
+  # via meta.spawn_clamped, so a clamped scenario can be excluded from boundary
+  # search rather than silently distorting it.
+
+  aggressiveness_trigger_m: 25.0     # ego this close to the CZ arms yielding
+  aggressiveness_max_decel_mps2: 4.0
+  # Plausibility ceiling from spec 6: |a| <= 4.0 m/s^2 for non-ego actors.
+  # aggressiveness = 1 -> no yielding; 0 -> yields at the full 4.0 m/s^2.
+
+  oncoming_spawn_back_m: 60.0  # legacy; unused since the phasing fix
+
+  # --- C3: signal phase, driven explicitly from the tick loop -------------
+  light_trigger_dist_m: 25.0
+  # The signal phase clock starts when the ego first comes within this distance
+  # of the junction centre, NOT at episode start. Chosen because every program
+  # passes through it on approach regardless of how cautiously it drives, so
+  # light_offset means the same thing for all of them. See
+  # CarlaBackend._apply_light_schedule for why the episode clock failed.
+
+  yellow_duration_s: 3.0
+  red_duration_s: 6.0
+  # The red phase is FINITE and the signal returns to green afterwards. With a
+  # terminal red, C3 was satisfiable only for light_offset >= 9.0: below that
+  # no program could both stop for the red and ever complete the turn, so
+  # every counterexample would fail the avoidability filter and C3 would score
+  # bad luck rather than bad driving. 6.0 s is long enough to be a real red
+  # phase and short enough that green returns with time to complete the
+  # manoeuvre inside the episode horizon.
+  # Fixed, not a search parameter: yellow interval is a property of the
+  # junction, not of the traffic situation the falsifier varies. Red onset is
+  # light_offset + yellow_duration_s, and C3's robustness is the margin from
+  # that onset to the ego's occupancy of the intersection.
+
+  # --- C4: lead vehicle ---------------------------------------------------
+  lead_blueprint: "vehicle.audi.tt"
+  lead_approach_speed_mps: 6.0
+  # DELIBERATELY BELOW the ego's cruise speed. At 8.0 m/s -- matching the ego
+  # -- the ego never closed on the lead, C4 was satisfied in 198 of 200
+  # episodes and lead_gap_s correlated +0.049 with rho at p = 0.49, i.e. it
+  # was inert in exactly the way ped_phase_offset was before it was dropped.
+  # A lead moving 2 m/s slower than the ego makes the gap close during the
+  # approach, so lead_gap_s controls how much room the program has before the
+  # RSS bound bites, which is the whole point of the parameter. 6.0 m/s is
+  # still a plausible approach speed for a vehicle slowing toward a junction.
+  lead_max_decel_mps2: 4.0
+  # The non-ego plausibility ceiling from data/scenarios/space.yaml. The
+  # falsifier must not be able to buy a C4 violation with absurd braking.
+  lead_dwell_s: 4.0
+  # How long the lead holds at the line before proceeding. NOT a search
+  # parameter: it must be long enough that C4 bites while the ego closes on a
+  # stationary vehicle, and short enough that the lead always clears so the
+  # ego can complete its own turn. A lead that never clears drives ICR to zero
+  # in every episode and measures the program on an impossible task.
+  lead_stop_before_cz_m: 14.0
+  # Distance from the conflict-zone centre at which the lead begins to stop,
+  # just outside C2's 12.0 m conflict-zone radius so the lead holds AT the
+  # line rather than inside the junction.
+  oncoming_min_gap_m: 8.0      # floor on inter-vehicle spacing, so a small
+                               # headway cannot spawn one car inside another
+  oncoming_retire_past_cz_m: 80.0
+  # Destroy an oncoming vehicle once it is this far past the conflict zone and
+  # still departing. Set on evidence (23 Aug): vehicles left to run reached the
+  # map boundary ~142 m past the junction and wrecked, and the post-crash
+  # dynamics were the ONLY quantity that failed to reproduce bit-exactly
+  # between runs. They cannot influence C1 or C2 from 80 m away.
+
+  controller:
+    v_cruise_mps: 8.0          # spec §3 entry condition: ego speed <= 8 m/s
+    v_turn_mps: 5.0
+    tau_yield_s: 3.0           # mirrors contracts.yaml C2_yield.tau_yield_s
+    yield_zone_m: 12.0         # distance to junction entry at which the yield
+                               # decision is taken
+    junction_entry_idx: 40     # == approach_m / route_step_m
+    junction_exit_idx: 70      # entry + junction traversal, refined at runtime
+    route_step_m: 1.0
+    lookahead_min_m: 4.0
+    lookahead_k: 0.5           # lookahead = min + k * speed
+    steer_normaliser_rad: 0.6  # alpha -> steer scaling; 0.6 rad ~= full lock
+    kp_throttle: 0.5
+    kp_brake: 0.6
+    throttle_max: 0.75
+    brake_max: 0.5
+    # brake_max reduced from 1.0 on evidence (23 Aug brake calibration).
+    # At 8 m/s, brake=0.5 gives ~-4.8 m/s^2 above the low-speed regime;
+    # brake=1.0 gave ~-10 m/s^2 mean, past any tyre-friction limit.
+
+    throttle_rate_per_tick: 0.20   # 4.0 per second at 20 Hz -- 0.25 s full travel
+    brake_rate_per_tick: 0.20
+    # Actuator slew limits, representing ACTUATOR PHYSICS (what a brake can do)
+    # rather than COMFORT (what the program should choose). Loosened from 0.10
+    # on 24 Aug: at 0.10 the limit itself pinned max|jerk_cmd| to 19.150 m/s^3
+    # in all 300 banked traces, giving C5 zero variance and therefore zero
+    # discriminating power. Comfort is the program's responsibility and C5 is
+    # how it is scored -- so the harness must not enforce it. See
+    # docs/c5_decision.md.
+
+  # PathIsClear look-ahead geometry
+  path_clear_max_m: 100.0
+  path_clear_halfwidth_m: 2.5

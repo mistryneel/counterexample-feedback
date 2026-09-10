@@ -1,0 +1,20 @@
+# Machine-specific overrides. Copy to config/local.yaml (git-ignored) and edit.
+# Any key here shallow-overrides the same path in config/sim.yaml.
+
+server:
+  host: "127.0.0.1"
+  port: 2000
+
+seeds:
+  tm_port: 8000             # CARLA Traffic Manager port; change it if 8000 is in use
+
+carla:
+  # How the server is launched. "docker" or "native".
+  mode: "docker"
+  docker_image: "carlasim/carla:0.9.16"
+  container_name: "carla_0916_p2000"
+  gpu_device: "0"           # NVIDIA_VISIBLE_DEVICES for this instance
+  docker_cmd: "docker"      # set to "sg docker -c docker" if not in the docker group
+
+  # native mode only:
+  root: "/path/to/CARLA_0.9.16"

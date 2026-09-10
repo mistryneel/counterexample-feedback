@@ -1,0 +1,40 @@
+{
+  "n_traces": 300,
+  "contracts": [
+    "C1",
+    "C2"
+  ],
+  "violation_rate": 0.31333333333333335,
+  "correlations": {
+    "aggressiveness": {
+      "pearson": -0.3557082609550785,
+      "spearman": -0.3787236676153095,
+      "p_value": 1.1466589707644672e-11,
+      "strength": "moderate"
+    },
+    "headway": {
+      "pearson": 0.044216532639639546,
+      "spearman": -0.0683501079678903,
+      "p_value": 0.23788205327784873,
+      "strength": "NONE"
+    },
+    "n_oncoming": {
+      "pearson": -0.2263464948037112,
+      "spearman": -0.1161824753377026,
+      "p_value": 0.04435156175098631,
+      "strength": "weak"
+    },
+    "v_oncoming": {
+      "pearson": -0.36634943215734733,
+      "spearman": -0.34942147684102004,
+      "p_value": 4.840824136133207e-10,
+      "strength": "moderate"
+    },
+    "achieved_gap_s": {
+      "pearson": 0.08306574443769334,
+      "spearman": -0.030034781501437034,
+      "p_value": 0.6043446496756011,
+      "strength": "NONE"
+    }
+  }
+}

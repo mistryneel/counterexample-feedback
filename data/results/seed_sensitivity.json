@@ -1,0 +1,11 @@
+{
+  "pass": true,
+  "seed": 20260823,
+  "max_dev_seed_set_m": 0.0,
+  "max_dev_different_seeds_m": 0.0,
+  "same_seed_reproduces": true,
+  "different_seeds_diverge": false,
+  "e1_uses_tm_for_any_actor": false,
+  "method": "across full server restarts; reload_world unavailable",
+  "tolerance": 1e-06
+}

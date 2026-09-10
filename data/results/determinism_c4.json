@@ -1,0 +1,235 @@
+{
+  "repeats": 6,
+  "program": "/home/npk/Projects/cv_research/data/scenarios/baseline_program.bt",
+  "tolerance": 1e-06,
+  "scenarios": [
+    {
+      "params": {
+        "n_oncoming": 2,
+        "v_oncoming": 14.0,
+        "headway": 2.0,
+        "aggressiveness": 0.9,
+        "light_offset": 2.0,
+        "lead_gap_s": 2.5
+      },
+      "rho_spread": 0.0,
+      "per_contract": {
+        "C1": {
+          "values": [
+            1.578914,
+            1.578914,
+            1.578914,
+            1.578914,
+            1.578914,
+            1.578914
+          ],
+          "spread": 0.0,
+          "reproduces": true
+        },
+        "C2": {
+          "values": [
+            27.0,
+            27.0,
+            27.0,
+            27.0,
+            27.0,
+            27.0
+          ],
+          "spread": 0.0,
+          "reproduces": true
+        },
+        "C3": {
+          "values": [
+            2.55,
+            2.55,
+            2.55,
+            2.55,
+            2.55,
+            2.55
+          ],
+          "spread": 0.0,
+          "reproduces": true
+        },
+        "C4": {
+          "values": [
+            8.475639,
+            8.132303,
+            8.823469,
+            8.177529,
+            8.156005,
+            8.135742
+          ],
+          "spread": 0.6911650471846009,
+          "reproduces": false
+        },
+        "C5": {
+          "values": [
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0
+          ],
+          "spread": 0.0,
+          "reproduces": true
+        }
+      },
+      "lead_x_max_spread_m": 0.05814361572265625,
+      "lead_first_divergent_row": 81
+    },
+    {
+      "params": {
+        "n_oncoming": 1,
+        "v_oncoming": 8.0,
+        "headway": 6.0,
+        "aggressiveness": 0.2,
+        "light_offset": 8.0,
+        "lead_gap_s": 4.0
+      },
+      "rho_spread": 0.0,
+      "per_contract": {
+        "C1": {
+          "values": [
+            1.251106,
+            1.251106,
+            1.251106,
+            1.251106,
+            1.251106,
+            1.251106
+          ],
+          "spread": 0.0,
+          "reproduces": true
+        },
+        "C2": {
+          "values": [
+            27.0,
+            27.0,
+            27.0,
+            27.0,
+            27.0,
+            27.0
+          ],
+          "spread": 0.0,
+          "reproduces": true
+        },
+        "C3": {
+          "values": [
+            30.0,
+            30.0,
+            30.0,
+            30.0,
+            30.0,
+            30.0
+          ],
+          "spread": 0.0,
+          "reproduces": true
+        },
+        "C4": {
+          "values": [
+            9.137621,
+            8.599612,
+            8.960603,
+            9.127516,
+            8.607127,
+            8.598006
+          ],
+          "spread": 0.5396150383192477,
+          "reproduces": false
+        },
+        "C5": {
+          "values": [
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0
+          ],
+          "spread": 0.0,
+          "reproduces": true
+        }
+      },
+      "lead_x_max_spread_m": 0.03845977783203125,
+      "lead_first_divergent_row": 52
+    },
+    {
+      "params": {
+        "n_oncoming": 3,
+        "v_oncoming": 10.0,
+        "headway": 5.0,
+        "aggressiveness": 0.5,
+        "light_offset": 5.0,
+        "lead_gap_s": 3.0
+      },
+      "rho_spread": 0.0,
+      "per_contract": {
+        "C1": {
+          "values": [
+            -0.286756,
+            -0.286756,
+            -0.286756,
+            -0.286756,
+            -0.286756,
+            -0.286756
+          ],
+          "spread": 0.0,
+          "reproduces": true
+        },
+        "C2": {
+          "values": [
+            -1.765621,
+            -1.765621,
+            -1.765621,
+            -1.765621,
+            -1.765621,
+            -1.765621
+          ],
+          "spread": 0.0,
+          "reproduces": true
+        },
+        "C3": {
+          "values": [
+            30.0,
+            30.0,
+            30.0,
+            30.0,
+            30.0,
+            30.0
+          ],
+          "spread": 0.0,
+          "reproduces": true
+        },
+        "C4": {
+          "values": [
+            19.657745,
+            19.664829,
+            19.606148,
+            19.609431,
+            19.652827,
+            19.67607
+          ],
+          "spread": 0.06992217741654017,
+          "reproduces": false
+        },
+        "C5": {
+          "values": [
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0
+          ],
+          "spread": 0.0,
+          "reproduces": true
+        }
+      },
+      "lead_x_max_spread_m": 0.05084991455078125,
+      "lead_first_divergent_row": 75
+    }
+  ],
+  "contracts_that_drift": [
+    "C4"
+  ]
+}

@@ -1,0 +1,166 @@
+{
+  "certificate_id": "CE011_C2_1673111e21cbfa9e",
+  "param_hash": "1673111e21cbfa9e",
+  "git_commit": "4d5b76130574d2075cc8e957a5c0822960d2e131",
+  "timestamp": "2026-08-31T19:45:41+00:00",
+  "schema_version": "1.0.0",
+  "program": "data/scenarios/baseline_program.bt",
+  "program_sha256_16": "59218be8676bd5e5",
+  "probe_program": "data/scenarios/conservative_probe.bt",
+  "scenario_params": {
+    "n_oncoming": 3,
+    "v_oncoming": 6.0228,
+    "headway": 7.6991,
+    "aggressiveness": 0.4704,
+    "light_offset": 7.834,
+    "lead_gap_s": 3.0861
+  },
+  "minimal_params": {
+    "n_oncoming": 1,
+    "v_oncoming": 6.0,
+    "headway": 8.0,
+    "aggressiveness": 0.4704,
+    "light_offset": 10.0,
+    "lead_gap_s": 4.3
+  },
+  "evaluation_params": {
+    "n_oncoming": 3,
+    "v_oncoming": 6.0228,
+    "headway": 7.6991,
+    "aggressiveness": 0.4704,
+    "light_offset": 7.834,
+    "lead_gap_s": 3.0861
+  },
+  "dropped_parameters": [
+    "n_oncoming",
+    "v_oncoming",
+    "headway",
+    "light_offset",
+    "lead_gap_s"
+  ],
+  "kept_parameters": [
+    "aggressiveness"
+  ],
+  "rho_minimal": -1.428586,
+  "per_contract_minimal": {
+    "C1": -0.351619,
+    "C2": -1.428586,
+    "C3": 30.0,
+    "C4": 21.238001,
+    "C5": 1.0
+  },
+  "minimal_param_hash": "1c3480748872d72b",
+  "active_node_minimal": "CommitTurn:Selector/Sequence/CommitTurn",
+  "violated_contract": "C2",
+  "rho": -1.522697,
+  "rho1": -0.251496,
+  "rho2": -1.522697,
+  "rho3": 30.0,
+  "rho4": 15.454511,
+  "rho5": 1.0,
+  "rho_argmin_contract": "C2",
+  "vacuous_contracts": [],
+  "argmin_t_s": 17.30000025779009,
+  "argmin_frame": 557369,
+  "argmin_index": 346,
+  "active_node": "CommitTurn:Selector/Sequence/CommitTurn",
+  "bt_node_type": "CommitTurn",
+  "bt_node_path": "Selector/Sequence/CommitTurn",
+  "bt_tick_path": "n_2,n_3",
+  "boundary": [
+    {
+      "parameter": "aggressiveness",
+      "direction": ">=",
+      "threshold": 0.441,
+      "resolved": true,
+      "violating_value": 0.4704,
+      "nominal_value": 0.0,
+      "bracket": [
+        0.44099999999999995,
+        0.43365
+      ],
+      "n_evals": 7,
+      "note": "crossing bracketed to [0.4336, 0.441] in 7 evaluations",
+      "rendered": "aggressiveness >= 0.441"
+    }
+  ],
+  "boundary_report": "C2 fails for aggressiveness >= 0.441",
+  "avoidable": true,
+  "avoidable_strict": true,
+  "probe_scoreable": true,
+  "probe_status": "ok",
+  "probe_rho": 1.5,
+  "probe_rho_on_contract": 5.805984,
+  "probe_per_contract": {
+    "C1": 6.053496,
+    "C2": 5.805984,
+    "C3": 6.85,
+    "C4": 2.358257,
+    "C5": 1.5
+  },
+  "probe_phases_reached": [
+    "P1_approach",
+    "P2_yield_clear",
+    "P3_commit",
+    "P4_settle"
+  ],
+  "narrative": "The ego was inside the conflict zone with only 1.48 s of margin on the 3.0 s yield requirement at t = 17.30 s. The gap the ego actually faced was 2.57 s.",
+  "episode_status": "collision",
+  "trace_path": "/home/npk/Projects/cv_research/data/traces/fals_fals_1673111e21cbfa9e.parquet",
+  "phases_reached": [
+    "P1_approach",
+    "P2_yield_clear",
+    "P3_commit"
+  ],
+  "achieved_gap_s": 2.572174823483492,
+  "original_param_hash": "1673111e21cbfa9e",
+  "reproducibility": {
+    "checked": true,
+    "tolerance": 1e-06,
+    "rho_repeat": -1.522697,
+    "rho_delta": 0.0,
+    "per_contract_repeat": {
+      "C1": -0.251496,
+      "C2": -1.522697,
+      "C3": 30.0,
+      "C4": 15.423759,
+      "C5": 1.0
+    },
+    "per_contract_delta": {
+      "C1": 0.0,
+      "C2": 0.0,
+      "C3": 0.0,
+      "C4": -0.030752419,
+      "C5": 0.0
+    },
+    "active_node_repeat": "CommitTurn:Selector/Sequence/CommitTurn",
+    "rho_reproduces": true,
+    "node_reproduces": true,
+    "per_contract_reproduces": {
+      "C1": true,
+      "C2": true,
+      "C3": true,
+      "C4": false,
+      "C5": true
+    },
+    "max_abs_per_contract_delta": 0.030752419,
+    "contracts_not_reproducing": [
+      "C4"
+    ]
+  },
+  "rollouts_falsification": 0,
+  "rollouts_minimization": 6,
+  "rollouts_boundary": 6,
+  "rollouts_avoidability": 1,
+  "information_key": "('C2', ('aggressiveness',), (0.44,))",
+  "information_duplicate_of": "CE001_C2_44b9f97d05fda474",
+  "authorising_node": "Decelerate:Selector/Sequence/Decelerate",
+  "blame_definitions": {
+    "active_node": "leaf ticking at the argmin timestep (pre-registered, spec 7.5)",
+    "authorising_node": "last distinct leaf active before the argmin leaf's run began"
+  },
+  "boundary_suppressed": [],
+  "boundary_report_rendered": "C2 fails for aggressiveness >= 0.441",
+  "narrative_pre_3c226ee": "The ego was inside the conflict zone with only 1.48 s of margin on the 3.0 s yield requirement at t = 17.30 s while CommitTurn was the active behaviour. C2 fails for aggressiveness >= 0.441. The gap the ego actually faced was 2.57 s.",
+  "narrative_regenerated": "Recomposed 31 Aug from the same banked fields. The original leaked the active_node (an F4a-only field) into what F2 and F3 render, and embedded the unsuppressed boundary_report. Using it verbatim would have put blame localization into F2 and F3, so F4a would have repeated a field rather than added one. Original retained as narrative_pre_3c226ee."
+}

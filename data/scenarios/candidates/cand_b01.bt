@@ -1,0 +1,65 @@
+# Unprotected left turn at a signalised four-way junction.
+# Priority order: finish what you started > take a real gap > escape deadlock
+# > wait lawfully at the line > approach with lead-vehicle spacing.
+
+Selector
+
+  # 1. Already inside the conflict zone: never abandon the turn. No conditions
+  #    other than InConflictZone gate this, so it cannot be re-evaluated away.
+  Sequence
+    InConflictZone
+    CommitTurn(v_mps=6.5, accel_mps2=2.0)
+
+  # 2. Normal gap acceptance: green ball, right at the line, slow enough to
+  #    turn, turn path clear, and the nearest oncoming car is 6 s away
+  #    (double the 3.0 s required by C2, leaving reaction margin).
+  Sequence
+    TrafficLightIsGreen
+    DistanceToStopLineBelow(dist_m=7.0)
+    EgoSpeedBelow(v_mps=9.0)
+    PathIsClear(dist_m=14.0)
+    OncomingGapExceeds(gap_s=6.0)
+    CommitTurn(v_mps=6.5, accel_mps2=2.0)
+
+  # 3. Deadlock escape: stationary for 12 s and still no generous gap.
+  #    Still requires green (C3) and still keeps a real yield margin (C2).
+  Sequence
+    WaitedLongerThan(t_s=12.0)
+    TrafficLightIsGreen
+    DistanceToStopLineBelow(dist_m=5.0)
+    PathIsClear(dist_m=9.0)
+    OncomingGapExceeds(gap_s=4.0)
+    CommitTurn(v_mps=6.0, accel_mps2=2.0)
+
+  # 4. Green but no acceptable gap yet: sit still at the line so the
+  #    stationary timer in branch 3 can accumulate.
+  Sequence
+    TrafficLightIsGreen
+    DistanceToStopLineBelow(dist_m=4.0)
+    HoldAtStopLine(decel_mps2=2.0)
+
+  # 5. Within stopping range of the junction.
+  Sequence
+    DistanceToStopLineBelow(dist_m=35.0)
+    Selector
+      # 5a. Green: close in on the line, respecting the lead vehicle.
+      Sequence
+        TrafficLightIsGreen
+        Selector
+          Sequence
+            PathIsClear(dist_m=18.0)
+            DistanceToStopLineBelow(dist_m=14.0)
+            Creep(v_mps=2.5, accel_mps2=1.2)
+          Sequence
+            PathIsClear(dist_m=24.0)
+            Cruise(v_mps=8.0, accel_mps2=1.5)
+          Decelerate(v_mps=1.5, decel_mps2=2.0)
+      # 5b. Yellow or red: stop at the line and wait for the next green.
+      HoldAtStopLine(decel_mps2=2.5)
+
+  # 6. Far from the junction: follow the lead vehicle at an RSS-safe distance.
+  Selector
+    Sequence
+      PathIsClear(dist_m=26.0)
+      Cruise(v_mps=8.0, accel_mps2=1.5)
+    Decelerate(v_mps=4.5, decel_mps2=1.5)

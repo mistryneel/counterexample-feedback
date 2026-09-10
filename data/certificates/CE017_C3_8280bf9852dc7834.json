@@ -1,0 +1,182 @@
+{
+  "certificate_id": "CE017_C3_8280bf9852dc7834",
+  "param_hash": "8280bf9852dc7834",
+  "git_commit": "4d5b76130574d2075cc8e957a5c0822960d2e131",
+  "timestamp": "2026-08-31T19:48:50+00:00",
+  "schema_version": "1.0.0",
+  "program": "data/scenarios/baseline_program.bt",
+  "program_sha256_16": "59218be8676bd5e5",
+  "probe_program": "data/scenarios/conservative_probe.bt",
+  "scenario_params": {
+    "n_oncoming": 1,
+    "v_oncoming": 8.1208,
+    "headway": 7.7817,
+    "aggressiveness": 0.3989,
+    "light_offset": 1.4391,
+    "lead_gap_s": 3.3563
+  },
+  "minimal_params": {
+    "n_oncoming": 1,
+    "v_oncoming": 6.0,
+    "headway": 8.0,
+    "aggressiveness": 0.3989,
+    "light_offset": 1.4391,
+    "lead_gap_s": 4.3
+  },
+  "evaluation_params": {
+    "n_oncoming": 1,
+    "v_oncoming": 8.1208,
+    "headway": 7.7817,
+    "aggressiveness": 0.3989,
+    "light_offset": 1.4391,
+    "lead_gap_s": 3.3563
+  },
+  "dropped_parameters": [
+    "n_oncoming",
+    "v_oncoming",
+    "headway",
+    "lead_gap_s"
+  ],
+  "kept_parameters": [
+    "aggressiveness",
+    "light_offset"
+  ],
+  "rho_minimal": -0.5,
+  "per_contract_minimal": {
+    "C1": -0.065628,
+    "C2": 27.0,
+    "C3": -0.5,
+    "C4": 17.603346,
+    "C5": 1.0
+  },
+  "minimal_param_hash": "56c6f70cddd67c80",
+  "active_node_minimal": "CommitTurn:Selector/Sequence/CommitTurn",
+  "violated_contract": "C3",
+  "rho": -0.7,
+  "rho1": -0.365661,
+  "rho2": -0.28614,
+  "rho3": -0.7,
+  "rho4": 16.299203,
+  "rho5": 1.0,
+  "rho_argmin_contract": "C3",
+  "vacuous_contracts": [],
+  "argmin_t_s": 16.4500002451241,
+  "argmin_frame": 704318,
+  "argmin_index": 329,
+  "active_node": "CommitTurn:Selector/Sequence/CommitTurn",
+  "bt_node_type": "CommitTurn",
+  "bt_node_path": "Selector/Sequence/CommitTurn",
+  "bt_tick_path": "n_2,n_3",
+  "boundary": [
+    {
+      "parameter": "aggressiveness",
+      "direction": ">=",
+      "threshold": 0.3677,
+      "resolved": true,
+      "violating_value": 0.3989,
+      "nominal_value": 0.0,
+      "bracket": [
+        0.3677359375,
+        0.361503125
+      ],
+      "n_evals": 7,
+      "note": "crossing bracketed to [0.3615, 0.3677] in 7 evaluations",
+      "rendered": "aggressiveness >= 0.3677"
+    },
+    {
+      "parameter": "light_offset",
+      "direction": "<=",
+      "threshold": 1.8404,
+      "resolved": true,
+      "violating_value": 1.4391,
+      "nominal_value": 10.0,
+      "bracket": [
+        1.8403921875,
+        1.90727421875
+      ],
+      "n_evals": 8,
+      "note": "crossing bracketed to [1.84, 1.907] in 8 evaluations",
+      "rendered": "light_offset <= 1.84"
+    }
+  ],
+  "boundary_report": "C3 fails for aggressiveness >= 0.3677 when light_offset <= 1.84",
+  "avoidable": true,
+  "avoidable_strict": true,
+  "probe_scoreable": true,
+  "probe_status": "ok",
+  "probe_rho": 0.5,
+  "probe_rho_on_contract": 0.5,
+  "probe_per_contract": {
+    "C1": 6.615258,
+    "C2": 27.0,
+    "C3": 0.5,
+    "C4": 2.695099,
+    "C5": 1.5
+  },
+  "probe_phases_reached": [
+    "P1_approach",
+    "P2_yield_clear",
+    "P3_commit",
+    "P4_settle"
+  ],
+  "narrative": "The ego was still occupying the intersection 0.70 s after the light turned red at t = 16.45 s. The gap the ego actually faced was 2.71 s.",
+  "episode_status": "collision",
+  "trace_path": "/home/npk/Projects/cv_research/data/traces/fals_fals_8280bf9852dc7834.parquet",
+  "phases_reached": [
+    "P1_approach",
+    "P2_yield_clear",
+    "P3_commit"
+  ],
+  "achieved_gap_s": 2.710607319351473,
+  "original_param_hash": "8280bf9852dc7834",
+  "reproducibility": {
+    "checked": true,
+    "tolerance": 1e-06,
+    "rho_repeat": -0.7,
+    "rho_delta": 0.0,
+    "per_contract_repeat": {
+      "C1": -0.365661,
+      "C2": -0.286141,
+      "C3": -0.7,
+      "C4": 16.290041,
+      "C5": 1.0
+    },
+    "per_contract_delta": {
+      "C1": 7.2e-08,
+      "C2": -1.114e-06,
+      "C3": 0.0,
+      "C4": -0.009162436,
+      "C5": 0.0
+    },
+    "active_node_repeat": "CommitTurn:Selector/Sequence/CommitTurn",
+    "rho_reproduces": true,
+    "node_reproduces": true,
+    "per_contract_reproduces": {
+      "C1": true,
+      "C2": false,
+      "C3": true,
+      "C4": false,
+      "C5": true
+    },
+    "max_abs_per_contract_delta": 0.009162436,
+    "contracts_not_reproducing": [
+      "C2",
+      "C4"
+    ]
+  },
+  "rollouts_falsification": 80,
+  "rollouts_minimization": 5,
+  "rollouts_boundary": 15,
+  "rollouts_avoidability": 1,
+  "information_key": "('C3', ('aggressiveness', 'light_offset'), (0.37, 1.84))",
+  "information_duplicate_of": null,
+  "authorising_node": "Decelerate:Selector/Sequence/Decelerate",
+  "blame_definitions": {
+    "active_node": "leaf ticking at the argmin timestep (pre-registered, spec 7.5)",
+    "authorising_node": "last distinct leaf active before the argmin leaf's run began"
+  },
+  "boundary_suppressed": [],
+  "boundary_report_rendered": "C3 fails for aggressiveness >= 0.3677 when light_offset <= 1.84",
+  "narrative_pre_3c226ee": "The ego was still occupying the intersection 0.70 s after the light turned red at t = 16.45 s while CommitTurn was the active behaviour. C3 fails for aggressiveness >= 0.3677 when light_offset <= 1.84. The gap the ego actually faced was 2.71 s.",
+  "narrative_regenerated": "Recomposed 31 Aug from the same banked fields. The original leaked the active_node (an F4a-only field) into what F2 and F3 render, and embedded the unsuppressed boundary_report. Using it verbatim would have put blame localization into F2 and F3, so F4a would have repeated a field rather than added one. Original retained as narrative_pre_3c226ee."
+}

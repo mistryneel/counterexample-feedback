@@ -1,0 +1,60 @@
+# Machine-specific config — never commit
+config/local.yaml
+.env
+
+# Large regenerable data
+data/traces/
+data/results/raw/
+*.parquet
+!data/certificates/*.parquet
+
+# CARLA install, if placed inside the repo
+CARLA_*/
+carla/
+*.tar.gz
+
+# LLM call logs — can contain large payloads; keep locally, summarize into results
+logs/llm_raw/
+
+# count_tokens memo. Pure cache: every entry is reproducible from the model
+# and the exact bytes counted, and it is keyed by a hash of both.
+data/results/.token_count_cache.json
+
+# Python
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+*.egg-info/
+.pytest_cache/
+.ipynb_checkpoints/
+
+# OS / editor
+.DS_Store
+.idea/
+.vscode/
+*.swp
+
+# Build artifacts
+*.log
+*.pid
+
+# LaTeX
+*.aux
+*.bbl
+*.blg
+*.out
+*.synctex.gz
+*.fdb_latexmk
+*.fls
+
+# --- Deliberately NOT ignored ---
+# data/certificates/     the counterexample certificates are results, commit them
+# data/scenarios/        space.yaml, baseline_program.bt, junction.yaml are all
+#                        experimental inputs and must be version-controlled
+# docs/env_manifest.md   reproducibility record
+# requirements.txt       pinned versions
+
+# Campaign artifacts: prompts and raw responses are large and regenerable from
+# patches.jsonl, which carries the full program text of every attempt.
+logs/campaign/

@@ -1,0 +1,64 @@
+# Unprotected left turn on a circular green.
+# Priority order: (1) never abandon a turn already begun,
+#                 (2) normal approach / gap-seeking logic,
+#                 (3) lead-vehicle fallback braking.
+
+Selector
+
+  # ---- 1. Already committed: clear the junction, no matter what changed ----
+  # No condition other than "am I in there" gates this, so the turn is never
+  # abandoned half-way across the oncoming lanes.
+  Sequence
+    InConflictZone
+    CommitTurn(v_mps=6.5, accel_mps2=2.0)
+
+  # ---- 2. Approach logic, gated on RSS headway to the LEAD vehicle ----
+  # If the lead is closer than ~22 m this Sequence fails and control drops
+  # to the braking fallback below. The inner Selector always ends in a
+  # RUNNING action, so this branch never returns SUCCESS by accident.
+  Sequence
+    PathIsClear(dist_m=22.0)
+    Selector
+
+      # 2a. Green + a genuinely large gap + clear turn path -> go.
+      # 6.5 s of gap leaves >3 s of C2 margin for the whole crossing.
+      Sequence
+        TrafficLightIsGreen
+        DistanceToStopLineBelow(dist_m=14.0)
+        OncomingGapExceeds(gap_s=6.5)
+        PathIsClear(dist_m=18.0)
+        CommitTurn(v_mps=6.5, accel_mps2=2.0)
+
+      # 2b. Deadlock escape: stationary a long time at the line, still green,
+      # still a workable gap -> take the smaller gap rather than wait forever.
+      Sequence
+        TrafficLightIsGreen
+        DistanceToStopLineBelow(dist_m=8.0)
+        WaitedLongerThan(t_s=11.0)
+        OncomingGapExceeds(gap_s=5.0)
+        PathIsClear(dist_m=15.0)
+        CommitTurn(v_mps=6.0, accel_mps2=2.0)
+
+      # 2c. Green but no gap yet: edge forward for visibility, staying out
+      # of the conflict zone.
+      Sequence
+        TrafficLightIsGreen
+        DistanceToStopLineBelow(dist_m=10.0)
+        EgoSpeedBelow(v_mps=2.5)
+        Creep(v_mps=1.2, accel_mps2=0.8)
+
+      # 2d. Near the line without a usable gap, or the light is not green:
+      # stop at the line and hold. Never enters on red.
+      Sequence
+        DistanceToStopLineBelow(dist_m=28.0)
+        HoldAtStopLine(decel_mps2=1.8)
+
+      # 2e. Still well upstream: normal approach speed.
+      Cruise(v_mps=7.0, accel_mps2=1.2)
+
+  # ---- 3. Lead vehicle inside RSS distance: back off ----
+  Selector
+    Sequence
+      PathIsClear(dist_m=12.0)
+      Decelerate(v_mps=3.0, decel_mps2=1.5)
+    Decelerate(v_mps=0.0, decel_mps2=2.5)

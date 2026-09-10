@@ -1,0 +1,182 @@
+{
+  "seed": 20260830,
+  "n_calibration_scenarios": 100,
+  "band": [
+    0.2,
+    0.4
+  ],
+  "active_contracts": [
+    "C1",
+    "C2",
+    "C3",
+    "C4",
+    "C5"
+  ],
+  "candidates": [
+    {
+      "program": "data/scenarios/reference_program.bt",
+      "n_scored": 100,
+      "n_unscoreable": 0,
+      "violations": 100,
+      "violation_rate": 1.0,
+      "argmin_contract": {
+        "C4": 54,
+        "C3": 18,
+        "C2": 26,
+        "C1": 2
+      },
+      "distinct_blamed_nodes": 2,
+      "H_node_given_contract_bits": 0.3938,
+      "blame_detail": {
+        "C4": {
+          "n": 54,
+          "distinct_nodes": 2,
+          "H_bits": 0.4451,
+          "nodes": {
+            "CommitTurn:Selector/Sequence/CommitTurn": 49,
+            "HoldAtStopLine:Selector/Sequence/HoldAtStopLine": 5
+          }
+        },
+        "C3": {
+          "n": 18,
+          "distinct_nodes": 2,
+          "H_bits": 0.8524,
+          "nodes": {
+            "HoldAtStopLine:Selector/Sequence/HoldAtStopLine": 13,
+            "CommitTurn:Selector/Sequence/CommitTurn": 5
+          }
+        },
+        "C2": {
+          "n": 26,
+          "distinct_nodes": 1,
+          "H_bits": 0.0,
+          "nodes": {
+            "HoldAtStopLine:Selector/Sequence/HoldAtStopLine": 26
+          }
+        },
+        "C1": {
+          "n": 2,
+          "distinct_nodes": 1,
+          "H_bits": 0.0,
+          "nodes": {
+            "CommitTurn:Selector/Sequence/CommitTurn": 2
+          }
+        }
+      },
+      "gate1_violation_band": false,
+      "gate2_blame_informative": true,
+      "freezable": false,
+      "ast_depth": 3,
+      "ast_size": 9
+    },
+    {
+      "program": "data/scenarios/probes/probe_careful.bt",
+      "n_scored": 100,
+      "n_unscoreable": 0,
+      "violations": 99,
+      "violation_rate": 0.99,
+      "argmin_contract": {
+        "C4": 61,
+        "C2": 22,
+        "C3": 15,
+        "C1": 1
+      },
+      "distinct_blamed_nodes": 2,
+      "H_node_given_contract_bits": 0.2152,
+      "blame_detail": {
+        "C4": {
+          "n": 61,
+          "distinct_nodes": 2,
+          "H_bits": 0.3492,
+          "nodes": {
+            "CommitTurn:Selector/Sequence/CommitTurn": 57,
+            "HoldAtStopLine:Selector/Sequence/HoldAtStopLine": 4
+          }
+        },
+        "C2": {
+          "n": 22,
+          "distinct_nodes": 1,
+          "H_bits": 0.0,
+          "nodes": {
+            "CommitTurn:Selector/Sequence/CommitTurn": 22
+          }
+        },
+        "C3": {
+          "n": 15,
+          "distinct_nodes": 1,
+          "H_bits": 0.0,
+          "nodes": {
+            "CommitTurn:Selector/Sequence/CommitTurn": 15
+          }
+        },
+        "C1": {
+          "n": 1,
+          "distinct_nodes": 1,
+          "H_bits": 0.0,
+          "nodes": {
+            "CommitTurn:Selector/Sequence/CommitTurn": 1
+          }
+        }
+      },
+      "gate1_violation_band": false,
+      "gate2_blame_informative": true,
+      "freezable": false,
+      "ast_depth": 3,
+      "ast_size": 17
+    },
+    {
+      "program": "data/scenarios/probes/probe_conservative.bt",
+      "n_scored": 100,
+      "n_unscoreable": 0,
+      "violations": 89,
+      "violation_rate": 0.89,
+      "argmin_contract": {
+        "C4": 12,
+        "C3": 46,
+        "C2": 26,
+        "C1": 5
+      },
+      "distinct_blamed_nodes": 1,
+      "H_node_given_contract_bits": 0.0,
+      "blame_detail": {
+        "C4": {
+          "n": 12,
+          "distinct_nodes": 1,
+          "H_bits": 0.0,
+          "nodes": {
+            "CommitTurn:Selector/Sequence/CommitTurn": 12
+          }
+        },
+        "C3": {
+          "n": 46,
+          "distinct_nodes": 1,
+          "H_bits": 0.0,
+          "nodes": {
+            "CommitTurn:Selector/Sequence/CommitTurn": 46
+          }
+        },
+        "C2": {
+          "n": 26,
+          "distinct_nodes": 1,
+          "H_bits": 0.0,
+          "nodes": {
+            "CommitTurn:Selector/Sequence/CommitTurn": 26
+          }
+        },
+        "C1": {
+          "n": 5,
+          "distinct_nodes": 1,
+          "H_bits": 0.0,
+          "nodes": {
+            "CommitTurn:Selector/Sequence/CommitTurn": 5
+          }
+        }
+      },
+      "gate1_violation_band": false,
+      "gate2_blame_informative": false,
+      "freezable": false,
+      "ast_depth": 3,
+      "ast_size": 18
+    }
+  ]
+}

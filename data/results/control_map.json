@@ -1,0 +1,89 @@
+{
+  "measurements": [
+    {
+      "throttle": 0.0,
+      "brake": 0.0,
+      "a_mps2": -2.280482515856527
+    },
+    {
+      "throttle": 0.1,
+      "brake": 0.0,
+      "a_mps2": -1.8606596867287108
+    },
+    {
+      "throttle": 0.2,
+      "brake": 0.0,
+      "a_mps2": -1.2933419329425042
+    },
+    {
+      "throttle": 0.3,
+      "brake": 0.0,
+      "a_mps2": -0.537879381762024
+    },
+    {
+      "throttle": 0.4,
+      "brake": 0.0,
+      "a_mps2": 0.06089678281711072
+    },
+    {
+      "throttle": 0.5,
+      "brake": 0.0,
+      "a_mps2": 1.1627728422620596
+    },
+    {
+      "throttle": 0.6,
+      "brake": 0.0,
+      "a_mps2": 2.290511421533598
+    },
+    {
+      "throttle": 0.75,
+      "brake": 0.0,
+      "a_mps2": 3.7413461224192472
+    },
+    {
+      "throttle": 0.0,
+      "brake": 0.05,
+      "a_mps2": -2.408778909865497
+    },
+    {
+      "throttle": 0.0,
+      "brake": 0.1,
+      "a_mps2": -2.498092078082212
+    },
+    {
+      "throttle": 0.0,
+      "brake": 0.15,
+      "a_mps2": -2.615570320619014
+    },
+    {
+      "throttle": 0.0,
+      "brake": 0.2,
+      "a_mps2": -2.7459436873509517
+    },
+    {
+      "throttle": 0.0,
+      "brake": 0.3,
+      "a_mps2": -2.836869644416101
+    },
+    {
+      "throttle": 0.0,
+      "brake": 0.4,
+      "a_mps2": -2.94906935079171
+    },
+    {
+      "throttle": 0.0,
+      "brake": 0.5,
+      "a_mps2": -3.0669215902184064
+    }
+  ],
+  "k_throttle_mps2": 8.142909327725087,
+  "k_brake_mps2": 1.4320137312970707,
+  "a_coast_mps2": -2.280482515856527,
+  "speed_band_mps": [
+    5.5,
+    9.5
+  ],
+  "artifact_speed_mps": 5.0,
+  "max_abs_residual_mps2": 0.9157844324163973,
+  "method": "least-squares slope of speed vs time, entirely above the artifact regime"
+}

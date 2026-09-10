@@ -1,0 +1,96 @@
+# ============================================================================
+# E1 experiment settings: the token budget B, and the F1 excerpt window.
+# ============================================================================
+# ⚠️ B WAS NEVER GIVEN A NUMBER ANYWHERE IN THIS REPO before 31 Aug. The project
+# requires a pre-campaign check that "an F1 prompt fits inside the budget B",
+# and 01_TECHNICAL_SPEC_v2.md §10 caps TLLME at B, but no document, config or
+# script defined B. A check against an undefined threshold is not a check, so
+# the number is fixed HERE, once, before the campaign, and the measurement
+# behind it is data/results/prompt_budget.json
+# (scripts/check_prompt_budget.py, counted with client.messages.count_tokens
+# against claude-opus-5).
+#
+# ⚠️ TWO DIFFERENT QUANTITIES HAVE BEEN CALLED B. Spec §10's TLLME is a
+# CUMULATIVE cap on synthesis + patching tokens for the whole campaign;
+# The pre-campaign check reads B as a PER-PROMPT cap. They are not the
+# same number and cannot both be `B`. Named apart below.
+# ============================================================================
+
+# Per-attempt PROMPT cap, in tokens. This is what the pre-campaign check tests
+# F1 against, and it is the sense in which the pre-campaign check uses B.
+token_budget_B: 20000
+
+token_budget_justification: >
+  Measured, not chosen in advance. The fixed scaffolding -- vocabulary,
+  grammar, manoeuvre, five contracts, the frozen program, and the patch
+  instructions, byte-identical in every condition -- is 4513 tokens. F2/F3/F4
+  land at 4569-4891, i.e. the feedback block is 56-378 tokens and the
+  scaffolding is 92-98% of those prompts. 20000 sits ~4x above them, and is
+  the level at which a raw-trace condition must be WINDOWED rather than
+  dumped: an unwindowed F1 measures 170980-308880 tokens, so it fails at any
+  budget short of a full context window. Forcing that choice into the open is
+  the whole purpose of the check.
+
+# Cumulative token cap for the campaign (spec §10's TLLME). Distinct from
+# token_budget_B. Not enforced by any code yet; recorded so the two senses
+# stop sharing a symbol.
+tllme_cap_tokens: null      # UNSET -- decide before the campaign runs
+
+# --- F1 excerpt window ------------------------------------------------------
+# Rows kept either side of the argmin timestep of rho. -1 means the whole
+# trace. F1 renders EVERY logged column; only the row range is windowed,
+# because dropping columns would turn the raw-signal condition into a weak F3.
+#
+# The window is a CONSTANT ROW COUNT (2*halfwidth + 1), slid to stay inside the
+# trace rather than clipped. In 18 of the 20 banked traces the argmin is the
+# FINAL logged row -- the episode ends at the collision -- so a clipped window
+# would hand those 21 rows and the other two 41, a 2x information difference
+# between certificates inside one condition.
+f1_excerpt_halfwidth_rows: 10
+
+f1_excerpt_justification: >
+  ✅ CONFIRMED 31 Aug. Chosen as the largest constant-row window that fits
+  token_budget_B for EVERY certificate.
+
+  KNOWN AND ACCEPTED COST, which is a reported result rather than a defect:
+  this window reaches the impact but NOT the decision that caused it. The
+  transition `authorising_node` anchors to -- exactly what F4b reports -- lies
+  28 to 47 rows back from the argmin (1.40-2.35 s, median 2.03 s), and 0 of 20
+  fall inside +-10. Covering all 20 needs +-47 rows, whose nearest measured
+  rung (+-50) costs 3.1x B at the median, i.e. roughly 4x the whole rest of the
+  campaign's prompt spend.
+
+  Two alternatives were considered and declined. Raising B for F1 alone is an
+  across-condition asymmetry and destroys the ablation. Subsampling a wide
+  window (every 5th row over +-100, ~25k tokens) would reach the decision but
+  decimation is itself a processing choice, so F1 would stop being a raw
+  excerpt -- the one thing the condition is for.
+
+  THE FINDING: a raw trace does not fit inside a token budget, and windowing it
+  to fit costs visibility of the cause. That is a measured price for the
+  unstructured condition and it belongs in the results, not only the
+  limitations. It also strengthens the pre-registered D13 expectation that
+  F1 is near baseline -- the prediction now has a mechanism behind it.
+
+  Original sizing evidence follows. Measured prompt
+  tokens over all 20 certificates (min / median / max), constant-row windows:
+    full trace  170980 / 202812 / 308880   20/20 over B
+    +-100 rows  103557 / 121101 / 138539   20/20 over B
+    +-50  rows   53773 /  62771 /  71570   20/20 over B
+    +-25  rows   29019 /  33498 /  38183   20/20 over B
+    +-20  rows   24006 /  27634 /  31415   20/20 over B
+    +-15  rows   19178 /  21921 /  24772   19/20 over B
+    +-10  rows   14509 /  16381 /  18319    0/20 over B
+    +-5   rows    9926 /  10851 /  11867    0/20 over B
+  +-10 is the LARGEST measured window that fits inside B for every
+  certificate. It is 21 rows = 1.05 s of simulated time at 20 Hz.
+  KNOWN COST, measured rather than asserted: 1.05 s reaches the impact but
+  not the decision that caused it. The tick at which the failing leaf's run
+  began -- the transition `authorising_node` is anchored to, i.e. exactly
+  what F4b reports -- lies 28 to 47 rows back from the argmin (median 40.5),
+  which is 1.40 to 2.35 s. 0 of 20 fall inside a +-10 window. Covering all 20
+  needs +-47 rows; the nearest measured rung, +-50, costs a median 62771
+  tokens, 3.1x B. So F1 is structurally blind to the event F4b reports, and
+  buying that visibility costs ~4x the rest of the campaign's prompt spend.
+  That is a property of a raw-trace condition under any realistic budget, not
+  a defect of the rendering, and it belongs in the limitations.

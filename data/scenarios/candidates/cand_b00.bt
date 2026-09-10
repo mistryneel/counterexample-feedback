@@ -1,0 +1,55 @@
+# Unprotected left turn on a circular green.
+# Priority order: stay committed once past the line, then take a gap,
+# then deadlock escape, then hold, then normal following/cruise.
+
+Selector
+
+  # 1. COMMITTED: already in the box, or already past the stop line.
+  #    No yield/light conditions here on purpose -- never abandon a turn
+  #    half-way across the junction.
+  Sequence
+    Selector
+      InConflictZone
+      DistanceToStopLineBelow(dist_m=0.0)
+    CommitTurn(v_mps=6.0, accel_mps2=2.0)
+
+  # 2. NORMAL GO: green ball, close to the line, turn path clear of the
+  #    lead vehicle, and a generous oncoming gap (6.5 s >> the 3.0 s
+  #    required by C2, so the margin survives the crossing).
+  Sequence
+    TrafficLightIsGreen
+    DistanceToStopLineBelow(dist_m=18.0)
+    EgoSpeedBelow(v_mps=9.0)
+    PathIsClear(dist_m=20.0)
+    OncomingGapExceeds(gap_s=6.5)
+    CommitTurn(v_mps=6.0, accel_mps2=2.0)
+
+  # 3. DEADLOCK ESCAPE: stationary a long time and still no big gap.
+  #    Relaxed gap, but still only on green and only with a clear path.
+  Sequence
+    WaitedLongerThan(t_s=12.0)
+    TrafficLightIsGreen
+    PathIsClear(dist_m=18.0)
+    OncomingGapExceeds(gap_s=5.0)
+    CommitTurn(v_mps=5.0, accel_mps2=1.8)
+
+  # 4. NO GO (red/yellow, or no acceptable gap): settle at the stop line.
+  #    Guarded by PathIsClear so we never stop "at the line" through the
+  #    lead vehicle.
+  Sequence
+    PathIsClear(dist_m=20.0)
+    DistanceToStopLineBelow(dist_m=22.0)
+    HoldAtStopLine(decel_mps2=1.8)
+
+  # 5. APPROACH: open road ahead, cruise gently.
+  Sequence
+    PathIsClear(dist_m=28.0)
+    Cruise(v_mps=7.0, accel_mps2=1.2)
+
+  # 6. FOLLOW: lead inside RSS range -- back off to a low following speed.
+  Sequence
+    PathIsClear(dist_m=16.0)
+    Decelerate(v_mps=4.0, decel_mps2=1.5)
+
+  # 7. FALLBACK: something is very close -- come to a comfortable stop.
+  Decelerate(v_mps=0.0, decel_mps2=2.5)

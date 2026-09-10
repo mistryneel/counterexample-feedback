@@ -1,0 +1,55 @@
+# Unprotected left turn on a circular green.
+# Priority order: (1) never abandon a turn once committed,
+# (2) take a clean gap, (3) escape deadlock, (4) hold safely, (5) approach.
+Selector
+
+  # 1. Already inside the conflict zone: finish the turn, no re-gating.
+  Sequence
+    InConflictZone
+    CommitTurn(v_mps=6.0, accel_mps2=2.5)
+
+  # 2. At the line, green, path ahead clear, big oncoming gap: go.
+  #    6.5 s of gap leaves >3 s margin for C2 while crossing.
+  Sequence
+    DistanceToStopLineBelow(dist_m=7.0)
+    TrafficLightIsGreen
+    PathIsClear(dist_m=12.0)
+    OncomingGapExceeds(gap_s=6.5)
+    CommitTurn(v_mps=6.0, accel_mps2=2.5)
+
+  # 3. Deadlock escape: stationary too long, still green, accept a smaller gap.
+  Sequence
+    WaitedLongerThan(t_s=12.0)
+    TrafficLightIsGreen
+    DistanceToStopLineBelow(dist_m=5.0)
+    PathIsClear(dist_m=10.0)
+    OncomingGapExceeds(gap_s=4.5)
+    CommitTurn(v_mps=5.5, accel_mps2=2.5)
+
+  # 4. Stopped at the line without an accepted gap: stay stopped.
+  #    Checked before branch 5 so a stationary ego never creeps out on red.
+  Sequence
+    EgoSpeedBelow(v_mps=0.8)
+    DistanceToStopLineBelow(dist_m=2.0)
+    HoldAtStopLine(decel_mps2=1.8)
+
+  # 5. Moving and already past the stop line: we entered lawfully, so clear
+  #    the junction whatever the oncoming gap or the signal now say.
+  Sequence
+    DistanceToStopLineBelow(dist_m=0.0)
+    CommitTurn(v_mps=6.0, accel_mps2=2.5)
+
+  # 6. Approaching the junction with room to the lead: settle onto the line.
+  Sequence
+    PathIsClear(dist_m=14.0)
+    DistanceToStopLineBelow(dist_m=30.0)
+    HoldAtStopLine(decel_mps2=1.8)
+
+  # 7. Far from the junction, green, lead well ahead: normal cruising.
+  Sequence
+    TrafficLightIsGreen
+    PathIsClear(dist_m=26.0)
+    Cruise(v_mps=7.0, accel_mps2=1.5)
+
+  # 8. Fallback: lead too close or signal not green -- shed speed comfortably.
+  Decelerate(v_mps=0.0, decel_mps2=1.8)

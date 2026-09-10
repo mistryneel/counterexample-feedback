@@ -1,0 +1,58 @@
+# Unprotected left turn at a signalised four-way junction.
+# Priority order: finish what you started > lawful gap acceptance > wait > approach.
+
+Selector
+
+  # 1. Already inside the conflict zone: NEVER abandon the turn. Clear it.
+  Sequence
+    InConflictZone
+    CommitTurn(v_mps=6.5, accel_mps2=2.0)
+
+  # 2. Deadlock escape: stationary a long time, still green, path physically
+  #    clear, and a gap that still leaves margin over the 3.0 s C2 limit.
+  Sequence
+    WaitedLongerThan(t_s=14.0)
+    TrafficLightIsGreen
+    PathIsClear(dist_m=14.0)
+    OncomingGapExceeds(gap_s=4.5)
+    CommitTurn(v_mps=6.0, accel_mps2=2.0)
+
+  # 3. Normal gap acceptance: green ball, at the line, turn path free of the
+  #    lead vehicle, and a generous oncoming gap (6 s >> the 3 s contract).
+  Sequence
+    TrafficLightIsGreen
+    DistanceToStopLineBelow(dist_m=12.0)
+    PathIsClear(dist_m=16.0)
+    OncomingGapExceeds(gap_s=6.0)
+    CommitTurn(v_mps=6.5, accel_mps2=2.0)
+
+  # 4. Stopped on green with no acceptable gap: edge forward for visibility
+  #    only (Creep never enters the conflict zone).
+  Sequence
+    TrafficLightIsGreen
+    DistanceToStopLineBelow(dist_m=8.0)
+    EgoSpeedBelow(v_mps=1.2)
+    PathIsClear(dist_m=10.0)
+    Creep(v_mps=1.0, accel_mps2=0.6)
+
+  # 5. At the junction but not permitted to go (yellow/red, or no gap):
+  #    hold at the line, but only if the line itself is not occupied.
+  Sequence
+    DistanceToStopLineBelow(dist_m=16.0)
+    PathIsClear(dist_m=9.0)
+    HoldAtStopLine(decel_mps2=2.0)
+
+  # 6. Approach phase: bleed off speed early and gently.
+  Sequence
+    DistanceToStopLineBelow(dist_m=35.0)
+    PathIsClear(dist_m=20.0)
+    Decelerate(v_mps=5.0, decel_mps2=1.5)
+
+  # 7. Open road with RSS headway to the lead vehicle available.
+  Sequence
+    PathIsClear(dist_m=24.0)
+    Cruise(v_mps=8.0, accel_mps2=1.5)
+
+  # 8. Fallback: something is close ahead (lead vehicle) -- shed speed to a
+  #    crawl and keep the RSS gap. Comfortable deceleration, well under 3.0.
+  Decelerate(v_mps=0.5, decel_mps2=2.0)

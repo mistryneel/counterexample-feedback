@@ -1,0 +1,532 @@
+{
+  "stages": {
+    "3.6": {
+      "pass": true,
+      "seed": 20260823,
+      "max_dev_seed_set_m": 0.0,
+      "max_dev_different_seeds_m": 0.0,
+      "same_seed_reproduces": true,
+      "different_seeds_diverge": false,
+      "e1_uses_tm_for_any_actor": false,
+      "method": "across full server restarts; reload_world unavailable",
+      "tolerance": 1e-06
+    },
+    "3.1": {
+      "pass": true,
+      "delta_s_max_dev_vs_float32": 0.0,
+      "delta_s_max_dev_vs_float64": 7.450580569168253e-10,
+      "t_s_spacing_max_dev": 0.0,
+      "frames_monotonic": true,
+      "frame_gaps": 0,
+      "frame_duplicates": 0,
+      "n_ticks": 522,
+      "expected_ticks": 800,
+      "episode_status": "ok",
+      "wall_clock_s": 0.702730037002766,
+      "real_time_factor": 37.140862956875814
+    },
+    "3.2": {
+      "pass": true,
+      "config_msg": "fixed_delta_seconds=0.05 <= max_substep_delta_time(0.01) * max_substeps(10) = 0.1 -> HOLDS",
+      "server_fixed_delta_seconds": 0.05,
+      "server_max_substep_delta_time": 0.01,
+      "server_max_substeps": 10,
+      "product": 0.1,
+      "condition_holds": true
+    },
+    "3.3": {
+      "pass": true,
+      "rho": -0.8266994799372891,
+      "contract": "C5",
+      "t_s": 0.15000000223517418,
+      "argmin_index": 3,
+      "per_contract": {
+        "C1": {
+          "rho": 1.520512439558714,
+          "vacuous": false,
+          "t_s": 9.100000135600567,
+          "detail": {
+            "closest_actor_id": "147",
+            "units": "metres of bounding-box separation"
+          }
+        },
+        "C2": {
+          "rho": 3.2139842694229586,
+          "vacuous": false,
+          "t_s": 16.600000247359276,
+          "detail": {
+            "tau_yield_s": 3.0,
+            "ttc_at_argmin_s": 6.213984269422959,
+            "n_ticks_in_zone": 70,
+            "conflict_zone": "disc approximation (23 Aug)",
+            "radius_m": 12.0,
+            "units": "seconds of margin above tau_yield"
+          }
+        },
+        "C3": {
+          "rho": 30.0,
+          "vacuous": false,
+          "t_s": 16.600000247359276,
+          "detail": {
+            "t_red_onset_s": null,
+            "red_onset_observed": false,
+            "n_ticks_in_intersection": 70,
+            "n_entry_events": 1,
+            "semantics": "entry (not occupancy) -- see rho_c3 docstring",
+            "radius_m": 12.0,
+            "units": "seconds of margin before red onset"
+          }
+        },
+        "C4": {
+          "rho": 999.0,
+          "vacuous": true,
+          "t_s": null,
+          "detail": {
+            "reason": "no lead vehicle ahead of the ego in this episode",
+            "lead_role": "lead"
+          }
+        },
+        "C5": {
+          "rho": -0.8266994799372891,
+          "vacuous": false,
+          "t_s": 0.15000000223517418,
+          "detail": {
+            "a_comfort_mps2": 3.0,
+            "j_comfort_mps3": 3.0,
+            "binding_term": "accel",
+            "jerk_contributes": false,
+            "rho5_jerk_if_it_did": -35.29969523357461,
+            "a_cmd_at_argmin": 3.826699479937289,
+            "jerk_cmd_at_argmin": 24.428724100333525,
+            "max_abs_a_cmd": 3.826699479937289,
+            "max_abs_jerk_cmd": 38.29969523357461,
+            "source": "inverted control map from throttle/brake (pre-1.2.0 fallback)",
+            "units": "m/s^2 of comfort margin"
+          }
+        }
+      },
+      "checks": {
+        "C1 clearance within radii/centre band": true,
+        "C1 rho == independent recomputation": true,
+        "C2 rho == hand-computed ttc - tau": true,
+        "C1 rtamt cross-check": true,
+        "C2 rtamt cross-check": true,
+        "C5 rtamt cross-check": true,
+        "ego speed physically plausible": "True",
+        "ego acceleration plausible above the artifact regime": true
+      }
+    },
+    "3.4": {
+      "pass": true,
+      "compare": {
+        "n_traces": 5,
+        "lengths": [
+          522,
+          522,
+          522,
+          522,
+          522
+        ],
+        "length_identical": true,
+        "max_abs_dev": {
+          "t_s": 0.0,
+          "delta_s": 0.0,
+          "ego_x_m": 0.0,
+          "ego_y_m": 0.0,
+          "ego_z_m": 0.0,
+          "ego_yaw_deg": 0.0,
+          "ego_pitch_deg": 0.0,
+          "ego_roll_deg": 0.0,
+          "ego_vx_mps": 0.0,
+          "ego_vy_mps": 0.0,
+          "ego_vz_mps": 0.0,
+          "ego_speed_mps": 0.0,
+          "ego_ax_mps2": 0.0,
+          "ego_ay_mps2": 0.0,
+          "ego_az_mps2": 0.0,
+          "ego_accel_long_mps2": 0.0,
+          "ego_jerk_long_mps3": 0.0,
+          "ego_throttle": 0.0,
+          "ego_brake": 0.0,
+          "ego_steer": 0.0,
+          "ego_extent_x_m": 0.0,
+          "ego_extent_y_m": 0.0,
+          "ego_extent_z_m": 0.0,
+          "tl_state": 0.0,
+          "tl_elapsed_s": 0.0,
+          "bt_node_id": 0.0,
+          "bt_node_type": 0.0,
+          "bt_node_path": 0.0,
+          "bt_tick_path": 0.0,
+          "cmd_accel_mps2": 0.0,
+          "phase": 0.0,
+          "actor_type": 0.0,
+          "actor_role": 0.0,
+          "actor_x_m": 0.0,
+          "actor_y_m": 0.0,
+          "actor_z_m": 0.0,
+          "actor_yaw_deg": 0.0,
+          "actor_vx_mps": 0.0,
+          "actor_vy_mps": 0.0,
+          "actor_speed_mps": 0.0,
+          "actor_extent_x_m": 0.0,
+          "actor_extent_y_m": 0.0
+        },
+        "bookkeeping_dev": {
+          "frame": 2132.0,
+          "sim_elapsed_s": 106.60000158846378,
+          "actor_id": 16.0
+        },
+        "worst_field": null,
+        "worst_dev": 0.0
+      },
+      "rho": {
+        "rho_values": [
+          -0.8266994799372891,
+          -0.8266994799372891,
+          -0.8266994799372891,
+          -0.8266994799372891,
+          -0.8266994799372891
+        ],
+        "rho_min": -0.8266994799372891,
+        "rho_max": -0.8266994799372891,
+        "rho_spread": 0.0,
+        "per_contract": [
+          {
+            "C1": 1.520512439558714,
+            "C2": 3.2139842694229586,
+            "C3": 30.0,
+            "C4": 999.0,
+            "C5": -0.8266994799372891
+          },
+          {
+            "C1": 1.520512439558714,
+            "C2": 3.2139842694229586,
+            "C3": 30.0,
+            "C4": 999.0,
+            "C5": -0.8266994799372891
+          },
+          {
+            "C1": 1.520512439558714,
+            "C2": 3.2139842694229586,
+            "C3": 30.0,
+            "C4": 999.0,
+            "C5": -0.8266994799372891
+          },
+          {
+            "C1": 1.520512439558714,
+            "C2": 3.2139842694229586,
+            "C3": 30.0,
+            "C4": 999.0,
+            "C5": -0.8266994799372891
+          },
+          {
+            "C1": 1.520512439558714,
+            "C2": 3.2139842694229586,
+            "C3": 30.0,
+            "C4": 999.0,
+            "C5": -0.8266994799372891
+          }
+        ]
+      },
+      "mean_rtf": 49.82128118284528
+    },
+    "3.5": {
+      "pass": true,
+      "compare": {
+        "n_traces": 5,
+        "lengths": [
+          522,
+          522,
+          522,
+          522,
+          522
+        ],
+        "length_identical": true,
+        "max_abs_dev": {
+          "t_s": 0.0,
+          "delta_s": 0.0,
+          "ego_x_m": 0.0,
+          "ego_y_m": 0.0,
+          "ego_z_m": 0.0,
+          "ego_yaw_deg": 0.0,
+          "ego_pitch_deg": 0.0,
+          "ego_roll_deg": 0.0,
+          "ego_vx_mps": 0.0,
+          "ego_vy_mps": 0.0,
+          "ego_vz_mps": 0.0,
+          "ego_speed_mps": 0.0,
+          "ego_ax_mps2": 0.0,
+          "ego_ay_mps2": 0.0,
+          "ego_az_mps2": 0.0,
+          "ego_accel_long_mps2": 0.0,
+          "ego_jerk_long_mps3": 0.0,
+          "ego_throttle": 0.0,
+          "ego_brake": 0.0,
+          "ego_steer": 0.0,
+          "ego_extent_x_m": 0.0,
+          "ego_extent_y_m": 0.0,
+          "ego_extent_z_m": 0.0,
+          "tl_state": 0.0,
+          "tl_elapsed_s": 0.0,
+          "bt_node_id": 0.0,
+          "bt_node_type": 0.0,
+          "bt_node_path": 0.0,
+          "bt_tick_path": 0.0,
+          "cmd_accel_mps2": 0.0,
+          "phase": 0.0,
+          "actor_type": 0.0,
+          "actor_role": 0.0,
+          "actor_x_m": 0.0,
+          "actor_y_m": 0.0,
+          "actor_z_m": 0.0,
+          "actor_yaw_deg": 0.0,
+          "actor_vx_mps": 0.0,
+          "actor_vy_mps": 0.0,
+          "actor_speed_mps": 0.0,
+          "actor_extent_x_m": 0.0,
+          "actor_extent_y_m": 0.0
+        },
+        "bookkeeping_dev": {
+          "frame": 2692.0,
+          "sim_elapsed_s": 108.37752621888649,
+          "actor_id": 16.0
+        },
+        "worst_field": null,
+        "worst_dev": 0.0
+      },
+      "rho": {
+        "rho_values": [
+          -0.8266994799372891,
+          -0.8266994799372891,
+          -0.8266994799372891,
+          -0.8266994799372891,
+          -0.8266994799372891
+        ],
+        "rho_min": -0.8266994799372891,
+        "rho_max": -0.8266994799372891,
+        "rho_spread": 0.0,
+        "per_contract": [
+          {
+            "C1": 1.520512439558714,
+            "C2": 3.2139842694229586,
+            "C3": 30.0,
+            "C4": 999.0,
+            "C5": -0.8266994799372891
+          },
+          {
+            "C1": 1.520512439558714,
+            "C2": 3.2139842694229586,
+            "C3": 30.0,
+            "C4": 999.0,
+            "C5": -0.8266994799372891
+          },
+          {
+            "C1": 1.520512439558714,
+            "C2": 3.2139842694229586,
+            "C3": 30.0,
+            "C4": 999.0,
+            "C5": -0.8266994799372891
+          },
+          {
+            "C1": 1.520512439558714,
+            "C2": 3.2139842694229586,
+            "C3": 30.0,
+            "C4": 999.0,
+            "C5": -0.8266994799372891
+          },
+          {
+            "C1": 1.520512439558714,
+            "C2": 3.2139842694229586,
+            "C3": 30.0,
+            "C4": 999.0,
+            "C5": -0.8266994799372891
+          }
+        ]
+      }
+    }
+  },
+  "params": {
+    "n_oncoming": 2,
+    "v_oncoming": 11.0,
+    "headway": 3.0,
+    "ped_phase_offset": 0.0
+  },
+  "stage_execution_order": [
+    "3.6 (first: restarts the server)",
+    "3.1",
+    "3.2",
+    "3.3",
+    "3.4",
+    "3.5"
+  ],
+  "junction": {
+    "map": "Carla/Maps/Town05",
+    "junction_id": 1126,
+    "n_traffic_lights": 4,
+    "traffic_light_ids_NOT_STABLE": [
+      206,
+      207,
+      208,
+      209
+    ],
+    "ego_approach": {
+      "road_id": 6,
+      "lane_id": -1,
+      "s": 49.21051406860354,
+      "x": -30.44780921936035,
+      "y": -91.43966674804688,
+      "z": 0.0,
+      "yaw_deg": -179.9136962890625,
+      "dyaw_vs_entry": 0.0,
+      "traffic_light_id_at_discovery": 208
+    },
+    "oncoming_approach": {
+      "road_id": 7,
+      "lane_id": 1,
+      "s": 4.21958419799804,
+      "x": -70.00210571289062,
+      "y": -87.99923706054688,
+      "z": 0.0,
+      "yaw_deg": 0.0863037109375,
+      "dyaw_vs_entry": 180.0,
+      "traffic_light_id_at_discovery": 206,
+      "verified": {
+        "result": "exactly 180.0 deg opposed to ego approach; travels toward junction centre",
+        "verified_on": "2026-08-23",
+        "note": "derived from controlled approaches, NOT from the turn-exit waypoint (that waypoint is inside the junction where get_left_lane() returns None, which silently collapses to the ego approach lane)"
+      }
+    },
+    "junction_center": {
+      "x": -50.69066619873047,
+      "y": -92.60450744628906,
+      "z": 0.0277252197265625
+    },
+    "junction_extent": {
+      "x": 15.104494094848633,
+      "y": 18.00851058959961,
+      "z": 0.0277252197265625
+    },
+    "left_turn": {
+      "measured_dyaw_deg": -90.42379760742188,
+      "entry": {
+        "road_id": 1182,
+        "lane_id": -1,
+        "s": 2.220446049250313e-14,
+        "x": -35.5972900390625,
+        "y": -91.44742584228516,
+        "z": 0.0,
+        "yaw_deg": -179.9136962890625
+      },
+      "exit": {
+        "road_id": 1182,
+        "lane_id": -1,
+        "s": 24.002449571130818,
+        "x": -51.40518569946289,
+        "y": -74.64649963378906,
+        "z": 0.055450439453125,
+        "yaw_deg": 89.66250610351562
+      },
+      "turn_direction_verified": {
+        "method": "projected (exit - entry) onto entry waypoint's carla get_right_vector()",
+        "result": "negative dyaw == LEFT turn",
+        "verified_on": "2026-08-23",
+        "evidence": "all four ~-90 deg pairs projected negative (left); all four ~+90 positive (right)"
+      }
+    },
+    "all_turn_dyaw_deg": [
+      -102.73,
+      -90.42,
+      -89.58,
+      -77.27,
+      -12.3,
+      -12.3,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      12.3,
+      12.3,
+      77.27,
+      89.58,
+      90.42,
+      102.73
+    ],
+    "discovered_by": "carla_backend.discover_left_turn_junction",
+    "carla_version": "0.9.16"
+  },
+  "baseline": {
+    "episode_id": "det_baseline",
+    "status": "ok",
+    "param_hash": "a2da702a505f449e",
+    "scenario_params": {
+      "n_oncoming": 2,
+      "v_oncoming": 11.0,
+      "headway": 3.0,
+      "ped_phase_offset": 0.0
+    },
+    "n_ticks": 522,
+    "wall_clock_s": 0.702730037002766,
+    "real_time_factor": 37.140862956875814,
+    "trace_path": "/home/npk/Projects/cv_research/data/traces/det_baseline.parquet",
+    "error": null,
+    "meta": {
+      "seeds": {
+        "python": 20260823,
+        "numpy": 20260823,
+        "traffic_manager": 20260823
+      },
+      "junction_id": 1126,
+      "traffic_lights": {
+        "ego_tl_id": 102,
+        "oncoming_tl_id": 100
+      },
+      "phase_final": "P4_settle",
+      "phases_reached": [
+        "P1_approach",
+        "P2_yield_clear",
+        "P2_yield_hold",
+        "P3_commit",
+        "P4_settle"
+      ],
+      "route_len": 95,
+      "entry_idx": 40,
+      "achieved_gap_s": 2.531621077554541,
+      "spawn_clamped": false,
+      "n_oncoming_spawned": 2,
+      "n_oncoming_surviving": 0
+    }
+  },
+  "real_time_factor": 37.140862956875814,
+  "wall_clock_s": 0.702730037002766,
+  "n_ticks": 522,
+  "braking_artifact": {
+    "artifact_speed_threshold_mps": 5.0,
+    "max_abs_accel_above_threshold": 8.493109199443213,
+    "max_abs_accel_below_threshold": 26.919015422538493,
+    "ticks_above": 147,
+    "ticks_below": 375,
+    "note": "CARLA 0.9.16 low-speed braking artifact; see determinism_report.md"
+  },
+  "rtf_within": [
+    47.007569027323385,
+    50.491341496926296,
+    52.49999674120103,
+    49.539817047519435,
+    49.56768160125628
+  ],
+  "program_arg": null,
+  "rtf_across": [
+    47.859885969886896,
+    46.58418425757586,
+    49.87644086399704,
+    50.15705538424444,
+    49.143122904722446
+  ],
+  "tolerances": {
+    "field": 1e-06,
+    "rho": 1e-06
+  },
+  "verdict": "PASS",
+  "total_wall_clock_s": 122.50274133399944
+}

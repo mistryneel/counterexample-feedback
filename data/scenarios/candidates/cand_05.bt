@@ -1,0 +1,57 @@
+# Unprotected left turn on a circular green.
+# Priority order: finish what you started, then take a gap, then escape
+# deadlock, then wait, then approach, then keep clear of the lead vehicle.
+
+Selector
+
+  # 1. Already inside the conflict zone: NEVER abandon the turn. Clear it.
+  Sequence
+    InConflictZone
+    CommitTurn(v_mps=6.0, accel_mps2=2.0)
+
+  # 2. Normal gap acceptance: at the line, lawful green, generous oncoming
+  #    gap (5.5 s >> the 3.0 s contract limit so it still holds mid-turn),
+  #    and no actor on the turn path.
+  Sequence
+    DistanceToStopLineBelow(dist_m=7.0)
+    TrafficLightIsGreen
+    OncomingGapExceeds(gap_s=5.5)
+    PathIsClear(dist_m=18.0)
+    EgoSpeedBelow(v_mps=7.0)
+    CommitTurn(v_mps=6.0, accel_mps2=2.0)
+
+  # 3. Deadlock escape: stationary a long time and no big gap ever came.
+  #    Still only on green, still with a gap above the contract limit.
+  Sequence
+    WaitedLongerThan(t_s=12.0)
+    DistanceToStopLineBelow(dist_m=7.0)
+    TrafficLightIsGreen
+    OncomingGapExceeds(gap_s=4.2)
+    PathIsClear(dist_m=15.0)
+    CommitTurn(v_mps=5.5, accel_mps2=2.0)
+
+  # 4. At the line with the lane ahead free, but no acceptable gap or not
+  #    green: hold on the stop line and keep waiting.
+  Sequence
+    DistanceToStopLineBelow(dist_m=10.0)
+    PathIsClear(dist_m=12.0)
+    HoldAtStopLine(decel_mps2=2.0)
+
+  # 5. Final approach with a clear lane: bleed off speed early and gently.
+  Sequence
+    DistanceToStopLineBelow(dist_m=35.0)
+    PathIsClear(dist_m=20.0)
+    Decelerate(v_mps=4.0, decel_mps2=1.5)
+
+  # 6. Open road well before the junction, nothing ahead: cruise.
+  Sequence
+    PathIsClear(dist_m=26.0)
+    Cruise(v_mps=8.0, accel_mps2=1.5)
+
+  # 7. Fallback: something (the lead vehicle) is ahead. Give up speed to
+  #    keep the RSS gap; if it is very close, come to rest behind it.
+  Selector
+    Sequence
+      PathIsClear(dist_m=14.0)
+      Decelerate(v_mps=2.5, decel_mps2=1.8)
+    Decelerate(v_mps=0.0, decel_mps2=2.2)

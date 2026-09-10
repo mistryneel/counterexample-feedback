@@ -1,0 +1,57 @@
+# Unprotected left turn at a signalised four-way junction.
+# Priority order: finish what you started > take a real gap > escape deadlock >
+# hold at the line > manage the lead vehicle on approach.
+
+Selector
+
+  # 1. Once any part of the ego is in the conflict zone, ALWAYS clear it.
+  #    No yield/light condition here on purpose: abandoning mid-junction is worse.
+  Sequence
+    InConflictZone
+    CommitTurn(v_mps=6.0, accel_mps2=2.0)
+
+  # 2. Normal gap acceptance: green ball, at the line, turn path clear of the
+  #    lead vehicle, and oncoming traffic well beyond the 3.0 s contract limit.
+  Sequence
+    TrafficLightIsGreen
+    DistanceToStopLineBelow(dist_m=6.0)
+    EgoSpeedBelow(v_mps=9.0)
+    PathIsClear(dist_m=16.0)
+    OncomingGapExceeds(gap_s=5.5)
+    CommitTurn(v_mps=6.0, accel_mps2=2.0)
+
+  # 3. Deadlock escape: stationary a long time and still green -- accept a
+  #    smaller but still contract-legal gap.
+  Sequence
+    WaitedLongerThan(t_s=12.0)
+    TrafficLightIsGreen
+    DistanceToStopLineBelow(dist_m=8.0)
+    PathIsClear(dist_m=13.0)
+    OncomingGapExceeds(gap_s=4.0)
+    CommitTurn(v_mps=5.0, accel_mps2=2.0)
+
+  # 4. At the line with no acceptable gap (or a yellow/red): stop and wait.
+  #    Gated on PathIsClear so we never stop ON the lead vehicle.
+  Sequence
+    PathIsClear(dist_m=20.0)
+    DistanceToStopLineBelow(dist_m=14.0)
+    HoldAtStopLine(decel_mps2=2.0)
+
+  # 5. Approach phase: bleed off speed early and gently.
+  Sequence
+    PathIsClear(dist_m=24.0)
+    DistanceToStopLineBelow(dist_m=32.0)
+    Decelerate(v_mps=5.0, decel_mps2=1.5)
+
+  # 6. Free road far from the junction.
+  Sequence
+    PathIsClear(dist_m=26.0)
+    Cruise(v_mps=8.0, accel_mps2=1.2)
+
+  # 7. Lead vehicle is closing inside the RSS buffer: back off to its speed.
+  Sequence
+    PathIsClear(dist_m=16.0)
+    Decelerate(v_mps=4.0, decel_mps2=1.5)
+
+  # 8. Fallback: something is close ahead -- come to a stop behind it.
+  Decelerate(v_mps=0.0, decel_mps2=2.5)

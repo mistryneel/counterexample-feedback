@@ -1,0 +1,40 @@
+{
+  "question": "Could a correct fix have been written in this DSL?",
+  "method": "constructive, not judgement: candidate fixes written in the DSL, validated, and run on all 20 counterexample scenarios",
+  "variants_tested": [
+    {
+      "fix": "raise OncomingGapExceeds 5.5->9.0 in branches B and D",
+      "fixed": "0/20",
+      "note": "no effect: those branches are never reached"
+    },
+    {
+      "fix": "add TrafficLightIsGreen to branch C",
+      "fixed": "0/20"
+    },
+    {
+      "fix": "add OncomingGapExceeds guard to branch C, swept 5.5 to 15.0 (validator max)",
+      "fixed": "0/20",
+      "note": "guard PASSES at every value"
+    },
+    {
+      "fix": "add PathIsClear to branch C, 16/24/32 m",
+      "fixed": "0/20",
+      "note": "guard blocks, ego creeps in anyway"
+    },
+    {
+      "fix": "PathIsClear guard + fallback Decelerate(v_mps=0.0) true stop",
+      "fixed": "20/20",
+      "completed": "0/20",
+      "note": "THE DEGENERATE FIX"
+    }
+  ],
+  "mechanism": [
+    "The frozen baseline commits from branch C (node n_22), which tests only DistanceToStopLineBelow(0.0). That is true once PAST the line, so it commits unconditionally and preempts the gap-guarded branch D. The gap thresholds at n_10, n_16, n_26 are never reached.",
+    "OncomingGapExceeds excludes any oncoming vehicle below min_speed_for_ttc_mps = 0.5. Measured on CE003: a vehicle 9.4 m away travelling at 0.04 m/s is EXCLUDED, so the predicate reports TTC = 30.0 s (the cap) and OncomingGapExceeds(15.0) PASSES while a stopped car sits in the junction. The time-based yield predicate is structurally blind to a stationary obstacle.",
+    "PathIsClear can see it. But when the guard blocks the commit the program falls through to Decelerate(v_mps=1.0), so the ego CREEPS at ~1.07 m/s and drifts across the conflict-zone boundary. Entry is delayed 2 s, not prevented.",
+    "Once inside, branch A (InConflictZone -> CommitTurn) commits unconditionally, bypassing every guard."
+  ],
+  "finding": "A fix satisfying all five contracts IS expressible: guard the committing branch geometrically and make the fallback a true stop. It resolves 20/20. It also completes 0/20 and enters the junction 0/20. Across the family of edits tested, no expressible program both satisfied the contracts and completed the manoeuvre.",
+  "implication": "This is a mechanistic explanation for the refusal result rather than a separate observation. Refusal is not the model being lazy; on this vocabulary and this failure mode it is the only expressible fix that satisfies the contracts. 72% of apparent repairs converging on it is what the language admits.",
+  "caveat": "A family of edits was tested, not an exhaustive search of the program space. The claim is that no fix was found among natural single- and double-edit repairs, not that none exists."
+}

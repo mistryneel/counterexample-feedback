@@ -1,0 +1,217 @@
+# ============================================================================
+# Safety contract thresholds. Spec 01 §5.
+# ============================================================================
+# SCOPE TODAY (23 Aug): C1 and C2 only, minimal versions, to validate the
+# pipeline. C5 and the full forms land 24 Aug. C3 and C4 are DEFERRED (see
+# 01_TECHNICAL_SPEC_v2.md).
+#
+# Every threshold here appears in the certificate shown to the LLM, so a
+# change to this file changes the experiment. Treat as frozen once the
+# baseline program is frozen.
+# ============================================================================
+
+C1_collision:
+  enabled: true
+  # rho_1 = min over t of clearance(t)
+  # clearance = minimum separation in metres between ego and any other actor
+  # bounding box. Negative on overlap. Positive when satisfied.
+  clearance_floor_m: 0.0
+  # Actors considered. "all" = every vehicle and walker in the world.
+  actor_filter: "all"
+
+  no_actor_clearance_m: 100.0
+  # Clearance when no other actor exists. Capped rather than +inf so an empty
+  # scenario cannot dominate the min-across-contracts blame signal.
+
+C2_yield:
+  enabled: true
+  # rho_2 = min over { t : ego in conflict zone } of ( ttc_oncoming(t) - tau_yield )
+  tau_yield_s: 3.0
+  # Spec §5: default 3.0 s, sensitivity checks at 2.5 and 3.5.
+  tau_yield_sensitivity: [2.5, 3.5]
+
+  # ttc_oncoming = minimum time for any oncoming vehicle to reach the conflict
+  # zone at its current speed.
+  min_speed_for_ttc_mps: 0.5
+  # Below this speed an oncoming vehicle's TTC is unbounded (it is not
+  # approaching). Without this floor, a stopped vehicle gives ttc = dist/0 = inf
+  # in the best case and a ZeroDivisionError in the worst. Guard explicitly.
+
+  conflict_zone_radius_m: 12.0
+  # 23 AUG APPROXIMATION: the conflict zone is a disc of this radius about the
+  # junction centre. The real polygon (ego turn path intersected with the
+  # oncoming through-lane corridors) lands 24 Aug in junction.yaml. Any rho_2
+  # computed under the disc approximation is NOT comparable with one computed
+  # under the polygon -- traces banked today must be re-scored, not mixed.
+
+  ttc_cap_s: 30.0
+  # TTC is capped at the episode horizon. An uncapped TTC lets a distant
+  # vehicle dominate rho_2 with a meaningless +900 s margin, which destroys
+  # the min-across-contracts blame signal.
+
+  # If the ego is never in the conflict zone during an episode, C2 is
+  # vacuously satisfied. Report rho_2 as this sentinel, NOT as +inf, and flag
+  # it — a program that never enters the junction is not a safe program, it is
+  # a failed task. ICR/PCR catch that separately.
+  vacuous_rho: 999.0
+
+C5_comfort:
+  enabled: true
+  a_comfort_mps2: 3.0
+  j_comfort_mps3: 3.0
+  dt_s: 0.05
+
+  jerk_contributes: false
+  # The jerk term is COMPUTED AND REPORTED but excluded from rho_5. At
+  # dt = 0.05 s a 3.0 m/s^3 bound demands the commanded acceleration change by
+  # <= 0.15 m/s^2 per tick, and the DSL cannot express a multi-tick ramp -- an
+  # action selects an acceleration, so a switch between actions is a step.
+  # Measured across the plausible program space max|jerk_cmd| ran 36 to 260:
+  # every program violates, which would drive SCVR to 100% while
+  # distinguishing nothing. The ACCELERATION term discriminates cleanly on the
+  # same programs (1.00 / 2.00 / 7.50 against a 3.0 bound).
+  # Set true once the DSL gains an acceleration ramp. See docs/c5_decision.md.
+
+  # SOURCE: commanded control, NOT measured acceleration. Decided 24 Aug from
+  # measurement -- see docs/c5_decision.md. In one line: CARLA's accelerometer
+  # noise floor is sigma ~= 1.36 m/s^2 at 20 Hz, while j_comfort = 3.0 m/s^3
+  # demands tick-to-tick resolution of 0.15 m/s^2, nine times finer. Jerk from
+  # measured acceleration is a measurement of sampling noise. A speed-threshold
+  # sweep from 2 to 8 m/s found no cliff: 100% violation at every threshold.
+  #
+  # No ego-speed threshold is applied and none is needed: the commanded signal
+  # carries no low-speed braking artifact and no collision spike, so C5 is
+  # evaluated over the whole episode.
+  source: "commanded_control"
+  control_map: "data/results/control_map.json"   # measured; stl raises if absent
+
+# ============================================================================
+# C3 and C4 RE-ENABLED 30 Aug. They were deferred in spec v2; that deferral is
+# reversed. Definitions are the v1 spec forms, which v2 left standing.
+#
+# Motivation is NOT "more contracts is better". Measured on the reference
+# program over 101 violations, the blamed node was a pure function of the
+# violated contract (C2 -> HoldAtStopLine 90/90, C1 -> CommitTurn 11/11), i.e.
+# H(node | contract) = 0, under which F4 and F3 are information-identical.
+#
+# ⚠️ NOTE HONESTLY: adding contracts does NOT by itself fix that. It adds more
+# (contract, node) pairs while leaving the mapping deterministic -- verified by
+# unit test in scripts/calibrate_baseline.py, where five contracts with one
+# node each still give H = 0. What breaks the collapse is a program structure
+# in which one contract is blameable on SEVERAL nodes. That is enforced
+# separately by gate 2 of the baseline calibration. C3 and C4 widen the blame
+# signal; the entropy gate is what protects the F3/F4 comparison.
+# ============================================================================
+
+C3_red_light:
+  enabled: true
+  # rho_3 = min over { t : ego in intersection } of ( t_red_onset - t )
+  #
+  # Robustness is the TIME MARGIN TO RED ONSET, so a program that scrapes
+  # through as the phase changes scores near zero rather than passing cleanly.
+  # Spec 01 §5 (v1 form, unchanged).
+
+  red_states: ["Red"]
+  # CARLA TrafficLightState names, read from the trace `tl_state` column.
+  # Yellow is NOT red: entering on yellow is legal here and C3 must not
+  # punish it. Yellow is what makes the margin shrink, which is the point.
+
+  no_red_onset_rho: 30.0
+  # If the light never turns red during the episode there is no onset to
+  # measure. Report this cap, NOT +inf: an uncapped value dominates
+  # min(rho_1..rho_5) in the wrong direction and destroys the blame signal,
+  # exactly as an uncapped TTC would in C2. 30.0 s is the episode horizon.
+
+  vacuous_rho: 999.0
+  # Ego never entered the intersection -> C3 vacuously satisfied. Same
+  # convention and same reasoning as C2: excluded from the argmin, flagged,
+  # and caught by ICR/PCR instead, because a program that never enters the
+  # junction is a failed task, not a safe program.
+
+  use_conflict_zone: true
+  # "In the intersection" reuses C2's conflict-zone test rather than defining
+  # a second, subtly different region. One geometry, one source of truth.
+
+C4_rss_longitudinal:
+  enabled: true
+  # rho_4 = min over t of ( d_long(ego, lead) - d_min_RSS(v_ego, v_lead) )
+  #
+  # d_min_RSS is Lemma 2 of Shalev-Shwartz, Shammah & Shashua, "On a Formal
+  # Model of Safe and Scalable Self-Driving Cars", arXiv:1708.06374 (2017),
+  # for two cars travelling in the SAME direction:
+  #
+  #   d_min = [ v_r*rho + 0.5*a_max_accel*rho^2
+  #             + (v_r + rho*a_max_accel)^2 / (2*a_min_brake)
+  #             - v_f^2 / (2*a_max_brake) ]_+
+  #
+  #   v_r          longitudinal speed of the REAR car (the ego)
+  #   v_f          longitudinal speed of the FRONT car (the lead)
+  #   rho          response time of the rear car
+  #   a_max_accel  most the rear car may accelerate during its response time
+  #   a_min_brake  least the rear car brakes after responding
+  #   a_max_brake  most the front car might brake
+  #   [x]_+        max(x, 0)
+  #
+  # Formula verified against the paper text, not recalled. Do not "simplify"
+  # it: the asymmetry between a_min_brake (rear) and a_max_brake (front) is
+  # the entire content of the lemma -- it is a worst-case bound, which is why
+  # the rear car is assumed to brake weakly and the front car strongly.
+
+  tau_resp_s: 0.75
+  # Rear-car response time. RSS leaves this as a policy parameter rather than
+  # fixing it. 0.75 s is within the range typically used for an automated
+  # rear vehicle (faster than a human, not instantaneous). It is a THRESHOLD
+  # THAT APPEARS IN THE CERTIFICATE, so changing it changes the experiment.
+
+  a_max_accel_mps2: 4.0
+  a_min_brake_mps2: 4.0
+  a_max_brake_mps2: 8.0
+  # Consistent with the plausibility ceilings already declared for non-ego
+  # actors in data/scenarios/space.yaml (accel 4.0, brake 8.0). Using the same
+  # numbers keeps the contract and the sampler from disagreeing about what a
+  # car can physically do.
+
+  lead_role: "lead"
+  # Which actor_role counts as the lead vehicle. Only actors AHEAD of the ego
+  # and roughly aligned with its heading are considered; see
+  # `same_direction_max_dyaw_deg` and the longitudinal projection in stl.py.
+
+  same_direction_max_dyaw_deg: 45.0
+  # Lemma 2 is the SAME-DIRECTION case. An oncoming vehicle is the opposite
+  # case and has a different formula, so it must not be scored with this one.
+  # Beyond this heading difference the actor is not a lead vehicle.
+
+  d_cap_m: 100.0
+  # Cap on the reported margin when no lead vehicle exists or all leads are
+  # far behind. Same anti-domination reasoning as C1's no_actor_clearance_m.
+
+  vacuous_rho: 999.0
+  # No lead vehicle spawned in this scenario -> C4 vacuously satisfied,
+  # flagged, and excluded from the argmin.
+
+combined:
+  # rho = min(rho_1, rho_2, rho_3, rho_4, rho_5) over ENABLED contracts only.
+  # The argmin identifies both the weakest contract and the timestep at which
+  # it is weakest. Both are recorded; the timestep is what blame localization
+  # resolves against the behaviour tree.
+  active: ["C1", "C2", "C3", "C4", "C5"]
+
+  # C5 IS IN THE MIN, as of 24 Aug, once the behaviour-tree DSL exposed
+  # accel_mps2 / decel_mps2 as program parameters and rho_5 began to VARY
+  # between programs. Measured across three programs spanning the plausible
+  # space: gentle +2.00, reference +1.00, harsh -4.50 against a 3.0 bound.
+  # The harsh program correctly becomes the argmin -- a comfort failure that
+  # C1 and C2 would have masked. That is decision D4's whole purpose.
+  #
+  # Confirmed by data/results/sensitivity_g2.json, which scores 180 traces
+  # over contracts ["C1","C2","C5"].
+  #
+  # HISTORY: under the earlier hardcoded controller rho_5 was a CONSTANT
+  # (-35.300), pinned by harness saturation rather than by any program
+  # decision, and a constant inside min() wins every argmin -- which would
+  # have destroyed the C1/C2 blame signal. C5 was excluded from the min for
+  # exactly as long as that was true. See docs/c5_decision.md.
+  #
+  # The precondition for keeping it in: max|jerk_cmd| must have non-zero
+  # variance across a bank. Re-check after any change to the action vocabulary.
+  report_only: []

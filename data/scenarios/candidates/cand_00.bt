@@ -1,0 +1,78 @@
+# UNPROTECTED LEFT TURN -- signalised four-way, circular green ball
+# Priority order: finish what you started > commit on a real gap > approach politely
+
+Selector
+
+  # 1. Already inside the junction box: NEVER abandon. Clear it.
+  Sequence
+    InConflictZone
+    CommitTurn(v_mps=7.0, accel_mps2=2.0)
+
+  # 2. Nose already past the stop line: keep going while a workable gap remains.
+  #    Lower gap threshold than the entry test -> hysteresis, no dithering.
+  Sequence
+    DistanceToStopLineBelow(dist_m=0.0)
+    OncomingGapExceeds(gap_s=3.5)
+    PathIsClear(dist_m=6.0)
+    CommitTurn(v_mps=7.0, accel_mps2=2.0)
+
+  # 3. Lead vehicle far enough away (RSS headroom) -> run the junction logic.
+  Sequence
+    PathIsClear(dist_m=28.0)
+    Selector
+
+      # 3a. Rolling commit: still moving, green, and a big oncoming gap.
+      Sequence
+        DistanceToStopLineBelow(dist_m=20.0)
+        TrafficLightIsGreen
+        OncomingGapExceeds(gap_s=7.0)
+        EgoSpeedBelow(v_mps=10.0)
+        CommitTurn(v_mps=7.0, accel_mps2=2.0)
+
+      # 3b. Standing/creeping at the line, green, comfortable gap -> go.
+      Sequence
+        DistanceToStopLineBelow(dist_m=7.0)
+        TrafficLightIsGreen
+        OncomingGapExceeds(gap_s=5.0)
+        EgoSpeedBelow(v_mps=6.5)
+        CommitTurn(v_mps=6.5, accel_mps2=2.0)
+
+      # 3c. Deadlock escape: waited a long time, take a smaller but still
+      #     C2-legal gap, on green only.
+      Sequence
+        DistanceToStopLineBelow(dist_m=7.0)
+        TrafficLightIsGreen
+        WaitedLongerThan(t_s=10.0)
+        OncomingGapExceeds(gap_s=4.0)
+        CommitTurn(v_mps=6.0, accel_mps2=2.0)
+
+      # 3d. Green, at the line, no gap yet -> edge forward for visibility.
+      Sequence
+        DistanceToStopLineBelow(dist_m=14.0)
+        TrafficLightIsGreen
+        EgoSpeedBelow(v_mps=4.0)
+        Creep(v_mps=1.5, accel_mps2=1.0)
+
+      # 3e. Green, closing on the line too fast -> shed speed gently first.
+      Sequence
+        DistanceToStopLineBelow(dist_m=20.0)
+        TrafficLightIsGreen
+        Decelerate(v_mps=1.5, decel_mps2=2.0)
+
+      # 3f. Green and still well upstream -> normal approach.
+      Sequence
+        TrafficLightIsGreen
+        Cruise(v_mps=8.0, accel_mps2=1.5)
+
+      # 3g. Yellow or red and not yet committed -> stop at the line.
+      HoldAtStopLine(decel_mps2=2.0)
+
+  # 4. Lead vehicle inside 28 m -> graded car-following ladder (protects C4).
+  Selector
+    Sequence
+      PathIsClear(dist_m=18.0)
+      Decelerate(v_mps=4.0, decel_mps2=1.5)
+    Sequence
+      PathIsClear(dist_m=11.0)
+      Decelerate(v_mps=1.5, decel_mps2=2.0)
+    Decelerate(v_mps=0.0, decel_mps2=2.5)

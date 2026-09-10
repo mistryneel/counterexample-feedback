@@ -1,0 +1,303 @@
+{
+  "model": "claude-opus-5",
+  "budget_B": 20000,
+  "f1_halfwidth_rows": 10,
+  "n_certificates": 20,
+  "scaffolding_tokens": 4513,
+  "by_condition": {
+    "F1": {
+      "n": 20,
+      "min": 14509,
+      "median": 16381,
+      "max": 18319,
+      "mean": 16793.3,
+      "over_B": 0
+    },
+    "F2": {
+      "n": 20,
+      "min": 4569,
+      "median": 4584,
+      "max": 4587,
+      "mean": 4583.4,
+      "over_B": 0
+    },
+    "F3": {
+      "n": 20,
+      "min": 4767,
+      "median": 4780,
+      "max": 4800,
+      "mean": 4778.1,
+      "over_B": 0
+    },
+    "F4a": {
+      "n": 20,
+      "min": 4858,
+      "median": 4871,
+      "max": 4891,
+      "mean": 4869.1,
+      "over_B": 0
+    },
+    "F4b": {
+      "n": 20,
+      "min": 4852,
+      "median": 4867,
+      "max": 4885,
+      "mean": 4867.6,
+      "over_B": 0
+    }
+  },
+  "per_certificate": {
+    "CE001_C2_44b9f97d05fda474": {
+      "F1": 17817,
+      "F2": 4581,
+      "F3": 4782,
+      "F4a": 4873,
+      "F4b": 4867
+    },
+    "CE002_C2_86714546fca524ca": {
+      "F1": 16064,
+      "F2": 4581,
+      "F3": 4782,
+      "F4a": 4873,
+      "F4b": 4867
+    },
+    "CE003_C1_969f15c8657c8fa6": {
+      "F1": 16470,
+      "F2": 4587,
+      "F3": 4771,
+      "F4a": 4862,
+      "F4b": 4856
+    },
+    "CE004_C1_445649d2b99e873a": {
+      "F1": 16176,
+      "F2": 4587,
+      "F3": 4769,
+      "F4a": 4860,
+      "F4b": 4872
+    },
+    "CE005_C1_5b773c94ec4bb251": {
+      "F1": 16370,
+      "F2": 4587,
+      "F3": 4767,
+      "F4a": 4858,
+      "F4b": 4852
+    },
+    "CE006_C2_1e173dcbe748c286": {
+      "F1": 16393,
+      "F2": 4581,
+      "F3": 4770,
+      "F4a": 4861,
+      "F4b": 4855
+    },
+    "CE007_C1_ec6211901ed6b190": {
+      "F1": 16397,
+      "F2": 4587,
+      "F3": 4769,
+      "F4a": 4860,
+      "F4b": 4854
+    },
+    "CE008_C2_62ca4fa36005920e": {
+      "F1": 17919,
+      "F2": 4581,
+      "F3": 4784,
+      "F4a": 4875,
+      "F4b": 4869
+    },
+    "CE009_C1_bb1a8d764f269c24": {
+      "F1": 17952,
+      "F2": 4587,
+      "F3": 4782,
+      "F4a": 4873,
+      "F4b": 4885
+    },
+    "CE010_C2_56c436b720d319ef": {
+      "F1": 18080,
+      "F2": 4581,
+      "F3": 4782,
+      "F4a": 4873,
+      "F4b": 4867
+    },
+    "CE011_C2_1673111e21cbfa9e": {
+      "F1": 18050,
+      "F2": 4581,
+      "F3": 4781,
+      "F4a": 4872,
+      "F4b": 4866
+    },
+    "CE012_C1_1ec6b8b64324dbd4": {
+      "F1": 18319,
+      "F2": 4587,
+      "F3": 4781,
+      "F4a": 4872,
+      "F4b": 4866
+    },
+    "CE013_C2_ade4dfeb1e7cffee": {
+      "F1": 17900,
+      "F2": 4581,
+      "F3": 4780,
+      "F4a": 4871,
+      "F4b": 4865
+    },
+    "CE014_C1_8efa0eee117bb95e": {
+      "F1": 16335,
+      "F2": 4587,
+      "F3": 4769,
+      "F4a": 4860,
+      "F4b": 4854
+    },
+    "CE015_C1_40924ca98fb43db1": {
+      "F1": 16247,
+      "F2": 4587,
+      "F3": 4777,
+      "F4a": 4868,
+      "F4b": 4880
+    },
+    "CE016_C2_9d3ea4ae1a67ec58": {
+      "F1": 16248,
+      "F2": 4581,
+      "F3": 4800,
+      "F4a": 4891,
+      "F4b": 4885
+    },
+    "CE017_C3_8280bf9852dc7834": {
+      "F1": 14509,
+      "F2": 4569,
+      "F3": 4787,
+      "F4a": 4878,
+      "F4b": 4872
+    },
+    "CE018_C2_80d8dfdf2253ea72": {
+      "F1": 16238,
+      "F2": 4581,
+      "F3": 4770,
+      "F4a": 4861,
+      "F4b": 4855
+    },
+    "CE019_C1_0b3097eb9e85eede": {
+      "F1": 16221,
+      "F2": 4587,
+      "F3": 4780,
+      "F4a": 4871,
+      "F4b": 4883
+    },
+    "CE020_C1_d3346d835dab0fd8": {
+      "F1": 16161,
+      "F2": 4587,
+      "F3": 4780,
+      "F4a": 4871,
+      "F4b": 4883
+    }
+  },
+  "f1_window_ladder": {
+    "full trace": {
+      "n": 20,
+      "min": 170980,
+      "median": 202812,
+      "max": 308880,
+      "mean": 213932.1,
+      "over_B": 20,
+      "halfwidth": -1,
+      "seconds_of_sim": null
+    },
+    "+-100 rows": {
+      "n": 20,
+      "min": 103557,
+      "median": 121101,
+      "max": 138539,
+      "mean": 125484.4,
+      "over_B": 20,
+      "halfwidth": 100,
+      "seconds_of_sim": 10.05
+    },
+    "+-50 rows": {
+      "n": 20,
+      "min": 53773,
+      "median": 62771,
+      "max": 71570,
+      "mean": 64728.7,
+      "over_B": 20,
+      "halfwidth": 50,
+      "seconds_of_sim": 5.05
+    },
+    "+-25 rows": {
+      "n": 20,
+      "min": 29019,
+      "median": 33498,
+      "max": 38183,
+      "mean": 34437.8,
+      "over_B": 20,
+      "halfwidth": 25,
+      "seconds_of_sim": 2.55
+    },
+    "+-20 rows": {
+      "n": 20,
+      "min": 24006,
+      "median": 27634,
+      "max": 31415,
+      "mean": 28413.2,
+      "over_B": 20,
+      "halfwidth": 20,
+      "seconds_of_sim": 2.05
+    },
+    "+-15 rows": {
+      "n": 20,
+      "min": 19178,
+      "median": 21921,
+      "max": 24772,
+      "mean": 22557.8,
+      "over_B": 19,
+      "halfwidth": 15,
+      "seconds_of_sim": 1.55
+    },
+    "+-10 rows": {
+      "n": 20,
+      "min": 14509,
+      "median": 16381,
+      "max": 18319,
+      "mean": 16793.3,
+      "over_B": 0,
+      "halfwidth": 10,
+      "seconds_of_sim": 1.05
+    },
+    "+-5 rows": {
+      "n": 20,
+      "min": 9926,
+      "median": 10851,
+      "max": 11867,
+      "mean": 11094.9,
+      "over_B": 0,
+      "halfwidth": 5,
+      "seconds_of_sim": 0.55
+    }
+  },
+  "full_trace_f1_fits_in_B": false,
+  "f1_window_reach_vs_f4b": {
+    "rows_back_to_authorising_transition": {
+      "n": 20,
+      "min": 28,
+      "median": 40,
+      "max": 47,
+      "mean": 40.0
+    },
+    "seconds_back": {
+      "min": 1.4,
+      "median": 2.025,
+      "max": 2.35
+    },
+    "inside_configured_window": 0,
+    "halfwidth_needed_for_all": 47
+  },
+  "campaign": {
+    "conditions": 5,
+    "certificates": 20,
+    "seeds": 3,
+    "attempts": 300,
+    "mean_completion_tokens_measured": 6178,
+    "prompt_cost_usd": 4.67,
+    "completion_cost_usd": 46.34,
+    "total_usd": 51.01
+  },
+  "count_tokens_api_calls": 0,
+  "count_tokens_cache_hits": 261,
+  "git_commit": "890cd82088479028cfe9e9a502590d415878adcb"
+}

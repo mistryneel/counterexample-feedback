@@ -1,0 +1,166 @@
+{
+  "certificate_id": "CE019_C1_0b3097eb9e85eede",
+  "param_hash": "0b3097eb9e85eede",
+  "git_commit": "4d5b76130574d2075cc8e957a5c0822960d2e131",
+  "timestamp": "2026-08-31T19:49:32+00:00",
+  "schema_version": "1.0.0",
+  "program": "data/scenarios/baseline_program.bt",
+  "program_sha256_16": "59218be8676bd5e5",
+  "probe_program": "data/scenarios/conservative_probe.bt",
+  "scenario_params": {
+    "n_oncoming": 2,
+    "v_oncoming": 6.0,
+    "headway": 7.125,
+    "aggressiveness": 0.0,
+    "light_offset": 5.839,
+    "lead_gap_s": 2.9655
+  },
+  "minimal_params": {
+    "n_oncoming": 1,
+    "v_oncoming": 6.0,
+    "headway": 8.0,
+    "aggressiveness": 0.0,
+    "light_offset": 10.0,
+    "lead_gap_s": 2.9655
+  },
+  "evaluation_params": {
+    "n_oncoming": 2,
+    "v_oncoming": 6.0,
+    "headway": 7.125,
+    "aggressiveness": 0.0,
+    "light_offset": 5.839,
+    "lead_gap_s": 2.9655
+  },
+  "dropped_parameters": [
+    "n_oncoming",
+    "v_oncoming",
+    "headway",
+    "aggressiveness",
+    "light_offset"
+  ],
+  "kept_parameters": [
+    "lead_gap_s"
+  ],
+  "rho_minimal": -1.420628,
+  "per_contract_minimal": {
+    "C1": -0.202153,
+    "C2": -1.420628,
+    "C3": 30.0,
+    "C4": 19.704871,
+    "C5": 1.0
+  },
+  "minimal_param_hash": "e335940909f11c73",
+  "active_node_minimal": "CommitTurn:Selector/Sequence/CommitTurn",
+  "violated_contract": "C1",
+  "rho": -0.271433,
+  "rho1": -0.271433,
+  "rho2": 2.089401,
+  "rho3": 30.0,
+  "rho4": 19.654324,
+  "rho5": 1.0,
+  "rho_argmin_contract": "C1",
+  "vacuous_contracts": [],
+  "argmin_t_s": 15.550000231713057,
+  "argmin_frame": 714398,
+  "argmin_index": 311,
+  "active_node": "CommitTurn:Selector/Sequence/CommitTurn",
+  "bt_node_type": "CommitTurn",
+  "bt_node_path": "Selector/Sequence/CommitTurn",
+  "bt_tick_path": "n_2,n_3",
+  "boundary": [
+    {
+      "parameter": "lead_gap_s",
+      "direction": "<=",
+      "threshold": 3.0802,
+      "resolved": true,
+      "violating_value": 2.9655,
+      "nominal_value": 4.3,
+      "bracket": [
+        3.08018359375,
+        3.090609375
+      ],
+      "n_evals": 8,
+      "note": "crossing bracketed to [3.08, 3.091] in 8 evaluations",
+      "rendered": "lead_gap_s <= 3.08"
+    }
+  ],
+  "boundary_report": "C1 fails for lead_gap_s <= 3.08",
+  "avoidable": true,
+  "avoidable_strict": true,
+  "probe_scoreable": true,
+  "probe_status": "ok",
+  "probe_rho": 1.122588,
+  "probe_rho_on_contract": 5.635268,
+  "probe_per_contract": {
+    "C1": 5.635268,
+    "C2": 27.0,
+    "C3": 4.85,
+    "C4": 1.122588,
+    "C5": 1.5
+  },
+  "probe_phases_reached": [
+    "P1_approach",
+    "P2_yield_clear",
+    "P3_commit",
+    "P4_settle"
+  ],
+  "narrative": "The ego struck another vehicle, with the bounding boxes overlapping by 0.27 m (the contract requires positive clearance) at t = 15.55 s. The gap the ego actually faced was 1.20 s.",
+  "episode_status": "collision",
+  "trace_path": "/home/npk/Projects/cv_research/data/traces/fals_fals_0b3097eb9e85eede.parquet",
+  "phases_reached": [
+    "P1_approach",
+    "P2_yield_clear",
+    "P3_commit"
+  ],
+  "achieved_gap_s": 1.2021432824794083,
+  "original_param_hash": "0b3097eb9e85eede",
+  "reproducibility": {
+    "checked": true,
+    "tolerance": 1e-06,
+    "rho_repeat": -0.271433,
+    "rho_delta": 0.0,
+    "per_contract_repeat": {
+      "C1": -0.271433,
+      "C2": 2.089401,
+      "C3": 30.0,
+      "C4": 19.620936,
+      "C5": 1.0
+    },
+    "per_contract_delta": {
+      "C1": 0.0,
+      "C2": 0.0,
+      "C3": 0.0,
+      "C4": -0.033388311,
+      "C5": 0.0
+    },
+    "active_node_repeat": "CommitTurn:Selector/Sequence/CommitTurn",
+    "rho_reproduces": true,
+    "node_reproduces": true,
+    "per_contract_reproduces": {
+      "C1": true,
+      "C2": true,
+      "C3": true,
+      "C4": false,
+      "C5": true
+    },
+    "max_abs_per_contract_delta": 0.033388311,
+    "contracts_not_reproducing": [
+      "C4"
+    ]
+  },
+  "rollouts_falsification": 0,
+  "rollouts_minimization": 3,
+  "rollouts_boundary": 7,
+  "rollouts_avoidability": 1,
+  "information_key": "('C1', ('lead_gap_s',), (3.08,))",
+  "information_duplicate_of": "CE009_C1_bb1a8d764f269c24",
+  "authorising_node": "HoldAtStopLine:Selector/Sequence/HoldAtStopLine",
+  "blame_definitions": {
+    "active_node": "leaf ticking at the argmin timestep (pre-registered, spec 7.5)",
+    "authorising_node": "last distinct leaf active before the argmin leaf's run began"
+  },
+  "boundary_suppressed": [],
+  "boundary_report_rendered": "C1 fails for lead_gap_s <= 3.08",
+  "narrative_pre_3c226ee": "The ego struck another vehicle, with the bounding boxes overlapping by 0.27 m (the contract requires positive clearance) at t = 15.55 s while CommitTurn was the active behaviour. C1 fails for lead_gap_s <= 3.08. The gap the ego actually faced was 1.20 s.",
+  "narrative_regenerated": "Recomposed 31 Aug from the same banked fields. The original leaked the active_node (an F4a-only field) into what F2 and F3 render, and embedded the unsuppressed boundary_report. Using it verbatim would have put blame localization into F2 and F3, so F4a would have repeated a field rather than added one. Original retained as narrative_pre_3c226ee."
+}

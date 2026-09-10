@@ -1,0 +1,35 @@
+{
+  "test_1_generalisation": {
+    "program": "the single attempt that resolved, completed, and broke nothing (F1__CE005_C1__s3)",
+    "own_counterexample": {
+      "resolved": true,
+      "completed": true,
+      "rho": 0.5,
+      "binding": "C5"
+    },
+    "other_19_never_shown": {
+      "resolved": "19/19",
+      "completed": "19/19",
+      "entered": "19/19",
+      "binding": {
+        "C1": 3,
+        "C5": 16
+      }
+    },
+    "all_20": {
+      "resolved_and_completed": "20/20"
+    },
+    "interpretation": "A safe AND task-completing program IS expressible in this DSL, and the model found it. It generalises to every counterexample in the corpus, not only the one it was shown."
+  },
+  "test_2_rss_stability": {
+    "repeats": 6,
+    "rho_spread": 0.0,
+    "C4_spread_m": 0.0,
+    "C4_ever_binding": false,
+    "resolved_all_repeats": true,
+    "completed_all_repeats": true,
+    "interpretation": "The known C4 non-determinism does not touch this verdict. C4 is never the binding contract here and rho reproduces exactly."
+  },
+  "what_this_overturns": "The draft claimed no expressible program both satisfied the contracts and completed the manoeuvre. That is FALSE and the review was right to flag the wording. The correct claim is that the vocabulary is not the binding constraint; the search is. A safe, completing, generalising repair exists and was found once in 300 attempts, while 72% of attempts converged on the degenerate refusal instead.",
+  "why_the_hand_written_repairs_missed_it": "They made the fallback a true stop, which is over-conservative and prevents entry entirely. The model instead guarded the committing branch geometrically and left the fallback able to creep, which is sufficient. The model's repair is better than the ones written by hand."
+}

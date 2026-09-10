@@ -1,0 +1,58 @@
+# ============================================================================
+# CONSERVATIVE REFERENCE PROBE -- the avoidability filter (spec 6.5, RSS rule 5)
+# ============================================================================
+# NOT a baseline candidate and NOT a program under test. Its only job is to
+# answer one question per counterexample:
+#
+#     "In THIS scenario, did a violation-free response exist at all?"
+#
+# A counterexample is admitted only if this program replays the identical
+# scenario without violating the contract the baseline violated. That makes
+# the certificate ACTIONABLE (certificate property 7.3): without it the repair
+# loop is driven by failures no program expressible in the DSL could have
+# avoided, and the LLM is asked to fix bad luck rather than bad driving.
+#
+# DESIGN -- maximally cautious on every axis the DSL exposes:
+#   * commits only from a STOP at the line, on green, with a 9.0 s oncoming
+#     gap (three times tau_yield = 3.0) and 30 m of clear path
+#   * holds at the line from 25 m out, so it is stopped and settled well
+#     before the decision point
+#   * gentle accelerations throughout (<= 1.0 m/s2 against the 3.0 m/s2
+#     C5 comfort bound), so the probe cannot fail C5 and reject a
+#     counterexample for a reason unrelated to the violation being tested
+#   * cruises at 5.0 m/s, BELOW the lead's 6.0 m/s approach speed, so it does
+#     not close on the lead and C4 stays satisfied
+#   * InConflictZone first: once committed, finish. Re-deciding mid-turn would
+#     stop the ego inside the junction, which is worse for C3 than completing.
+#
+# DELIBERATELY NO DEADLOCK ESCAPE. Unlike the baseline this program has no
+# WaitedLongerThan branch, so in a scenario that never offers a 9.0 s gap it
+# simply never turns. That is the correct behaviour for an AVOIDABILITY probe
+# and not a defect: refusing to enter IS a violation-free response, which is
+# exactly what RSS rule 5 asks about. It does mean the filter is permissive --
+# it rejects only counterexamples where even never-entering violates -- and
+# that is reported with the campaign's rejection rate rather than hidden.
+# ============================================================================
+
+Selector
+  # Already committed: finish the turn rather than stopping inside the junction.
+  Sequence
+    InConflictZone
+    CommitTurn(v_mps=5.0, accel_mps2=1.0)
+
+  # The decision point: stopped, at the line, on green, with a huge gap.
+  Sequence
+    EgoSpeedBelow(v_mps=1.0)
+    DistanceToStopLineBelow(dist_m=5.0)
+    TrafficLightIsGreen
+    OncomingGapExceeds(gap_s=9.0)
+    PathIsClear(dist_m=30.0)
+    CommitTurn(v_mps=5.0, accel_mps2=1.0)
+
+  # Approaching: settle onto the stop line early and wait there.
+  Sequence
+    DistanceToStopLineBelow(dist_m=25.0)
+    HoldAtStopLine(decel_mps2=1.5)
+
+  # Open approach, gently.
+  Cruise(v_mps=5.0, accel_mps2=0.8)

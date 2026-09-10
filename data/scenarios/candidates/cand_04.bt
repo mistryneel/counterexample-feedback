@@ -1,0 +1,65 @@
+# Unprotected left turn at a signalised four-way junction.
+# Priority order: finish what you started > take a real gap > escape deadlock >
+# creep for visibility > hold at the line > approach > protect the lead gap.
+
+Selector
+
+  # 1. ALREADY COMMITTED. Once any part of the ego is in the conflict zone the
+  #    only safe thing is to clear it. No gating conditions here on purpose:
+  #    nothing may abandon the turn half way across.
+  Sequence
+    InConflictZone
+    CommitTurn(v_mps=6.5, accel_mps2=2.0)
+
+  # 2. ACCEPT A GAP. Green ball, at the line, own path clear of the lead,
+  #    and the nearest oncoming vehicle needs 5 s to reach the zone
+  #    (contract C2 wants 3 s, so 5 s leaves reaction margin).
+  Sequence
+    TrafficLightIsGreen
+    DistanceToStopLineBelow(dist_m=8.0)
+    EgoSpeedBelow(v_mps=9.0)
+    PathIsClear(dist_m=20.0)
+    OncomingGapExceeds(gap_s=5.0)
+    CommitTurn(v_mps=6.0, accel_mps2=2.0)
+
+  # 3. DEADLOCK ESCAPE. Stationary a long time and still no generous gap:
+  #    take a smaller but still legal one, still only on green.
+  Sequence
+    TrafficLightIsGreen
+    DistanceToStopLineBelow(dist_m=8.0)
+    WaitedLongerThan(t_s=12.0)
+    PathIsClear(dist_m=15.0)
+    OncomingGapExceeds(gap_s=4.0)
+    CommitTurn(v_mps=5.5, accel_mps2=2.0)
+
+  # 4. CREEP for visibility while stopped on green with the lead gone.
+  Sequence
+    TrafficLightIsGreen
+    DistanceToStopLineBelow(dist_m=10.0)
+    EgoSpeedBelow(v_mps=1.5)
+    PathIsClear(dist_m=15.0)
+    Creep(v_mps=1.5, accel_mps2=0.8)
+
+  # 5. NEAR THE JUNCTION, no accepted gap or not green: stop at the line.
+  #    Placed before the cruise branch so approach speed can never carry the
+  #    ego over the line un-gated.
+  Sequence
+    DistanceToStopLineBelow(dist_m=25.0)
+    PathIsClear(dist_m=18.0)
+    HoldAtStopLine(decel_mps2=1.8)
+
+  # 6. APPROACH. Far from the line, green, and a wide clear path ahead of the
+  #    lead vehicle: cruise gently (C4 headroom at 7 m/s behind a 6 m/s lead).
+  Sequence
+    TrafficLightIsGreen
+    PathIsClear(dist_m=28.0)
+    Cruise(v_mps=7.0, accel_mps2=1.5)
+
+  # 7. LEAD CLOSING. Bleed speed off comfortably to rebuild the RSS gap.
+  Sequence
+    PathIsClear(dist_m=12.0)
+    Decelerate(v_mps=2.0, decel_mps2=1.5)
+
+  # 8. FALLBACK: something is close ahead (stopped lead, red light, blocked
+  #    junction) -- come to rest where we are, comfortably.
+  Decelerate(v_mps=0.0, decel_mps2=2.5)

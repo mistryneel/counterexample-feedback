@@ -1,0 +1,23 @@
+# CALIBRATION PROBE, not a baseline candidate. Deliberately over-cautious, to
+# find the FLOOR of the achievable violation rate. If even this program cannot
+# get inside the 20-40% band, the parameter space is too harsh and must be
+# retuned before any baseline is synthesized against it.
+
+Selector()
+  Sequence()
+    InConflictZone()
+    CommitTurn(v_mps=5.0, accel_mps2=1.0)
+  Sequence()
+    TrafficLightIsGreen()
+    PathIsClear(dist_m=30.0)
+    OncomingGapExceeds(gap_s=7.0)
+    CommitTurn(v_mps=5.0, accel_mps2=1.0)
+  Sequence()
+    WaitedLongerThan(t_s=20.0)
+    TrafficLightIsGreen()
+    PathIsClear(dist_m=20.0)
+    CommitTurn(v_mps=4.0, accel_mps2=1.0)
+  Sequence()
+    DistanceToStopLineBelow(dist_m=25.0)
+    HoldAtStopLine(decel_mps2=1.5)
+  Cruise(v_mps=5.0, accel_mps2=0.8)

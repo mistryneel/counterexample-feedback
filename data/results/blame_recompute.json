@@ -1,0 +1,273 @@
+{
+  "n": 20,
+  "H_active_node_bits": 0.0,
+  "H_authorising_node_bits": 0.5,
+  "H_contract_bits": 1.2345,
+  "detail_active": {
+    "C2": {
+      "n": 9,
+      "distinct_nodes": 1,
+      "H_bits": -0.0,
+      "nodes": {
+        "CommitTurn:Selector/Sequence/CommitTurn": 9
+      }
+    },
+    "C1": {
+      "n": 10,
+      "distinct_nodes": 1,
+      "H_bits": -0.0,
+      "nodes": {
+        "CommitTurn:Selector/Sequence/CommitTurn": 10
+      }
+    },
+    "C3": {
+      "n": 1,
+      "distinct_nodes": 1,
+      "H_bits": -0.0,
+      "nodes": {
+        "CommitTurn:Selector/Sequence/CommitTurn": 1
+      }
+    }
+  },
+  "detail_authorising": {
+    "C2": {
+      "n": 9,
+      "distinct_nodes": 1,
+      "H_bits": -0.0,
+      "nodes": {
+        "Decelerate:Selector/Sequence/Decelerate": 9
+      }
+    },
+    "C1": {
+      "n": 10,
+      "distinct_nodes": 2,
+      "H_bits": 1.0,
+      "nodes": {
+        "Decelerate:Selector/Sequence/Decelerate": 5,
+        "HoldAtStopLine:Selector/Sequence/HoldAtStopLine": 5
+      }
+    },
+    "C3": {
+      "n": 1,
+      "distinct_nodes": 1,
+      "H_bits": -0.0,
+      "nodes": {
+        "Decelerate:Selector/Sequence/Decelerate": 1
+      }
+    }
+  },
+  "n_boundary_suppressed": 7,
+  "certificates_with_no_rendered_boundary": [
+    "CE003_C1_969f15c8657c8fa6",
+    "CE004_C1_445649d2b99e873a",
+    "CE005_C1_5b773c94ec4bb251",
+    "CE006_C2_1e173dcbe748c286",
+    "CE007_C1_ec6211901ed6b190",
+    "CE014_C1_8efa0eee117bb95e",
+    "CE018_C2_80d8dfdf2253ea72"
+  ],
+  "rows": [
+    {
+      "id": "CE001_C2_44b9f97d05fda474",
+      "contract": "C2",
+      "active": "CommitTurn:Selector/Sequence/CommitTurn",
+      "authorising": "Decelerate:Selector/Sequence/Decelerate",
+      "hidden": [],
+      "shown": [
+        "aggressiveness"
+      ]
+    },
+    {
+      "id": "CE002_C2_86714546fca524ca",
+      "contract": "C2",
+      "active": "CommitTurn:Selector/Sequence/CommitTurn",
+      "authorising": "Decelerate:Selector/Sequence/Decelerate",
+      "hidden": [],
+      "shown": [
+        "aggressiveness"
+      ]
+    },
+    {
+      "id": "CE003_C1_969f15c8657c8fa6",
+      "contract": "C1",
+      "active": "CommitTurn:Selector/Sequence/CommitTurn",
+      "authorising": "Decelerate:Selector/Sequence/Decelerate",
+      "hidden": [
+        "headway"
+      ],
+      "shown": []
+    },
+    {
+      "id": "CE004_C1_445649d2b99e873a",
+      "contract": "C1",
+      "active": "CommitTurn:Selector/Sequence/CommitTurn",
+      "authorising": "HoldAtStopLine:Selector/Sequence/HoldAtStopLine",
+      "hidden": [
+        "headway"
+      ],
+      "shown": []
+    },
+    {
+      "id": "CE005_C1_5b773c94ec4bb251",
+      "contract": "C1",
+      "active": "CommitTurn:Selector/Sequence/CommitTurn",
+      "authorising": "Decelerate:Selector/Sequence/Decelerate",
+      "hidden": [
+        "headway"
+      ],
+      "shown": []
+    },
+    {
+      "id": "CE006_C2_1e173dcbe748c286",
+      "contract": "C2",
+      "active": "CommitTurn:Selector/Sequence/CommitTurn",
+      "authorising": "Decelerate:Selector/Sequence/Decelerate",
+      "hidden": [
+        "headway"
+      ],
+      "shown": []
+    },
+    {
+      "id": "CE007_C1_ec6211901ed6b190",
+      "contract": "C1",
+      "active": "CommitTurn:Selector/Sequence/CommitTurn",
+      "authorising": "Decelerate:Selector/Sequence/Decelerate",
+      "hidden": [
+        "headway"
+      ],
+      "shown": []
+    },
+    {
+      "id": "CE008_C2_62ca4fa36005920e",
+      "contract": "C2",
+      "active": "CommitTurn:Selector/Sequence/CommitTurn",
+      "authorising": "Decelerate:Selector/Sequence/Decelerate",
+      "hidden": [],
+      "shown": [
+        "aggressiveness"
+      ]
+    },
+    {
+      "id": "CE009_C1_bb1a8d764f269c24",
+      "contract": "C1",
+      "active": "CommitTurn:Selector/Sequence/CommitTurn",
+      "authorising": "HoldAtStopLine:Selector/Sequence/HoldAtStopLine",
+      "hidden": [],
+      "shown": [
+        "lead_gap_s"
+      ]
+    },
+    {
+      "id": "CE010_C2_56c436b720d319ef",
+      "contract": "C2",
+      "active": "CommitTurn:Selector/Sequence/CommitTurn",
+      "authorising": "Decelerate:Selector/Sequence/Decelerate",
+      "hidden": [],
+      "shown": [
+        "aggressiveness"
+      ]
+    },
+    {
+      "id": "CE011_C2_1673111e21cbfa9e",
+      "contract": "C2",
+      "active": "CommitTurn:Selector/Sequence/CommitTurn",
+      "authorising": "Decelerate:Selector/Sequence/Decelerate",
+      "hidden": [],
+      "shown": [
+        "aggressiveness"
+      ]
+    },
+    {
+      "id": "CE012_C1_1ec6b8b64324dbd4",
+      "contract": "C1",
+      "active": "CommitTurn:Selector/Sequence/CommitTurn",
+      "authorising": "Decelerate:Selector/Sequence/Decelerate",
+      "hidden": [],
+      "shown": [
+        "aggressiveness"
+      ]
+    },
+    {
+      "id": "CE013_C2_ade4dfeb1e7cffee",
+      "contract": "C2",
+      "active": "CommitTurn:Selector/Sequence/CommitTurn",
+      "authorising": "Decelerate:Selector/Sequence/Decelerate",
+      "hidden": [],
+      "shown": [
+        "aggressiveness"
+      ]
+    },
+    {
+      "id": "CE014_C1_8efa0eee117bb95e",
+      "contract": "C1",
+      "active": "CommitTurn:Selector/Sequence/CommitTurn",
+      "authorising": "Decelerate:Selector/Sequence/Decelerate",
+      "hidden": [
+        "headway"
+      ],
+      "shown": []
+    },
+    {
+      "id": "CE015_C1_40924ca98fb43db1",
+      "contract": "C1",
+      "active": "CommitTurn:Selector/Sequence/CommitTurn",
+      "authorising": "HoldAtStopLine:Selector/Sequence/HoldAtStopLine",
+      "hidden": [],
+      "shown": [
+        "aggressiveness"
+      ]
+    },
+    {
+      "id": "CE016_C2_9d3ea4ae1a67ec58",
+      "contract": "C2",
+      "active": "CommitTurn:Selector/Sequence/CommitTurn",
+      "authorising": "Decelerate:Selector/Sequence/Decelerate",
+      "hidden": [],
+      "shown": [
+        "aggressiveness",
+        "v_oncoming"
+      ]
+    },
+    {
+      "id": "CE017_C3_8280bf9852dc7834",
+      "contract": "C3",
+      "active": "CommitTurn:Selector/Sequence/CommitTurn",
+      "authorising": "Decelerate:Selector/Sequence/Decelerate",
+      "hidden": [],
+      "shown": [
+        "aggressiveness",
+        "light_offset"
+      ]
+    },
+    {
+      "id": "CE018_C2_80d8dfdf2253ea72",
+      "contract": "C2",
+      "active": "CommitTurn:Selector/Sequence/CommitTurn",
+      "authorising": "Decelerate:Selector/Sequence/Decelerate",
+      "hidden": [
+        "headway"
+      ],
+      "shown": []
+    },
+    {
+      "id": "CE019_C1_0b3097eb9e85eede",
+      "contract": "C1",
+      "active": "CommitTurn:Selector/Sequence/CommitTurn",
+      "authorising": "HoldAtStopLine:Selector/Sequence/HoldAtStopLine",
+      "hidden": [],
+      "shown": [
+        "lead_gap_s"
+      ]
+    },
+    {
+      "id": "CE020_C1_d3346d835dab0fd8",
+      "contract": "C1",
+      "active": "CommitTurn:Selector/Sequence/CommitTurn",
+      "authorising": "HoldAtStopLine:Selector/Sequence/HoldAtStopLine",
+      "hidden": [],
+      "shown": [
+        "lead_gap_s"
+      ]
+    }
+  ]
+}

@@ -1,0 +1,87 @@
+# ============================================================================
+# FROZEN BASELINE PROGRAM -- PATCHED (entry path-clearance only).
+# ============================================================================
+# Observed failure: the ego committed the left turn while an oncoming vehicle
+# sat STOPPED on the turn path just inside the junction. A stationary vehicle
+# never fails OncomingGapExceeds (its time-to-conflict-zone is unbounded), so
+# the only guard that can see it is PathIsClear -- and the baseline radii
+# (16/14/20 m) were shorter than the distance the ego covers between the entry
+# decision and the conflict zone. The repair lengthens the three entry-time
+# path checks and gives the "past the line but not yet inside" branch a
+# short-range clearance test with a comfortable fallback. Branch A is left
+# untouched: once inside the conflict zone the turn is still unconditional.
+# ============================================================================
+
+# Unprotected left turn at a signalised four-way junction.
+# Priority order: finish what you started > decide from a stop >
+# finish a rolling entry > enter on green with a real gap > stop at the line >
+# back off behind the lead > cruise the approach.
+
+Selector
+
+  # --- A. Already inside the conflict zone: never abandon the turn. ---
+  Sequence
+    InConflictZone
+    CommitTurn(v_mps=7.0, accel_mps2=2.0)
+
+  # --- B. Stopped at (or just over) the stop line: this is the decision point. ---
+  Sequence
+    EgoSpeedBelow(v_mps=1.0)
+    DistanceToStopLineBelow(dist_m=4.0)
+    Selector
+      # Normal go: green, a gap well beyond the 3.0 s contract, path physically clear.
+      # PATCH: 16.0 -> 22.0 so a stalled/queued vehicle on the turn path blocks entry.
+      Sequence
+        TrafficLightIsGreen
+        OncomingGapExceeds(gap_s=5.5)
+        PathIsClear(dist_m=22.0)
+        CommitTurn(v_mps=6.5, accel_mps2=2.0)
+      # Deadlock escape: nobody ever gives a big gap, so take a smaller but still legal one.
+      # PATCH: 14.0 -> 18.0 (still shorter than the 3.8 s gap it accepts, so the escape works).
+      Sequence
+        TrafficLightIsGreen
+        WaitedLongerThan(t_s=12.0)
+        OncomingGapExceeds(gap_s=3.8)
+        PathIsClear(dist_m=18.0)
+        CommitTurn(v_mps=6.0, accel_mps2=2.0)
+      # Otherwise sit still, gently.
+      HoldAtStopLine(decel_mps2=2.0)
+
+  # --- C. Past the stop line and still rolling: committed, drive through. ---
+  # (The stopped-past-the-line case is caught by B above, so this only fires while moving.)
+  # PATCH: check the short range ahead before crossing into the zone; if something is
+  # standing there, ease off (still short of the conflict zone) instead of driving into it.
+  Sequence
+    DistanceToStopLineBelow(dist_m=0.0)
+    Selector
+      Sequence
+        PathIsClear(dist_m=12.0)
+        CommitTurn(v_mps=7.0, accel_mps2=2.0)
+      Decelerate(v_mps=0.0, decel_mps2=2.5)
+
+  # --- D. Rolling entry: green, generous gap, clear path, close to the line. ---
+  # PATCH: 20.0 -> 26.0; a rolling entry covers more ground before the zone.
+  Sequence
+    TrafficLightIsGreen
+    DistanceToStopLineBelow(dist_m=14.0)
+    OncomingGapExceeds(gap_s=6.5)
+    PathIsClear(dist_m=26.0)
+    CommitTurn(v_mps=6.5, accel_mps2=2.0)
+
+  # --- E. Near the junction, road ahead clear: settle onto the stop line and wait. ---
+  Sequence
+    DistanceToStopLineBelow(dist_m=18.0)
+    PathIsClear(dist_m=20.0)
+    HoldAtStopLine(decel_mps2=2.0)
+
+  # --- F. Near the junction but something (lead or crossing traffic) is in the way. ---
+  Sequence
+    DistanceToStopLineBelow(dist_m=30.0)
+    Decelerate(v_mps=1.0, decel_mps2=2.0)
+
+  # --- G. Open approach: cruise, but keep an RSS-safe buffer behind the lead. ---
+  Selector
+    Sequence
+      PathIsClear(dist_m=28.0)
+      Cruise(v_mps=7.0, accel_mps2=1.5)
+    Decelerate(v_mps=4.0, decel_mps2=1.5)

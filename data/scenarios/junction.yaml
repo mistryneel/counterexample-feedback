@@ -1,0 +1,87 @@
+# Auto-discovered junction. Frozen once written -- delete this
+# file and re-run only if you intend to change the experiment.
+map: Carla/Maps/Town05
+junction_id: 1126
+n_traffic_lights: 4
+traffic_light_ids_NOT_STABLE:
+- 206
+- 207
+- 208
+- 209
+ego_approach:
+  road_id: 6
+  lane_id: -1
+  s: 49.21051406860354
+  x: -30.44780921936035
+  y: -91.43966674804688
+  z: 0.0
+  yaw_deg: -179.9136962890625
+  dyaw_vs_entry: 0.0
+  traffic_light_id_at_discovery: 208
+oncoming_approach:
+  road_id: 7
+  lane_id: 1
+  s: 4.21958419799804
+  x: -70.00210571289062
+  y: -87.99923706054688
+  z: 0.0
+  yaw_deg: 0.0863037109375
+  dyaw_vs_entry: 180.0
+  traffic_light_id_at_discovery: 206
+  verified:
+    result: exactly 180.0 deg opposed to ego approach; travels toward junction centre
+    verified_on: '2026-08-23'
+    note: derived from controlled approaches, NOT from the turn-exit waypoint (that
+      waypoint is inside the junction where get_left_lane() returns None, which silently
+      collapses to the ego approach lane)
+junction_center:
+  x: -50.69066619873047
+  y: -92.60450744628906
+  z: 0.0277252197265625
+junction_extent:
+  x: 15.104494094848633
+  y: 18.00851058959961
+  z: 0.0277252197265625
+left_turn:
+  measured_dyaw_deg: -90.42379760742188
+  entry:
+    road_id: 1182
+    lane_id: -1
+    s: 2.220446049250313e-14
+    x: -35.5972900390625
+    y: -91.44742584228516
+    z: 0.0
+    yaw_deg: -179.9136962890625
+  exit:
+    road_id: 1182
+    lane_id: -1
+    s: 24.002449571130818
+    x: -51.40518569946289
+    y: -74.64649963378906
+    z: 0.055450439453125
+    yaw_deg: 89.66250610351562
+  turn_direction_verified:
+    method: projected (exit - entry) onto entry waypoint's carla get_right_vector()
+    result: negative dyaw == LEFT turn
+    verified_on: '2026-08-23'
+    evidence: all four ~-90 deg pairs projected negative (left); all four ~+90 positive
+      (right)
+all_turn_dyaw_deg:
+- -102.73
+- -90.42
+- -89.58
+- -77.27
+- -12.3
+- -12.3
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 12.3
+- 12.3
+- 77.27
+- 89.58
+- 90.42
+- 102.73
+discovered_by: carla_backend.discover_left_turn_junction
+carla_version: 0.9.16
