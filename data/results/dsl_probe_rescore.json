@@ -1,0 +1,6824 @@
+{
+ "script": "scripts/rescore_dsl_probes.py",
+ "scorer": "src/stl.py compute_rho; resolved = rho >= 0; completed = 'P4_settle' in phases_reached; entered = C2 not vacuous (src/evaluate.py)",
+ "inputs_sha256": {
+  "config/contracts.yaml": "d8da9d81f160fbb412ae171c22041f2878365f7e728f1bb40ddd07931513d8fd",
+  "data/scenarios/junction.yaml": "12a0cf1f22c1a4dff1c32cf6ed148863e43461c1b21462447c53f2689e68f580",
+  "data/results/control_map.json": "4eb394a32437545d741ebcbdb6b77ebd8f0d1af992690df1e0f70dad36213f31",
+  "data/scenarios/baseline_program.bt": "59218be8676bd5e54f5fa3d6385cefb3935975daa41dce03b1f22575c68d9ed8",
+  "data/scenarios/dsl_probe/clean_repair.bt": "507bfe02db54fed2808d4f1916a21fc8cb80a7ceca8356acb045d342f981a874",
+  "data/scenarios/dsl_probe/diag.bt": "6d1bdc43d2ad6365dca8af509eae3e722c0ebab5ed7234d70d169516f629c78b",
+  "data/scenarios/dsl_probe/fixA_bigger_gap.bt": "8543c504cff895eb09ec2c1bcbc4579439fa4d2b8bf749241b45d606c55eb4ba",
+  "data/scenarios/dsl_probe/fixFULL.bt": "d0c0517aebf806092c43dba7e643d7da7623a0efddcf8638b0bfbe4f6a870508",
+  "data/scenarios/dsl_probe/geometric_guard_16m.bt": "83f66f99bf7d45d8d417d9c458e610581f37bfdbedd413cebb341e5db5ce6f08",
+  "data/scenarios/dsl_probe/geometric_guard_32m.bt": "9ff1eeb672bd1ac55313e483a5c3a51b60c6ed97f852b560804814a5d892a955",
+  "data/scenarios/dsl_probe/pc.bt": "dd54c6d1929eb5b7396f6134b0258fb7b2ea70c7a78433f9b33572652106d774",
+  "data/scenarios/dsl_probe/sweep_10.0.bt": "74e03b2339bfed5643c6ec4e078481b64cd984d49cdd8173491563abd3ad07e7",
+  "data/scenarios/dsl_probe/sweep_12.0.bt": "3c3ab3c659ca7618ae1aa94b077f472ee26363cf7520c84e583f73a977824d50",
+  "data/scenarios/dsl_probe/sweep_15.0.bt": "263ef83b8fba8a6fdb650cf8af682ca596dc87bc7c301bbcfa740878277bd43d",
+  "data/scenarios/dsl_probe/sweep_5.5.bt": "42da805bb1b387cd22fad942257c5ddbdf6bfc19a41ca98f86c9271accc7135f",
+  "data/scenarios/dsl_probe/sweep_8.0.bt": "3cc16db50abf493744ae4a325b62ad8beb11d62f16fe60f13ac23adea443b6e8"
+ },
+ "traces": {
+  "directory": "data/dsl_probe_traces",
+  "files": 532,
+  "bytes": 39954045,
+  "sha256_verified": 532
+ },
+ "table4": [
+  {
+   "row": "frozen baseline",
+   "key": "frozen_baseline",
+   "paper": {
+    "resolved": "0/20",
+    "completed": "2/20"
+   },
+   "paper_tex_cells": "0/20, 2/20",
+   "recomputed_per_variant": [
+    {
+     "directory": "data/dsl_probe_traces/frozen_baseline",
+     "program": "data/scenarios/baseline_program.bt",
+     "program_sha": "59218be8676bd5e5",
+     "description": "the frozen baseline, unmodified",
+     "resolved": "0/20",
+     "completed": "2/20",
+     "entered": "20/20"
+    }
+   ],
+   "status": "MATCH"
+  },
+  {
+   "row": "raise gap thresholds (e.g. 5.5 -> 9.0)",
+   "key": "raise_gap_thresholds",
+   "paper": {
+    "resolved": "0/20",
+    "completed": "3/20"
+   },
+   "paper_tex_cells": "0/20, 3/20",
+   "recomputed_per_variant": [
+    {
+     "directory": "data/dsl_probe_traces/raise_gap_thresholds",
+     "program": "data/scenarios/dsl_probe/fixA_bigger_gap.bt",
+     "program_sha": "8543c504cff895eb",
+     "description": "OncomingGapExceeds 5.5 -> 9.0, 3.8 -> 6.0 and 6.5 -> 9.0 in the gap-guarded branches",
+     "resolved": "0/20",
+     "completed": "3/20",
+     "entered": "20/20"
+    }
+   ],
+   "status": "MATCH"
+  },
+  {
+   "row": "gap guard on committing branch, up to 15.0",
+   "key": "gap_guard_sweep",
+   "paper": {
+    "resolved": "0/20",
+    "completed": "2/20"
+   },
+   "paper_tex_cells": "0/20, 2/20",
+   "recomputed_per_variant": [
+    {
+     "directory": "data/dsl_probe_traces/gap_guard_sweep/gap_s_5.5",
+     "program": "data/scenarios/dsl_probe/sweep_5.5.bt",
+     "program_sha": "42da805bb1b387cd",
+     "description": "OncomingGapExceeds(gap_s=5.5) added to the committing branch",
+     "resolved": "0/20",
+     "completed": "2/20",
+     "entered": "20/20"
+    },
+    {
+     "directory": "data/dsl_probe_traces/gap_guard_sweep/gap_s_8.0",
+     "program": "data/scenarios/dsl_probe/sweep_8.0.bt",
+     "program_sha": "3cc16db50abf4937",
+     "description": "OncomingGapExceeds(gap_s=8.0) added to the committing branch",
+     "resolved": "0/20",
+     "completed": "2/20",
+     "entered": "20/20"
+    },
+    {
+     "directory": "data/dsl_probe_traces/gap_guard_sweep/gap_s_10.0",
+     "program": "data/scenarios/dsl_probe/sweep_10.0.bt",
+     "program_sha": "74e03b2339bfed56",
+     "description": "OncomingGapExceeds(gap_s=10.0) added to the committing branch",
+     "resolved": "0/20",
+     "completed": "2/20",
+     "entered": "20/20"
+    },
+    {
+     "directory": "data/dsl_probe_traces/gap_guard_sweep/gap_s_12.0",
+     "program": "data/scenarios/dsl_probe/sweep_12.0.bt",
+     "program_sha": "3c3ab3c659ca7618",
+     "description": "OncomingGapExceeds(gap_s=12.0) added to the committing branch",
+     "resolved": "0/20",
+     "completed": "2/20",
+     "entered": "20/20"
+    },
+    {
+     "directory": "data/dsl_probe_traces/gap_guard_sweep/gap_s_15.0",
+     "program": "data/scenarios/dsl_probe/sweep_15.0.bt",
+     "program_sha": "263ef83b8fba8a6f",
+     "description": "OncomingGapExceeds(gap_s=15.0) added to the committing branch",
+     "resolved": "0/20",
+     "completed": "2/20",
+     "entered": "20/20"
+    }
+   ],
+   "status": "MATCH"
+  },
+  {
+   "row": "geometric guard on committing branch",
+   "key": "geometric_guard",
+   "paper": {
+    "resolved": "0/20",
+    "completed": "2/20"
+   },
+   "paper_tex_cells": "0/20, 2/20",
+   "recomputed_per_variant": [
+    {
+     "directory": "data/dsl_probe_traces/geometric_guard/pathisclear_16m",
+     "program": "data/scenarios/dsl_probe/geometric_guard_16m.bt",
+     "program_sha": "83f66f99bf7d45d8",
+     "description": "PathIsClear(dist_m=16.0) added to the committing branch",
+     "resolved": "0/20",
+     "completed": "2/20",
+     "entered": "20/20"
+    },
+    {
+     "directory": "data/dsl_probe_traces/geometric_guard/pathisclear_24m",
+     "program": "data/scenarios/dsl_probe/diag.bt",
+     "program_sha": "6d1bdc43d2ad6365",
+     "description": "PathIsClear(dist_m=24.0) added to the committing branch",
+     "resolved": "0/20",
+     "completed": "2/20",
+     "entered": "20/20"
+    },
+    {
+     "directory": "data/dsl_probe_traces/geometric_guard/pathisclear_32m",
+     "program": "data/scenarios/dsl_probe/geometric_guard_32m.bt",
+     "program_sha": "9ff1eeb672bd1ac5",
+     "description": "PathIsClear(dist_m=32.0) added to the committing branch",
+     "resolved": "0/20",
+     "completed": "2/20",
+     "entered": "20/20"
+    },
+    {
+     "directory": "data/dsl_probe_traces/geometric_guard/green_and_pathisclear_24m",
+     "program": "data/scenarios/dsl_probe/pc.bt",
+     "program_sha": "dd54c6d1929eb5b7",
+     "description": "TrafficLightIsGreen and PathIsClear(dist_m=24.0) added to the committing branch",
+     "resolved": "0/20",
+     "completed": "2/20",
+     "entered": "20/20"
+    }
+   ],
+   "status": "MATCH"
+  },
+  {
+   "row": "geometric guard + true stop",
+   "key": "geometric_guard_true_stop",
+   "paper": {
+    "resolved": "20/20",
+    "completed": "0/20",
+    "entered": "0/20"
+   },
+   "paper_tex_cells": "20/20, 0/20",
+   "recomputed_per_variant": [
+    {
+     "directory": "data/dsl_probe_traces/geometric_guard_true_stop",
+     "program": "data/scenarios/dsl_probe/fixFULL.bt",
+     "program_sha": "d0c0517aebf80609",
+     "description": "PathIsClear(dist_m=24.0) on the committing branch and fallback Decelerate(v_mps=0.0, decel_mps2=3.0)",
+     "resolved": "20/20",
+     "completed": "0/20",
+     "entered": "0/20"
+    }
+   ],
+   "status": "MATCH"
+  },
+  {
+   "row": "the model's clean repair, from F1",
+   "key": "clean_repair",
+   "paper": {
+    "resolved": "20/20",
+    "completed": "20/20"
+   },
+   "paper_tex_cells": "20/20, 20/20",
+   "recomputed_per_variant": [
+    {
+     "directory": "data/dsl_probe_traces/clean_repair",
+     "program": "data/scenarios/dsl_probe/clean_repair.bt",
+     "program_sha": "507bfe02db54fed2",
+     "description": "the patched program of attempt F1__CE005_C1_5b773c94ec4bb251__s3",
+     "resolved": "20/20",
+     "completed": "20/20",
+     "entered": "20/20"
+    }
+   ],
+   "status": "MATCH"
+  }
+ ],
+ "cross_check_dsl_expressiveness_json": [
+  {
+   "variant": "raise OncomingGapExceeds 5.5->9.0 in branches B and D",
+   "field": "fixed",
+   "committed": "0/20",
+   "recomputed_per_variant": {
+    "data/dsl_probe_traces/raise_gap_thresholds": "0/20"
+   },
+   "status": "MATCH"
+  },
+  {
+   "variant": "add TrafficLightIsGreen to branch C",
+   "committed": {
+    "fixed": "0/20"
+   },
+   "status": "NOT RE-SCORED",
+   "why": "not a Table 4 row; its trajectories are not in data/dsl_probe_traces/"
+  },
+  {
+   "variant": "add OncomingGapExceeds guard to branch C, swept 5.5 to 15.0 (validator max)",
+   "field": "fixed",
+   "committed": "0/20",
+   "recomputed_per_variant": {
+    "data/dsl_probe_traces/gap_guard_sweep/gap_s_5.5": "0/20",
+    "data/dsl_probe_traces/gap_guard_sweep/gap_s_8.0": "0/20",
+    "data/dsl_probe_traces/gap_guard_sweep/gap_s_10.0": "0/20",
+    "data/dsl_probe_traces/gap_guard_sweep/gap_s_12.0": "0/20",
+    "data/dsl_probe_traces/gap_guard_sweep/gap_s_15.0": "0/20"
+   },
+   "status": "MATCH"
+  },
+  {
+   "variant": "add PathIsClear to branch C, 16/24/32 m",
+   "field": "fixed",
+   "committed": "0/20",
+   "recomputed_per_variant": {
+    "data/dsl_probe_traces/geometric_guard/pathisclear_16m": "0/20",
+    "data/dsl_probe_traces/geometric_guard/pathisclear_24m": "0/20",
+    "data/dsl_probe_traces/geometric_guard/pathisclear_32m": "0/20",
+    "data/dsl_probe_traces/geometric_guard/green_and_pathisclear_24m": "0/20"
+   },
+   "status": "MATCH"
+  },
+  {
+   "variant": "PathIsClear guard + fallback Decelerate(v_mps=0.0) true stop",
+   "field": "fixed",
+   "committed": "20/20",
+   "recomputed_per_variant": {
+    "data/dsl_probe_traces/geometric_guard_true_stop": "20/20"
+   },
+   "status": "MATCH"
+  },
+  {
+   "variant": "PathIsClear guard + fallback Decelerate(v_mps=0.0) true stop",
+   "field": "completed",
+   "committed": "0/20",
+   "recomputed_per_variant": {
+    "data/dsl_probe_traces/geometric_guard_true_stop": "0/20"
+   },
+   "status": "MATCH"
+  },
+  {
+   "variant": "add PathIsClear to branch C, 16/24/32 m",
+   "status": "NOTE",
+   "why": "the row also includes a fourth variant, TrafficLightIsGreen plus PathIsClear(24 m) (data/scenarios/dsl_probe/pc.bt); it gives the same counts as the other three"
+  },
+  {
+   "field": "finding",
+   "committed": "A fix satisfying all five contracts IS expressible: guard the committing branch geometrically and make the fallback a true stop. It resolves 20/20. It also completes 0/20 and enters the junction 0/20. Across the family of edits tested, no expressible program both satisfied the contracts and completed the manoeuvre.",
+   "recomputed": "episodes of the hand-written programs that both resolved and completed: 0 of 240",
+   "status": "MATCH",
+   "why": "true of the hand-written family the sentence refers to"
+  },
+  {
+   "field": "implication",
+   "committed": "This is a mechanistic explanation for the refusal result rather than a separate observation. Refusal is not the model being lazy; on this vocabulary and this failure mode it is the only expressible fix that satisfies the contracts. 72% of apparent repairs converging on it is what the language admits.",
+   "recomputed": "the clean repair resolves 20/20 and completes 20/20",
+   "status": "SUPERSEDED",
+   "why": "the clean repair is a valid program in the same language that satisfies the contracts and completes the manoeuvre, so refusal is not the only expressible fix. Textual; does not affect the exit code"
+  }
+ ],
+ "cross_check_frozen_baseline_vs_certificates": {
+  "what": "frozen-baseline trajectories here were re-simulated after the certificates were banked; compares their rho, completion and entry with each certificate's recorded run",
+  "resolved_sign_agrees": "20/20",
+  "completed_and_entered_agree": "20/20",
+  "max_abs_rho_delta": 0.004762,
+  "differences_above_1e-6": [
+   {
+    "certificate_id": "CE004_C1_445649d2b99e873a",
+    "certificate_rho": -0.229334,
+    "rescored_rho": -0.234096,
+    "abs_delta": 0.004762,
+    "certificate_argmin": "C1",
+    "rescored_argmin": "C1"
+   }
+  ],
+  "status": "MATCH"
+ },
+ "rows": {
+  "frozen_baseline": {
+   "label": "frozen baseline",
+   "variants": [
+    {
+     "directory": "data/dsl_probe_traces/frozen_baseline",
+     "program": "data/scenarios/baseline_program.bt",
+     "program_sha": "59218be8676bd5e5",
+     "n": 20,
+     "resolved": 0,
+     "completed": 2,
+     "entered": 20,
+     "resolved_and_completed": 0,
+     "description": "the frozen baseline, unmodified",
+     "episodes": [
+      {
+       "file": "frozen_baseline/full_froz_CE001.json",
+       "episode_id": "full_froz_CE001",
+       "certificate_id": "CE001_C2_44b9f97d05fda474",
+       "status": "collision",
+       "rho": -1.510919,
+       "argmin_contract": "C2",
+       "per_contract": {
+        "C1": -0.26913,
+        "C2": -1.510919,
+        "C3": 30.0,
+        "C4": 15.409607,
+        "C5": 1.0
+       },
+       "vacuous": [],
+       "phases_reached": [
+        "P1_approach",
+        "P2_yield_clear",
+        "P3_commit"
+       ],
+       "resolved": false,
+       "completed": false,
+       "entered": true
+      },
+      {
+       "file": "frozen_baseline/full_froz_CE002.json",
+       "episode_id": "full_froz_CE002",
+       "certificate_id": "CE002_C2_86714546fca524ca",
+       "status": "collision",
+       "rho": -1.012703,
+       "argmin_contract": "C2",
+       "per_contract": {
+        "C1": -0.233648,
+        "C2": -1.012703,
+        "C3": 30.0,
+        "C4": 17.127724,
+        "C5": 1.0
+       },
+       "vacuous": [],
+       "phases_reached": [
+        "P1_approach",
+        "P2_yield_clear",
+        "P3_commit"
+       ],
+       "resolved": false,
+       "completed": false,
+       "entered": true
+      },
+      {
+       "file": "frozen_baseline/full_froz_CE003.json",
+       "episode_id": "full_froz_CE003",
+       "certificate_id": "CE003_C1_969f15c8657c8fa6",
+       "status": "collision",
+       "rho": -0.2961,
+       "argmin_contract": "C1",
+       "per_contract": {
+        "C1": -0.2961,
+        "C2": 1.109008,
+        "C3": 0.3,
+        "C4": 16.279983,
+        "C5": 1.0
+       },
+       "vacuous": [],
+       "phases_reached": [
+        "P1_approach",
+        "P2_yield_clear",
+        "P3_commit"
+       ],
+       "resolved": false,
+       "completed": false,
+       "entered": true
+      },
+      {
+       "file": "frozen_baseline/full_froz_CE004.json",
+       "episode_id": "full_froz_CE004",
+       "certificate_id": "CE004_C1_445649d2b99e873a",
+       "status": "ok",
+       "rho": -0.234096,
+       "argmin_contract": "C1",
+       "per_contract": {
+        "C1": -0.234096,
+        "C2": 27.0,
+        "C3": 1.05,
+        "C4": 7.399418,
+        "C5": 1.0
+       },
+       "vacuous": [],
+       "phases_reached": [
+        "P1_approach",
+        "P2_yield_clear",
+        "P3_commit",
+        "P4_settle"
+       ],
+       "resolved": false,
+       "completed": true,
+       "entered": true
+      },
+      {
+       "file": "frozen_baseline/full_froz_CE005.json",
+       "episode_id": "full_froz_CE005",
+       "certificate_id": "CE005_C1_5b773c94ec4bb251",
+       "status": "collision",
+       "rho": -0.323035,
+       "argmin_contract": "C1",
+       "per_contract": {
+        "C1": -0.323035,
+        "C2": 2.536193,
+        "C3": 30.0,
+        "C4": 15.397732,
+        "C5": 1.0
+       },
+       "vacuous": [],
+       "phases_reached": [
+        "P1_approach",
+        "P2_yield_clear",
+        "P3_commit"
+       ],
+       "resolved": false,
+       "completed": false,
+       "entered": true
+      },
+      {
+       "file": "frozen_baseline/full_froz_CE006.json",
+       "episode_id": "full_froz_CE006",
+       "certificate_id": "CE006_C2_1e173dcbe748c286",
+       "status": "collision",
+       "rho": -0.768042,
+       "argmin_contract": "C2",
+       "per_contract": {
+        "C1": -0.452306,
+        "C2": -0.768042,
+        "C3": 30.0,
+        "C4": 15.412339,
+        "C5": 1.0
+       },
+       "vacuous": [],
+       "phases_reached": [
+        "P1_approach",
+        "P2_yield_clear",
+        "P3_commit"
+       ],
+       "resolved": false,
+       "completed": false,
+       "entered": true
+      },
+      {
+       "file": "frozen_baseline/full_froz_CE007.json",
+       "episode_id": "full_froz_CE007",
+       "certificate_id": "CE007_C1_ec6211901ed6b190",
+       "status": "collision",
+       "rho": -0.284514,
+       "argmin_contract": "C1",
+       "per_contract": {
+        "C1": -0.284514,
+        "C2": 1.794642,
+        "C3": 30.0,
+        "C4": 15.400571,
+        "C5": 1.0
+       },
+       "vacuous": [],
+       "phases_reached": [
+        "P1_approach",
+        "P2_yield_clear",
+        "P3_commit"
+       ],
+       "resolved": false,
+       "completed": false,
+       "entered": true
+      },
+      {
+       "file": "frozen_baseline/full_froz_CE008.json",
+       "episode_id": "full_froz_CE008",
+       "certificate_id": "CE008_C2_62ca4fa36005920e",
+       "status": "collision",
+       "rho": -0.911143,
+       "argmin_contract": "C2",
+       "per_contract": {
+        "C1": -0.349147,
+        "C2": -0.911143,
+        "C3": 30.0,
+        "C4": 15.467432,
+        "C5": 1.0
+       },
+       "vacuous": [],
+       "phases_reached": [
+        "P1_approach",
+        "P2_yield_clear",
+        "P3_commit"
+       ],
+       "resolved": false,
+       "completed": false,
+       "entered": true
+      },
+      {
+       "file": "frozen_baseline/full_froz_CE009.json",
+       "episode_id": "full_froz_CE009",
+       "certificate_id": "CE009_C1_bb1a8d764f269c24",
+       "status": "ok",
+       "rho": -0.081624,
+       "argmin_contract": "C1",
+       "per_contract": {
+        "C1": -0.081624,
+        "C2": 5.286936,
+        "C3": 7.3,
+        "C4": 9.568758,
+        "C5": 1.0
+       },
+       "vacuous": [],
+       "phases_reached": [
+        "P1_approach",
+        "P2_yield_clear",
+        "P3_commit",
+        "P4_settle"
+       ],
+       "resolved": false,
+       "completed": true,
+       "entered": true
+      },
+      {
+       "file": "frozen_baseline/full_froz_CE010.json",
+       "episode_id": "full_froz_CE010",
+       "certificate_id": "CE010_C2_56c436b720d319ef",
+       "status": "collision",
+       "rho": -1.614457,
+       "argmin_contract": "C2",
+       "per_contract": {
+        "C1": -0.235905,
+        "C2": -1.614457,
+        "C3": 30.0,
+        "C4": 15.441097,
+        "C5": 1.0
+       },
+       "vacuous": [],
+       "phases_reached": [
+        "P1_approach",
+        "P2_yield_clear",
+        "P3_commit"
+       ],
+       "resolved": false,
+       "completed": false,
+       "entered": true
+      },
+      {
+       "file": "frozen_baseline/full_froz_CE011.json",
+       "episode_id": "full_froz_CE011",
+       "certificate_id": "CE011_C2_1673111e21cbfa9e",
+       "status": "collision",
+       "rho": -1.522697,
+       "argmin_contract": "C2",
+       "per_contract": {
+        "C1": -0.251496,
+        "C2": -1.522697,
+        "C3": 30.0,
+        "C4": 15.395664,
+        "C5": 1.0
+       },
+       "vacuous": [],
+       "phases_reached": [
+        "P1_approach",
+        "P2_yield_clear",
+        "P3_commit"
+       ],
+       "resolved": false,
+       "completed": false,
+       "entered": true
+      },
+      {
+       "file": "frozen_baseline/full_froz_CE012.json",
+       "episode_id": "full_froz_CE012",
+       "certificate_id": "CE012_C1_1ec6b8b64324dbd4",
+       "status": "collision",
+       "rho": -0.319348,
+       "argmin_contract": "C1",
+       "per_contract": {
+        "C1": -0.319348,
+        "C2": 2.258374,
+        "C3": 30.0,
+        "C4": 15.406172,
+        "C5": 1.0
+       },
+       "vacuous": [],
+       "phases_reached": [
+        "P1_approach",
+        "P2_yield_clear",
+        "P3_commit"
+       ],
+       "resolved": false,
+       "completed": false,
+       "entered": true
+      },
+      {
+       "file": "frozen_baseline/full_froz_CE013.json",
+       "episode_id": "full_froz_CE013",
+       "certificate_id": "CE013_C2_ade4dfeb1e7cffee",
+       "status": "collision",
+       "rho": -1.270829,
+       "argmin_contract": "C2",
+       "per_contract": {
+        "C1": -0.217026,
+        "C2": -1.270829,
+        "C3": 30.0,
+        "C4": 16.27177,
+        "C5": 1.0
+       },
+       "vacuous": [],
+       "phases_reached": [
+        "P1_approach",
+        "P2_yield_clear",
+        "P3_commit"
+       ],
+       "resolved": false,
+       "completed": false,
+       "entered": true
+      },
+      {
+       "file": "frozen_baseline/full_froz_CE014.json",
+       "episode_id": "full_froz_CE014",
+       "certificate_id": "CE014_C1_8efa0eee117bb95e",
+       "status": "collision",
+       "rho": -0.292612,
+       "argmin_contract": "C1",
+       "per_contract": {
+        "C1": -0.292612,
+        "C2": 4.801474,
+        "C3": 30.0,
+        "C4": 17.972209,
+        "C5": 1.0
+       },
+       "vacuous": [],
+       "phases_reached": [
+        "P1_approach",
+        "P2_yield_clear",
+        "P3_commit"
+       ],
+       "resolved": false,
+       "completed": false,
+       "entered": true
+      },
+      {
+       "file": "frozen_baseline/full_froz_CE015.json",
+       "episode_id": "full_froz_CE015",
+       "certificate_id": "CE015_C1_40924ca98fb43db1",
+       "status": "collision",
+       "rho": -0.353556,
+       "argmin_contract": "C1",
+       "per_contract": {
+        "C1": -0.353556,
+        "C2": 27.0,
+        "C3": 30.0,
+        "C4": 17.967234,
+        "C5": 1.0
+       },
+       "vacuous": [],
+       "phases_reached": [
+        "P1_approach",
+        "P2_yield_clear",
+        "P3_commit"
+       ],
+       "resolved": false,
+       "completed": false,
+       "entered": true
+      },
+      {
+       "file": "frozen_baseline/full_froz_CE016.json",
+       "episode_id": "full_froz_CE016",
+       "certificate_id": "CE016_C2_9d3ea4ae1a67ec58",
+       "status": "collision",
+       "rho": -1.585567,
+       "argmin_contract": "C2",
+       "per_contract": {
+        "C1": -0.274903,
+        "C2": -1.585567,
+        "C3": 30.0,
+        "C4": 17.97223,
+        "C5": 1.0
+       },
+       "vacuous": [],
+       "phases_reached": [
+        "P1_approach",
+        "P2_yield_clear",
+        "P3_commit"
+       ],
+       "resolved": false,
+       "completed": false,
+       "entered": true
+      },
+      {
+       "file": "frozen_baseline/full_froz_CE017.json",
+       "episode_id": "full_froz_CE017",
+       "certificate_id": "CE017_C3_8280bf9852dc7834",
+       "status": "collision",
+       "rho": -0.7,
+       "argmin_contract": "C3",
+       "per_contract": {
+        "C1": -0.365661,
+        "C2": -0.28614,
+        "C3": -0.7,
+        "C4": 16.299221,
+        "C5": 1.0
+       },
+       "vacuous": [],
+       "phases_reached": [
+        "P1_approach",
+        "P2_yield_clear",
+        "P3_commit"
+       ],
+       "resolved": false,
+       "completed": false,
+       "entered": true
+      },
+      {
+       "file": "frozen_baseline/full_froz_CE018.json",
+       "episode_id": "full_froz_CE018",
+       "certificate_id": "CE018_C2_80d8dfdf2253ea72",
+       "status": "collision",
+       "rho": -1.615144,
+       "argmin_contract": "C2",
+       "per_contract": {
+        "C1": -0.334732,
+        "C2": -1.615144,
+        "C3": 30.0,
+        "C4": 16.259516,
+        "C5": 1.0
+       },
+       "vacuous": [],
+       "phases_reached": [
+        "P1_approach",
+        "P2_yield_clear",
+        "P3_commit"
+       ],
+       "resolved": false,
+       "completed": false,
+       "entered": true
+      },
+      {
+       "file": "frozen_baseline/full_froz_CE019.json",
+       "episode_id": "full_froz_CE019",
+       "certificate_id": "CE019_C1_0b3097eb9e85eede",
+       "status": "collision",
+       "rho": -0.271433,
+       "argmin_contract": "C1",
+       "per_contract": {
+        "C1": -0.271433,
+        "C2": 2.089413,
+        "C3": 30.0,
+        "C4": 19.592481,
+        "C5": 1.0
+       },
+       "vacuous": [],
+       "phases_reached": [
+        "P1_approach",
+        "P2_yield_clear",
+        "P3_commit"
+       ],
+       "resolved": false,
+       "completed": false,
+       "entered": true
+      },
+      {
+       "file": "frozen_baseline/full_froz_CE020.json",
+       "episode_id": "full_froz_CE020",
+       "certificate_id": "CE020_C1_d3346d835dab0fd8",
+       "status": "collision",
+       "rho": -0.276562,
+       "argmin_contract": "C1",
+       "per_contract": {
+        "C1": -0.276562,
+        "C2": 4.904933,
+        "C3": 30.0,
+        "C4": 19.664829,
+        "C5": 1.0
+       },
+       "vacuous": [],
+       "phases_reached": [
+        "P1_approach",
+        "P2_yield_clear",
+        "P3_commit"
+       ],
+       "resolved": false,
+       "completed": false,
+       "entered": true
+      }
+     ]
+    }
+   ]
+  },
+  "raise_gap_thresholds": {
+   "label": "raise gap thresholds (e.g. 5.5 -> 9.0)",
+   "variants": [
+    {
+     "directory": "data/dsl_probe_traces/raise_gap_thresholds",
+     "program": "data/scenarios/dsl_probe/fixA_bigger_gap.bt",
+     "program_sha": "8543c504cff895eb",
+     "n": 20,
+     "resolved": 0,
+     "completed": 3,
+     "entered": 20,
+     "resolved_and_completed": 0,
+     "description": "OncomingGapExceeds 5.5 -> 9.0, 3.8 -> 6.0 and 6.5 -> 9.0 in the gap-guarded branches",
+     "episodes": [
+      {
+       "file": "raise_gap_thresholds/probe_fixA_CE001.json",
+       "episode_id": "probe_fixA _CE001",
+       "certificate_id": "CE001_C2_44b9f97d05fda474",
+       "status": "collision",
+       "rho": -1.510919,
+       "argmin_contract": "C2",
+       "per_contract": {
+        "C1": -0.26913,
+        "C2": -1.510919,
+        "C3": 30.0,
+        "C4": 15.32666,
+        "C5": 1.0
+       },
+       "vacuous": [],
+       "phases_reached": [
+        "P1_approach",
+        "P2_yield_clear",
+        "P3_commit"
+       ],
+       "resolved": false,
+       "completed": false,
+       "entered": true
+      },
+      {
+       "file": "raise_gap_thresholds/probe_fixA_CE002.json",
+       "episode_id": "probe_fixA _CE002",
+       "certificate_id": "CE002_C2_86714546fca524ca",
+       "status": "collision",
+       "rho": -1.012703,
+       "argmin_contract": "C2",
+       "per_contract": {
+        "C1": -0.233648,
+        "C2": -1.012703,
+        "C3": 30.0,
+        "C4": 17.220879,
+        "C5": 1.0
+       },
+       "vacuous": [],
+       "phases_reached": [
+        "P1_approach",
+        "P2_yield_clear",
+        "P3_commit"
+       ],
+       "resolved": false,
+       "completed": false,
+       "entered": true
+      },
+      {
+       "file": "raise_gap_thresholds/probe_fixA_CE003.json",
+       "episode_id": "probe_fixA _CE003",
+       "certificate_id": "CE003_C1_969f15c8657c8fa6",
+       "status": "collision",
+       "rho": -0.2961,
+       "argmin_contract": "C1",
+       "per_contract": {
+        "C1": -0.2961,
+        "C2": 1.109008,
+        "C3": 0.3,
+        "C4": 16.385558,
+        "C5": 1.0
+       },
+       "vacuous": [],
+       "phases_reached": [
+        "P1_approach",
+        "P2_yield_clear",
+        "P3_commit"
+       ],
+       "resolved": false,
+       "completed": false,
+       "entered": true
+      },
+      {
+       "file": "raise_gap_thresholds/probe_fixA_CE004.json",
+       "episode_id": "probe_fixA _CE004",
+       "certificate_id": "CE004_C1_445649d2b99e873a",
+       "status": "ok",
+       "rho": -0.242277,
+       "argmin_contract": "C1",
+       "per_contract": {
+        "C1": -0.242277,
+        "C2": 27.0,
+        "C3": 0.95,
+        "C4": 7.715546,
+        "C5": 1.0
+       },
+       "vacuous": [],
+       "phases_reached": [
+        "P1_approach",
+        "P2_yield_clear",
+        "P3_commit",
+        "P4_settle"
+       ],
+       "resolved": false,
+       "completed": true,
+       "entered": true
+      },
+      {
+       "file": "raise_gap_thresholds/probe_fixA_CE005.json",
+       "episode_id": "probe_fixA _CE005",
+       "certificate_id": "CE005_C1_5b773c94ec4bb251",
+       "status": "collision",
+       "rho": -0.323035,
+       "argmin_contract": "C1",
+       "per_contract": {
+        "C1": -0.323035,
+        "C2": 2.536193,
+        "C3": 30.0,
+        "C4": 15.40924,
+        "C5": 1.0
+       },
+       "vacuous": [],
+       "phases_reached": [
+        "P1_approach",
+        "P2_yield_clear",
+        "P3_commit"
+       ],
+       "resolved": false,
+       "completed": false,
+       "entered": true
+      },
+      {
+       "file": "raise_gap_thresholds/probe_fixA_CE006.json",
+       "episode_id": "probe_fixA _CE006",
+       "certificate_id": "CE006_C2_1e173dcbe748c286",
+       "status": "collision",
+       "rho": -0.768042,
+       "argmin_contract": "C2",
+       "per_contract": {
+        "C1": -0.452306,
+        "C2": -0.768042,
+        "C3": 30.0,
+        "C4": 15.467577,
+        "C5": 1.0
+       },
+       "vacuous": [],
+       "phases_reached": [
+        "P1_approach",
+        "P2_yield_clear",
+        "P3_commit"
+       ],
+       "resolved": false,
+       "completed": false,
+       "entered": true
+      },
+      {
+       "file": "raise_gap_thresholds/probe_fixA_CE007.json",
+       "episode_id": "probe_fixA _CE007",
+       "certificate_id": "CE007_C1_ec6211901ed6b190",
+       "status": "collision",
+       "rho": -0.284514,
+       "argmin_contract": "C1",
+       "per_contract": {
+        "C1": -0.284514,
+        "C2": 1.794642,
+        "C3": 30.0,
+        "C4": 15.466241,
+        "C5": 1.0
+       },
+       "vacuous": [],
+       "phases_reached": [
+        "P1_approach",
+        "P2_yield_clear",
+        "P3_commit"
+       ],
+       "resolved": false,
+       "completed": false,
+       "entered": true
+      },
+      {
+       "file": "raise_gap_thresholds/probe_fixA_CE008.json",
+       "episode_id": "probe_fixA _CE008",
+       "certificate_id": "CE008_C2_62ca4fa36005920e",
+       "status": "collision",
+       "rho": -0.911143,
+       "argmin_contract": "C2",
+       "per_contract": {
+        "C1": -0.349147,
+        "C2": -0.911143,
+        "C3": 30.0,
+        "C4": 15.396785,
+        "C5": 1.0
+       },
+       "vacuous": [],
+       "phases_reached": [
+        "P1_approach",
+        "P2_yield_clear",
+        "P3_commit"
+       ],
+       "resolved": false,
+       "completed": false,
+       "entered": true
+      },
+      {
+       "file": "raise_gap_thresholds/probe_fixA_CE009.json",
+       "episode_id": "probe_fixA _CE009",
+       "certificate_id": "CE009_C1_bb1a8d764f269c24",
+       "status": "ok",
+       "rho": -0.052598,
+       "argmin_contract": "C1",
+       "per_contract": {
+        "C1": -0.052598,
+        "C2": 5.831137,
+        "C3": 7.05,
+        "C4": 11.165195,
+        "C5": 1.0
+       },
+       "vacuous": [],
+       "phases_reached": [
+        "P1_approach",
+        "P2_yield_clear",
+        "P3_commit",
+        "P4_settle"
+       ],
+       "resolved": false,
+       "completed": true,
+       "entered": true
+      },
+      {
+       "file": "raise_gap_thresholds/probe_fixA_CE010.json",
+       "episode_id": "probe_fixA _CE010",
+       "certificate_id": "CE010_C2_56c436b720d319ef",
+       "status": "collision",
+       "rho": -1.614457,
+       "argmin_contract": "C2",
+       "per_contract": {
+        "C1": -0.235905,
+        "C2": -1.614457,
+        "C3": 30.0,
+        "C4": 15.394144,
+        "C5": 1.0
+       },
+       "vacuous": [],
+       "phases_reached": [
+        "P1_approach",
+        "P2_yield_clear",
+        "P3_commit"
+       ],
+       "resolved": false,
+       "completed": false,
+       "entered": true
+      },
+      {
+       "file": "raise_gap_thresholds/probe_fixA_CE011.json",
+       "episode_id": "probe_fixA _CE011",
+       "certificate_id": "CE011_C2_1673111e21cbfa9e",
+       "status": "collision",
+       "rho": -1.522697,
+       "argmin_contract": "C2",
+       "per_contract": {
+        "C1": -0.251496,
+        "C2": -1.522697,
+        "C3": 30.0,
+        "C4": 15.418752,
+        "C5": 1.0
+       },
+       "vacuous": [],
+       "phases_reached": [
+        "P1_approach",
+        "P2_yield_clear",
+        "P3_commit"
+       ],
+       "resolved": false,
+       "completed": false,
+       "entered": true
+      },
+      {
+       "file": "raise_gap_thresholds/probe_fixA_CE012.json",
+       "episode_id": "probe_fixA _CE012",
+       "certificate_id": "CE012_C1_1ec6b8b64324dbd4",
+       "status": "collision",
+       "rho": -0.319348,
+       "argmin_contract": "C1",
+       "per_contract": {
+        "C1": -0.319348,
+        "C2": 2.258374,
+        "C3": 30.0,
+        "C4": 15.423624,
+        "C5": 1.0
+       },
+       "vacuous": [],
+       "phases_reached": [
+        "P1_approach",
+        "P2_yield_clear",
+        "P3_commit"
+       ],
+       "resolved": false,
+       "completed": false,
+       "entered": true
+      },
+      {
+       "file": "raise_gap_thresholds/probe_fixA_CE013.json",
+       "episode_id": "probe_fixA _CE013",
+       "certificate_id": "CE013_C2_ade4dfeb1e7cffee",
+       "status": "collision",
+       "rho": -1.270829,
+       "argmin_contract": "C2",
+       "per_contract": {
+        "C1": -0.217026,
+        "C2": -1.270829,
+        "C3": 30.0,
+        "C4": 16.310411,
+        "C5": 1.0
+       },
+       "vacuous": [],
+       "phases_reached": [
+        "P1_approach",
+        "P2_yield_clear",
+        "P3_commit"
+       ],
+       "resolved": false,
+       "completed": false,
+       "entered": true
+      },
+      {
+       "file": "raise_gap_thresholds/probe_fixA_CE014.json",
+       "episode_id": "probe_fixA _CE014",
+       "certificate_id": "CE014_C1_8efa0eee117bb95e",
+       "status": "collision",
+       "rho": -0.292612,
+       "argmin_contract": "C1",
+       "per_contract": {
+        "C1": -0.292612,
+        "C2": 4.801474,
+        "C3": 30.0,
+        "C4": 17.948631,
+        "C5": 1.0
+       },
+       "vacuous": [],
+       "phases_reached": [
+        "P1_approach",
+        "P2_yield_clear",
+        "P3_commit"
+       ],
+       "resolved": false,
+       "completed": false,
+       "entered": true
+      },
+      {
+       "file": "raise_gap_thresholds/probe_fixA_CE015.json",
+       "episode_id": "probe_fixA _CE015",
+       "certificate_id": "CE015_C1_40924ca98fb43db1",
+       "status": "ok",
+       "rho": -0.362163,
+       "argmin_contract": "C1",
+       "per_contract": {
+        "C1": -0.362163,
+        "C2": 27.0,
+        "C3": 30.0,
+        "C4": 9.729568,
+        "C5": 1.0
+       },
+       "vacuous": [],
+       "phases_reached": [
+        "P1_approach",
+        "P2_yield_clear",
+        "P3_commit",
+        "P4_settle"
+       ],
+       "resolved": false,
+       "completed": true,
+       "entered": true
+      },
+      {
+       "file": "raise_gap_thresholds/probe_fixA_CE016.json",
+       "episode_id": "probe_fixA _CE016",
+       "certificate_id": "CE016_C2_9d3ea4ae1a67ec58",
+       "status": "collision",
+       "rho": -1.585567,
+       "argmin_contract": "C2",
+       "per_contract": {
+        "C1": -0.274903,
+        "C2": -1.585567,
+        "C3": 30.0,
+        "C4": 17.991956,
+        "C5": 1.0
+       },
+       "vacuous": [],
+       "phases_reached": [
+        "P1_approach",
+        "P2_yield_clear",
+        "P3_commit"
+       ],
+       "resolved": false,
+       "completed": false,
+       "entered": true
+      },
+      {
+       "file": "raise_gap_thresholds/probe_fixA_CE017.json",
+       "episode_id": "probe_fixA _CE017",
+       "certificate_id": "CE017_C3_8280bf9852dc7834",
+       "status": "collision",
+       "rho": -0.7,
+       "argmin_contract": "C3",
+       "per_contract": {
+        "C1": -0.365661,
+        "C2": -0.28614,
+        "C3": -0.7,
+        "C4": 16.310699,
+        "C5": 1.0
+       },
+       "vacuous": [],
+       "phases_reached": [
+        "P1_approach",
+        "P2_yield_clear",
+        "P3_commit"
+       ],
+       "resolved": false,
+       "completed": false,
+       "entered": true
+      },
+      {
+       "file": "raise_gap_thresholds/probe_fixA_CE018.json",
+       "episode_id": "probe_fixA _CE018",
+       "certificate_id": "CE018_C2_80d8dfdf2253ea72",
+       "status": "collision",
+       "rho": -1.615144,
+       "argmin_contract": "C2",
+       "per_contract": {
+        "C1": -0.334732,
+        "C2": -1.615144,
+        "C3": 30.0,
+        "C4": 16.308751,
+        "C5": 1.0
+       },
+       "vacuous": [],
+       "phases_reached": [
+        "P1_approach",
+        "P2_yield_clear",
+        "P3_commit"
+       ],
+       "resolved": false,
+       "completed": false,
+       "entered": true
+      },
+      {
+       "file": "raise_gap_thresholds/probe_fixA_CE019.json",
+       "episode_id": "probe_fixA _CE019",
+       "certificate_id": "CE019_C1_0b3097eb9e85eede",
+       "status": "collision",
+       "rho": -0.28699,
+       "argmin_contract": "C1",
+       "per_contract": {
+        "C1": -0.28699,
+        "C2": 2.084766,
+        "C3": 30.0,
+        "C4": 19.601788,
+        "C5": 1.0
+       },
+       "vacuous": [],
+       "phases_reached": [
+        "P1_approach",
+        "P2_yield_clear",
+        "P3_commit"
+       ],
+       "resolved": false,
+       "completed": false,
+       "entered": true
+      },
+      {
+       "file": "raise_gap_thresholds/probe_fixA_CE020.json",
+       "episode_id": "probe_fixA _CE020",
+       "certificate_id": "CE020_C1_d3346d835dab0fd8",
+       "status": "collision",
+       "rho": -0.272614,
+       "argmin_contract": "C1",
+       "per_contract": {
+        "C1": -0.272614,
+        "C2": 5.453976,
+        "C3": 30.0,
+        "C4": 19.562228,
+        "C5": 1.0
+       },
+       "vacuous": [],
+       "phases_reached": [
+        "P1_approach",
+        "P2_yield_clear",
+        "P3_commit"
+       ],
+       "resolved": false,
+       "completed": false,
+       "entered": true
+      }
+     ]
+    }
+   ]
+  },
+  "gap_guard_sweep": {
+   "label": "gap guard on committing branch, up to 15.0",
+   "variants": [
+    {
+     "directory": "data/dsl_probe_traces/gap_guard_sweep/gap_s_5.5",
+     "program": "data/scenarios/dsl_probe/sweep_5.5.bt",
+     "program_sha": "42da805bb1b387cd",
+     "n": 20,
+     "resolved": 0,
+     "completed": 2,
+     "entered": 20,
+     "resolved_and_completed": 0,
+     "description": "OncomingGapExceeds(gap_s=5.5) added to the committing branch",
+     "episodes": [
+      {
+       "file": "gap_guard_sweep/gap_s_5.5/sw5.5_CE001.json",
+       "episode_id": "sw5.5_CE001",
+       "certificate_id": "CE001_C2_44b9f97d05fda474",
+       "status": "collision",
+       "rho": -1.510919,
+       "argmin_contract": "C2",
+       "per_contract": {
+        "C1": -0.26913,
+        "C2": -1.510919,
+        "C3": 30.0,
+        "C4": 15.403985,
+        "C5": 1.0
+       },
+       "vacuous": [],
+       "phases_reached": [
+        "P1_approach",
+        "P2_yield_clear",
+        "P3_commit"
+       ],
+       "resolved": false,
+       "completed": false,
+       "entered": true
+      },
+      {
+       "file": "gap_guard_sweep/gap_s_5.5/sw5.5_CE002.json",
+       "episode_id": "sw5.5_CE002",
+       "certificate_id": "CE002_C2_86714546fca524ca",
+       "status": "collision",
+       "rho": -1.012703,
+       "argmin_contract": "C2",
+       "per_contract": {
+        "C1": -0.233648,
+        "C2": -1.012703,
+        "C3": 30.0,
+        "C4": 17.195324,
+        "C5": 1.0
+       },
+       "vacuous": [],
+       "phases_reached": [
+        "P1_approach",
+        "P2_yield_clear",
+        "P3_commit"
+       ],
+       "resolved": false,
+       "completed": false,
+       "entered": true
+      },
+      {
+       "file": "gap_guard_sweep/gap_s_5.5/sw5.5_CE003.json",
+       "episode_id": "sw5.5_CE003",
+       "certificate_id": "CE003_C1_969f15c8657c8fa6",
+       "status": "collision",
+       "rho": -0.2961,
+       "argmin_contract": "C1",
+       "per_contract": {
+        "C1": -0.2961,
+        "C2": 1.109008,
+        "C3": 0.3,
+        "C4": 16.300363,
+        "C5": 1.0
+       },
+       "vacuous": [],
+       "phases_reached": [
+        "P1_approach",
+        "P2_yield_clear",
+        "P3_commit"
+       ],
+       "resolved": false,
+       "completed": false,
+       "entered": true
+      },
+      {
+       "file": "gap_guard_sweep/gap_s_5.5/sw5.5_CE004.json",
+       "episode_id": "sw5.5_CE004",
+       "certificate_id": "CE004_C1_445649d2b99e873a",
+       "status": "ok",
+       "rho": -0.229334,
+       "argmin_contract": "C1",
+       "per_contract": {
+        "C1": -0.229334,
+        "C2": 27.0,
+        "C3": 1.0,
+        "C4": 8.109091,
+        "C5": 1.0
+       },
+       "vacuous": [],
+       "phases_reached": [
+        "P1_approach",
+        "P2_yield_clear",
+        "P3_commit",
+        "P4_settle"
+       ],
+       "resolved": false,
+       "completed": true,
+       "entered": true
+      },
+      {
+       "file": "gap_guard_sweep/gap_s_5.5/sw5.5_CE005.json",
+       "episode_id": "sw5.5_CE005",
+       "certificate_id": "CE005_C1_5b773c94ec4bb251",
+       "status": "collision",
+       "rho": -0.323035,
+       "argmin_contract": "C1",
+       "per_contract": {
+        "C1": -0.323035,
+        "C2": 2.536193,
+        "C3": 30.0,
+        "C4": 15.400922,
+        "C5": 1.0
+       },
+       "vacuous": [],
+       "phases_reached": [
+        "P1_approach",
+        "P2_yield_clear",
+        "P3_commit"
+       ],
+       "resolved": false,
+       "completed": false,
+       "entered": true
+      },
+      {
+       "file": "gap_guard_sweep/gap_s_5.5/sw5.5_CE006.json",
+       "episode_id": "sw5.5_CE006",
+       "certificate_id": "CE006_C2_1e173dcbe748c286",
+       "status": "collision",
+       "rho": -0.768042,
+       "argmin_contract": "C2",
+       "per_contract": {
+        "C1": -0.452306,
+        "C2": -0.768042,
+        "C3": 30.0,
+        "C4": 15.40521,
+        "C5": 1.0
+       },
+       "vacuous": [],
+       "phases_reached": [
+        "P1_approach",
+        "P2_yield_clear",
+        "P3_commit"
+       ],
+       "resolved": false,
+       "completed": false,
+       "entered": true
+      },
+      {
+       "file": "gap_guard_sweep/gap_s_5.5/sw5.5_CE007.json",
+       "episode_id": "sw5.5_CE007",
+       "certificate_id": "CE007_C1_ec6211901ed6b190",
+       "status": "collision",
+       "rho": -0.284514,
+       "argmin_contract": "C1",
+       "per_contract": {
+        "C1": -0.284514,
+        "C2": 1.794642,
+        "C3": 30.0,
+        "C4": 15.406096,
+        "C5": 1.0
+       },
+       "vacuous": [],
+       "phases_reached": [
+        "P1_approach",
+        "P2_yield_clear",
+        "P3_commit"
+       ],
+       "resolved": false,
+       "completed": false,
+       "entered": true
+      },
+      {
+       "file": "gap_guard_sweep/gap_s_5.5/sw5.5_CE008.json",
+       "episode_id": "sw5.5_CE008",
+       "certificate_id": "CE008_C2_62ca4fa36005920e",
+       "status": "collision",
+       "rho": -0.911143,
+       "argmin_contract": "C2",
+       "per_contract": {
+        "C1": -0.349147,
+        "C2": -0.911143,
+        "C3": 30.0,
+        "C4": 15.415368,
+        "C5": 1.0
+       },
+       "vacuous": [],
+       "phases_reached": [
+        "P1_approach",
+        "P2_yield_clear",
+        "P3_commit"
+       ],
+       "resolved": false,
+       "completed": false,
+       "entered": true
+      },
+      {
+       "file": "gap_guard_sweep/gap_s_5.5/sw5.5_CE009.json",
+       "episode_id": "sw5.5_CE009",
+       "certificate_id": "CE009_C1_bb1a8d764f269c24",
+       "status": "ok",
+       "rho": -0.081624,
+       "argmin_contract": "C1",
+       "per_contract": {
+        "C1": -0.081624,
+        "C2": 5.286936,
+        "C3": 7.3,
+        "C4": 10.13197,
+        "C5": 1.0
+       },
+       "vacuous": [],
+       "phases_reached": [
+        "P1_approach",
+        "P2_yield_clear",
+        "P3_commit",
+        "P4_settle"
+       ],
+       "resolved": false,
+       "completed": true,
+       "entered": true
+      },
+      {
+       "file": "gap_guard_sweep/gap_s_5.5/sw5.5_CE010.json",
+       "episode_id": "sw5.5_CE010",
+       "certificate_id": "CE010_C2_56c436b720d319ef",
+       "status": "collision",
+       "rho": -1.614457,
+       "argmin_contract": "C2",
+       "per_contract": {
+        "C1": -0.235905,
+        "C2": -1.614457,
+        "C3": 30.0,
+        "C4": 15.335536,
+        "C5": 1.0
+       },
+       "vacuous": [],
+       "phases_reached": [
+        "P1_approach",
+        "P2_yield_clear",
+        "P3_commit"
+       ],
+       "resolved": false,
+       "completed": false,
+       "entered": true
+      },
+      {
+       "file": "gap_guard_sweep/gap_s_5.5/sw5.5_CE011.json",
+       "episode_id": "sw5.5_CE011",
+       "certificate_id": "CE011_C2_1673111e21cbfa9e",
+       "status": "collision",
+       "rho": -1.522697,
+       "argmin_contract": "C2",
+       "per_contract": {
+        "C1": -0.251496,
+        "C2": -1.522697,
+        "C3": 30.0,
+        "C4": 15.400667,
+        "C5": 1.0
+       },
+       "vacuous": [],
+       "phases_reached": [
+        "P1_approach",
+        "P2_yield_clear",
+        "P3_commit"
+       ],
+       "resolved": false,
+       "completed": false,
+       "entered": true
+      },
+      {
+       "file": "gap_guard_sweep/gap_s_5.5/sw5.5_CE012.json",
+       "episode_id": "sw5.5_CE012",
+       "certificate_id": "CE012_C1_1ec6b8b64324dbd4",
+       "status": "collision",
+       "rho": -0.319348,
+       "argmin_contract": "C1",
+       "per_contract": {
+        "C1": -0.319348,
+        "C2": 2.258374,
+        "C3": 30.0,
+        "C4": 15.40506,
+        "C5": 1.0
+       },
+       "vacuous": [],
+       "phases_reached": [
+        "P1_approach",
+        "P2_yield_clear",
+        "P3_commit"
+       ],
+       "resolved": false,
+       "completed": false,
+       "entered": true
+      },
+      {
+       "file": "gap_guard_sweep/gap_s_5.5/sw5.5_CE013.json",
+       "episode_id": "sw5.5_CE013",
+       "certificate_id": "CE013_C2_ade4dfeb1e7cffee",
+       "status": "collision",
+       "rho": -1.270829,
+       "argmin_contract": "C2",
+       "per_contract": {
+        "C1": -0.217026,
+        "C2": -1.270829,
+        "C3": 30.0,
+        "C4": 16.310731,
+        "C5": 1.0
+       },
+       "vacuous": [],
+       "phases_reached": [
+        "P1_approach",
+        "P2_yield_clear",
+        "P3_commit"
+       ],
+       "resolved": false,
+       "completed": false,
+       "entered": true
+      },
+      {
+       "file": "gap_guard_sweep/gap_s_5.5/sw5.5_CE014.json",
+       "episode_id": "sw5.5_CE014",
+       "certificate_id": "CE014_C1_8efa0eee117bb95e",
+       "status": "collision",
+       "rho": -0.292612,
+       "argmin_contract": "C1",
+       "per_contract": {
+        "C1": -0.292612,
+        "C2": 4.801474,
+        "C3": 30.0,
+        "C4": 17.945062,
+        "C5": 1.0
+       },
+       "vacuous": [],
+       "phases_reached": [
+        "P1_approach",
+        "P2_yield_clear",
+        "P3_commit"
+       ],
+       "resolved": false,
+       "completed": false,
+       "entered": true
+      },
+      {
+       "file": "gap_guard_sweep/gap_s_5.5/sw5.5_CE015.json",
+       "episode_id": "sw5.5_CE015",
+       "certificate_id": "CE015_C1_40924ca98fb43db1",
+       "status": "collision",
+       "rho": -0.353556,
+       "argmin_contract": "C1",
+       "per_contract": {
+        "C1": -0.353556,
+        "C2": 27.0,
+        "C3": 30.0,
+        "C4": 17.972374,
+        "C5": 1.0
+       },
+       "vacuous": [],
+       "phases_reached": [
+        "P1_approach",
+        "P2_yield_clear",
+        "P3_commit"
+       ],
+       "resolved": false,
+       "completed": false,
+       "entered": true
+      },
+      {
+       "file": "gap_guard_sweep/gap_s_5.5/sw5.5_CE016.json",
+       "episode_id": "sw5.5_CE016",
+       "certificate_id": "CE016_C2_9d3ea4ae1a67ec58",
+       "status": "collision",
+       "rho": -1.585567,
+       "argmin_contract": "C2",
+       "per_contract": {
+        "C1": -0.274903,
+        "C2": -1.585567,
+        "C3": 30.0,
+        "C4": 17.958815,
+        "C5": 1.0
+       },
+       "vacuous": [],
+       "phases_reached": [
+        "P1_approach",
+        "P2_yield_clear",
+        "P3_commit"
+       ],
+       "resolved": false,
+       "completed": false,
+       "entered": true
+      },
+      {
+       "file": "gap_guard_sweep/gap_s_5.5/sw5.5_CE017.json",
+       "episode_id": "sw5.5_CE017",
+       "certificate_id": "CE017_C3_8280bf9852dc7834",
+       "status": "collision",
+       "rho": -0.65,
+       "argmin_contract": "C3",
+       "per_contract": {
+        "C1": -0.365661,
+        "C2": -0.28614,
+        "C3": -0.65,
+        "C4": 16.298566,
+        "C5": 1.0
+       },
+       "vacuous": [],
+       "phases_reached": [
+        "P1_approach",
+        "P2_yield_clear",
+        "P3_commit"
+       ],
+       "resolved": false,
+       "completed": false,
+       "entered": true
+      },
+      {
+       "file": "gap_guard_sweep/gap_s_5.5/sw5.5_CE018.json",
+       "episode_id": "sw5.5_CE018",
+       "certificate_id": "CE018_C2_80d8dfdf2253ea72",
+       "status": "collision",
+       "rho": -1.615144,
+       "argmin_contract": "C2",
+       "per_contract": {
+        "C1": -0.334732,
+        "C2": -1.615144,
+        "C3": 30.0,
+        "C4": 16.339624,
+        "C5": 1.0
+       },
+       "vacuous": [],
+       "phases_reached": [
+        "P1_approach",
+        "P2_yield_clear",
+        "P3_commit"
+       ],
+       "resolved": false,
+       "completed": false,
+       "entered": true
+      },
+      {
+       "file": "gap_guard_sweep/gap_s_5.5/sw5.5_CE019.json",
+       "episode_id": "sw5.5_CE019",
+       "certificate_id": "CE019_C1_0b3097eb9e85eede",
+       "status": "collision",
+       "rho": -0.271433,
+       "argmin_contract": "C1",
+       "per_contract": {
+        "C1": -0.271433,
+        "C2": 2.089413,
+        "C3": 30.0,
+        "C4": 19.611204,
+        "C5": 1.0
+       },
+       "vacuous": [],
+       "phases_reached": [
+        "P1_approach",
+        "P2_yield_clear",
+        "P3_commit"
+       ],
+       "resolved": false,
+       "completed": false,
+       "entered": true
+      },
+      {
+       "file": "gap_guard_sweep/gap_s_5.5/sw5.5_CE020.json",
+       "episode_id": "sw5.5_CE020",
+       "certificate_id": "CE020_C1_d3346d835dab0fd8",
+       "status": "collision",
+       "rho": -0.276562,
+       "argmin_contract": "C1",
+       "per_contract": {
+        "C1": -0.276562,
+        "C2": 4.904933,
+        "C3": 30.0,
+        "C4": 19.609431,
+        "C5": 1.0
+       },
+       "vacuous": [],
+       "phases_reached": [
+        "P1_approach",
+        "P2_yield_clear",
+        "P3_commit"
+       ],
+       "resolved": false,
+       "completed": false,
+       "entered": true
+      }
+     ]
+    },
+    {
+     "directory": "data/dsl_probe_traces/gap_guard_sweep/gap_s_8.0",
+     "program": "data/scenarios/dsl_probe/sweep_8.0.bt",
+     "program_sha": "3cc16db50abf4937",
+     "n": 20,
+     "resolved": 0,
+     "completed": 2,
+     "entered": 20,
+     "resolved_and_completed": 0,
+     "description": "OncomingGapExceeds(gap_s=8.0) added to the committing branch",
+     "episodes": [
+      {
+       "file": "gap_guard_sweep/gap_s_8.0/sw8.0_CE001.json",
+       "episode_id": "sw8.0_CE001",
+       "certificate_id": "CE001_C2_44b9f97d05fda474",
+       "status": "collision",
+       "rho": -1.46207,
+       "argmin_contract": "C2",
+       "per_contract": {
+        "C1": -0.287458,
+        "C2": -1.46207,
+        "C3": 30.0,
+        "C4": 15.415037,
+        "C5": 1.0
+       },
+       "vacuous": [],
+       "phases_reached": [
+        "P1_approach",
+        "P2_yield_clear",
+        "P3_commit"
+       ],
+       "resolved": false,
+       "completed": false,
+       "entered": true
+      },
+      {
+       "file": "gap_guard_sweep/gap_s_8.0/sw8.0_CE002.json",
+       "episode_id": "sw8.0_CE002",
+       "certificate_id": "CE002_C2_86714546fca524ca",
+       "status": "collision",
+       "rho": -1.012703,
+       "argmin_contract": "C2",
+       "per_contract": {
+        "C1": -0.233648,
+        "C2": -1.012703,
+        "C3": 30.0,
+        "C4": 17.065482,
+        "C5": 1.0
+       },
+       "vacuous": [],
+       "phases_reached": [
+        "P1_approach",
+        "P2_yield_clear",
+        "P3_commit"
+       ],
+       "resolved": false,
+       "completed": false,
+       "entered": true
+      },
+      {
+       "file": "gap_guard_sweep/gap_s_8.0/sw8.0_CE003.json",
+       "episode_id": "sw8.0_CE003",
+       "certificate_id": "CE003_C1_969f15c8657c8fa6",
+       "status": "collision",
+       "rho": -0.2961,
+       "argmin_contract": "C1",
+       "per_contract": {
+        "C1": -0.2961,
+        "C2": 1.109008,
+        "C3": 0.3,
+        "C4": 16.227288,
+        "C5": 1.0
+       },
+       "vacuous": [],
+       "phases_reached": [
+        "P1_approach",
+        "P2_yield_clear",
+        "P3_commit"
+       ],
+       "resolved": false,
+       "completed": false,
+       "entered": true
+      },
+      {
+       "file": "gap_guard_sweep/gap_s_8.0/sw8.0_CE004.json",
+       "episode_id": "sw8.0_CE004",
+       "certificate_id": "CE004_C1_445649d2b99e873a",
+       "status": "ok",
+       "rho": -0.229334,
+       "argmin_contract": "C1",
+       "per_contract": {
+        "C1": -0.229334,
+        "C2": 27.0,
+        "C3": 1.05,
+        "C4": 7.970891,
+        "C5": 1.0
+       },
+       "vacuous": [],
+       "phases_reached": [
+        "P1_approach",
+        "P2_yield_clear",
+        "P3_commit",
+        "P4_settle"
+       ],
+       "resolved": false,
+       "completed": true,
+       "entered": true
+      },
+      {
+       "file": "gap_guard_sweep/gap_s_8.0/sw8.0_CE005.json",
+       "episode_id": "sw8.0_CE005",
+       "certificate_id": "CE005_C1_5b773c94ec4bb251",
+       "status": "collision",
+       "rho": -0.323035,
+       "argmin_contract": "C1",
+       "per_contract": {
+        "C1": -0.323035,
+        "C2": 2.536193,
+        "C3": 30.0,
+        "C4": 15.400743,
+        "C5": 1.0
+       },
+       "vacuous": [],
+       "phases_reached": [
+        "P1_approach",
+        "P2_yield_clear",
+        "P3_commit"
+       ],
+       "resolved": false,
+       "completed": false,
+       "entered": true
+      },
+      {
+       "file": "gap_guard_sweep/gap_s_8.0/sw8.0_CE006.json",
+       "episode_id": "sw8.0_CE006",
+       "certificate_id": "CE006_C2_1e173dcbe748c286",
+       "status": "collision",
+       "rho": -0.768042,
+       "argmin_contract": "C2",
+       "per_contract": {
+        "C1": -0.452306,
+        "C2": -0.768042,
+        "C3": 30.0,
+        "C4": 15.415385,
+        "C5": 1.0
+       },
+       "vacuous": [],
+       "phases_reached": [
+        "P1_approach",
+        "P2_yield_clear",
+        "P3_commit"
+       ],
+       "resolved": false,
+       "completed": false,
+       "entered": true
+      },
+      {
+       "file": "gap_guard_sweep/gap_s_8.0/sw8.0_CE007.json",
+       "episode_id": "sw8.0_CE007",
+       "certificate_id": "CE007_C1_ec6211901ed6b190",
+       "status": "collision",
+       "rho": -0.284514,
+       "argmin_contract": "C1",
+       "per_contract": {
+        "C1": -0.284514,
+        "C2": 1.794642,
+        "C3": 30.0,
+        "C4": 15.438943,
+        "C5": 1.0
+       },
+       "vacuous": [],
+       "phases_reached": [
+        "P1_approach",
+        "P2_yield_clear",
+        "P3_commit"
+       ],
+       "resolved": false,
+       "completed": false,
+       "entered": true
+      },
+      {
+       "file": "gap_guard_sweep/gap_s_8.0/sw8.0_CE008.json",
+       "episode_id": "sw8.0_CE008",
+       "certificate_id": "CE008_C2_62ca4fa36005920e",
+       "status": "collision",
+       "rho": -0.845822,
+       "argmin_contract": "C2",
+       "per_contract": {
+        "C1": -0.416008,
+        "C2": -0.845822,
+        "C3": 30.0,
+        "C4": 15.406096,
+        "C5": 1.0
+       },
+       "vacuous": [],
+       "phases_reached": [
+        "P1_approach",
+        "P2_yield_clear",
+        "P3_commit"
+       ],
+       "resolved": false,
+       "completed": false,
+       "entered": true
+      },
+      {
+       "file": "gap_guard_sweep/gap_s_8.0/sw8.0_CE009.json",
+       "episode_id": "sw8.0_CE009",
+       "certificate_id": "CE009_C1_bb1a8d764f269c24",
+       "status": "ok",
+       "rho": -0.081624,
+       "argmin_contract": "C1",
+       "per_contract": {
+        "C1": -0.081624,
+        "C2": 5.285898,
+        "C3": 7.3,
+        "C4": 10.089175,
+        "C5": 1.0
+       },
+       "vacuous": [],
+       "phases_reached": [
+        "P1_approach",
+        "P2_yield_clear",
+        "P3_commit",
+        "P4_settle"
+       ],
+       "resolved": false,
+       "completed": true,
+       "entered": true
+      },
+      {
+       "file": "gap_guard_sweep/gap_s_8.0/sw8.0_CE010.json",
+       "episode_id": "sw8.0_CE010",
+       "certificate_id": "CE010_C2_56c436b720d319ef",
+       "status": "collision",
+       "rho": -1.614457,
+       "argmin_contract": "C2",
+       "per_contract": {
+        "C1": -0.235905,
+        "C2": -1.614457,
+        "C3": 30.0,
+        "C4": 15.415381,
+        "C5": 1.0
+       },
+       "vacuous": [],
+       "phases_reached": [
+        "P1_approach",
+        "P2_yield_clear",
+        "P3_commit"
+       ],
+       "resolved": false,
+       "completed": false,
+       "entered": true
+      },
+      {
+       "file": "gap_guard_sweep/gap_s_8.0/sw8.0_CE011.json",
+       "episode_id": "sw8.0_CE011",
+       "certificate_id": "CE011_C2_1673111e21cbfa9e",
+       "status": "collision",
+       "rho": -1.522697,
+       "argmin_contract": "C2",
+       "per_contract": {
+        "C1": -0.251496,
+        "C2": -1.522697,
+        "C3": 30.0,
+        "C4": 15.406096,
+        "C5": 1.0
+       },
+       "vacuous": [],
+       "phases_reached": [
+        "P1_approach",
+        "P2_yield_clear",
+        "P3_commit"
+       ],
+       "resolved": false,
+       "completed": false,
+       "entered": true
+      },
+      {
+       "file": "gap_guard_sweep/gap_s_8.0/sw8.0_CE012.json",
+       "episode_id": "sw8.0_CE012",
+       "certificate_id": "CE012_C1_1ec6b8b64324dbd4",
+       "status": "collision",
+       "rho": -0.319348,
+       "argmin_contract": "C1",
+       "per_contract": {
+        "C1": -0.319348,
+        "C2": 2.258374,
+        "C3": 30.0,
+        "C4": 15.406409,
+        "C5": 1.0
+       },
+       "vacuous": [],
+       "phases_reached": [
+        "P1_approach",
+        "P2_yield_clear",
+        "P3_commit"
+       ],
+       "resolved": false,
+       "completed": false,
+       "entered": true
+      },
+      {
+       "file": "gap_guard_sweep/gap_s_8.0/sw8.0_CE013.json",
+       "episode_id": "sw8.0_CE013",
+       "certificate_id": "CE013_C2_ade4dfeb1e7cffee",
+       "status": "collision",
+       "rho": -1.270829,
+       "argmin_contract": "C2",
+       "per_contract": {
+        "C1": -0.217026,
+        "C2": -1.270829,
+        "C3": 30.0,
+        "C4": 16.373316,
+        "C5": 1.0
+       },
+       "vacuous": [],
+       "phases_reached": [
+        "P1_approach",
+        "P2_yield_clear",
+        "P3_commit"
+       ],
+       "resolved": false,
+       "completed": false,
+       "entered": true
+      },
+      {
+       "file": "gap_guard_sweep/gap_s_8.0/sw8.0_CE014.json",
+       "episode_id": "sw8.0_CE014",
+       "certificate_id": "CE014_C1_8efa0eee117bb95e",
+       "status": "collision",
+       "rho": -0.292612,
+       "argmin_contract": "C1",
+       "per_contract": {
+        "C1": -0.292612,
+        "C2": 4.801474,
+        "C3": 30.0,
+        "C4": 17.938186,
+        "C5": 1.0
+       },
+       "vacuous": [],
+       "phases_reached": [
+        "P1_approach",
+        "P2_yield_clear",
+        "P3_commit"
+       ],
+       "resolved": false,
+       "completed": false,
+       "entered": true
+      },
+      {
+       "file": "gap_guard_sweep/gap_s_8.0/sw8.0_CE015.json",
+       "episode_id": "sw8.0_CE015",
+       "certificate_id": "CE015_C1_40924ca98fb43db1",
+       "status": "collision",
+       "rho": -0.353556,
+       "argmin_contract": "C1",
+       "per_contract": {
+        "C1": -0.353556,
+        "C2": 27.0,
+        "C3": 30.0,
+        "C4": 17.933977,
+        "C5": 1.0
+       },
+       "vacuous": [],
+       "phases_reached": [
+        "P1_approach",
+        "P2_yield_clear",
+        "P3_commit"
+       ],
+       "resolved": false,
+       "completed": false,
+       "entered": true
+      },
+      {
+       "file": "gap_guard_sweep/gap_s_8.0/sw8.0_CE016.json",
+       "episode_id": "sw8.0_CE016",
+       "certificate_id": "CE016_C2_9d3ea4ae1a67ec58",
+       "status": "collision",
+       "rho": -1.585567,
+       "argmin_contract": "C2",
+       "per_contract": {
+        "C1": -0.274903,
+        "C2": -1.585567,
+        "C3": 30.0,
+        "C4": 17.96621,
+        "C5": 1.0
+       },
+       "vacuous": [],
+       "phases_reached": [
+        "P1_approach",
+        "P2_yield_clear",
+        "P3_commit"
+       ],
+       "resolved": false,
+       "completed": false,
+       "entered": true
+      },
+      {
+       "file": "gap_guard_sweep/gap_s_8.0/sw8.0_CE017.json",
+       "episode_id": "sw8.0_CE017",
+       "certificate_id": "CE017_C3_8280bf9852dc7834",
+       "status": "collision",
+       "rho": -0.7,
+       "argmin_contract": "C3",
+       "per_contract": {
+        "C1": -0.365661,
+        "C2": -0.28614,
+        "C3": -0.7,
+        "C4": 16.311528,
+        "C5": 1.0
+       },
+       "vacuous": [],
+       "phases_reached": [
+        "P1_approach",
+        "P2_yield_clear",
+        "P3_commit"
+       ],
+       "resolved": false,
+       "completed": false,
+       "entered": true
+      },
+      {
+       "file": "gap_guard_sweep/gap_s_8.0/sw8.0_CE018.json",
+       "episode_id": "sw8.0_CE018",
+       "certificate_id": "CE018_C2_80d8dfdf2253ea72",
+       "status": "collision",
+       "rho": -1.615144,
+       "argmin_contract": "C2",
+       "per_contract": {
+        "C1": -0.334732,
+        "C2": -1.615144,
+        "C3": 30.0,
+        "C4": 16.290041,
+        "C5": 1.0
+       },
+       "vacuous": [],
+       "phases_reached": [
+        "P1_approach",
+        "P2_yield_clear",
+        "P3_commit"
+       ],
+       "resolved": false,
+       "completed": false,
+       "entered": true
+      },
+      {
+       "file": "gap_guard_sweep/gap_s_8.0/sw8.0_CE019.json",
+       "episode_id": "sw8.0_CE019",
+       "certificate_id": "CE019_C1_0b3097eb9e85eede",
+       "status": "collision",
+       "rho": -0.271433,
+       "argmin_contract": "C1",
+       "per_contract": {
+        "C1": -0.271433,
+        "C2": 2.089413,
+        "C3": 30.0,
+        "C4": 19.652827,
+        "C5": 1.0
+       },
+       "vacuous": [],
+       "phases_reached": [
+        "P1_approach",
+        "P2_yield_clear",
+        "P3_commit"
+       ],
+       "resolved": false,
+       "completed": false,
+       "entered": true
+      },
+      {
+       "file": "gap_guard_sweep/gap_s_8.0/sw8.0_CE020.json",
+       "episode_id": "sw8.0_CE020",
+       "certificate_id": "CE020_C1_d3346d835dab0fd8",
+       "status": "collision",
+       "rho": -0.276562,
+       "argmin_contract": "C1",
+       "per_contract": {
+        "C1": -0.276562,
+        "C2": 4.904933,
+        "C3": 30.0,
+        "C4": 19.664829,
+        "C5": 1.0
+       },
+       "vacuous": [],
+       "phases_reached": [
+        "P1_approach",
+        "P2_yield_clear",
+        "P3_commit"
+       ],
+       "resolved": false,
+       "completed": false,
+       "entered": true
+      }
+     ]
+    },
+    {
+     "directory": "data/dsl_probe_traces/gap_guard_sweep/gap_s_10.0",
+     "program": "data/scenarios/dsl_probe/sweep_10.0.bt",
+     "program_sha": "74e03b2339bfed56",
+     "n": 20,
+     "resolved": 0,
+     "completed": 2,
+     "entered": 20,
+     "resolved_and_completed": 0,
+     "description": "OncomingGapExceeds(gap_s=10.0) added to the committing branch",
+     "episodes": [
+      {
+       "file": "gap_guard_sweep/gap_s_10.0/sw10.0_CE001.json",
+       "episode_id": "sw10.0_CE001",
+       "certificate_id": "CE001_C2_44b9f97d05fda474",
+       "status": "collision",
+       "rho": -1.499538,
+       "argmin_contract": "C2",
+       "per_contract": {
+        "C1": -0.258405,
+        "C2": -1.499538,
+        "C3": 30.0,
+        "C4": 15.421495,
+        "C5": 1.0
+       },
+       "vacuous": [],
+       "phases_reached": [
+        "P1_approach",
+        "P2_yield_clear",
+        "P3_commit"
+       ],
+       "resolved": false,
+       "completed": false,
+       "entered": true
+      },
+      {
+       "file": "gap_guard_sweep/gap_s_10.0/sw10.0_CE002.json",
+       "episode_id": "sw10.0_CE002",
+       "certificate_id": "CE002_C2_86714546fca524ca",
+       "status": "collision",
+       "rho": -1.012703,
+       "argmin_contract": "C2",
+       "per_contract": {
+        "C1": -0.233648,
+        "C2": -1.012703,
+        "C3": 30.0,
+        "C4": 17.239327,
+        "C5": 1.0
+       },
+       "vacuous": [],
+       "phases_reached": [
+        "P1_approach",
+        "P2_yield_clear",
+        "P3_commit"
+       ],
+       "resolved": false,
+       "completed": false,
+       "entered": true
+      },
+      {
+       "file": "gap_guard_sweep/gap_s_10.0/sw10.0_CE003.json",
+       "episode_id": "sw10.0_CE003",
+       "certificate_id": "CE003_C1_969f15c8657c8fa6",
+       "status": "collision",
+       "rho": -0.2961,
+       "argmin_contract": "C1",
+       "per_contract": {
+        "C1": -0.2961,
+        "C2": 1.109008,
+        "C3": 0.3,
+        "C4": 16.290142,
+        "C5": 1.0
+       },
+       "vacuous": [],
+       "phases_reached": [
+        "P1_approach",
+        "P2_yield_clear",
+        "P3_commit"
+       ],
+       "resolved": false,
+       "completed": false,
+       "entered": true
+      },
+      {
+       "file": "gap_guard_sweep/gap_s_10.0/sw10.0_CE004.json",
+       "episode_id": "sw10.0_CE004",
+       "certificate_id": "CE004_C1_445649d2b99e873a",
+       "status": "ok",
+       "rho": -0.229334,
+       "argmin_contract": "C1",
+       "per_contract": {
+        "C1": -0.229334,
+        "C2": 27.0,
+        "C3": 1.0,
+        "C4": 8.107638,
+        "C5": 1.0
+       },
+       "vacuous": [],
+       "phases_reached": [
+        "P1_approach",
+        "P2_yield_clear",
+        "P3_commit",
+        "P4_settle"
+       ],
+       "resolved": false,
+       "completed": true,
+       "entered": true
+      },
+      {
+       "file": "gap_guard_sweep/gap_s_10.0/sw10.0_CE005.json",
+       "episode_id": "sw10.0_CE005",
+       "certificate_id": "CE005_C1_5b773c94ec4bb251",
+       "status": "collision",
+       "rho": -0.323035,
+       "argmin_contract": "C1",
+       "per_contract": {
+        "C1": -0.323035,
+        "C2": 2.536193,
+        "C3": 30.0,
+        "C4": 15.406037,
+        "C5": 1.0
+       },
+       "vacuous": [],
+       "phases_reached": [
+        "P1_approach",
+        "P2_yield_clear",
+        "P3_commit"
+       ],
+       "resolved": false,
+       "completed": false,
+       "entered": true
+      },
+      {
+       "file": "gap_guard_sweep/gap_s_10.0/sw10.0_CE006.json",
+       "episode_id": "sw10.0_CE006",
+       "certificate_id": "CE006_C2_1e173dcbe748c286",
+       "status": "collision",
+       "rho": -0.768042,
+       "argmin_contract": "C2",
+       "per_contract": {
+        "C1": -0.452306,
+        "C2": -0.768042,
+        "C3": 30.0,
+        "C4": 15.315825,
+        "C5": 1.0
+       },
+       "vacuous": [],
+       "phases_reached": [
+        "P1_approach",
+        "P2_yield_clear",
+        "P3_commit"
+       ],
+       "resolved": false,
+       "completed": false,
+       "entered": true
+      },
+      {
+       "file": "gap_guard_sweep/gap_s_10.0/sw10.0_CE007.json",
+       "episode_id": "sw10.0_CE007",
+       "certificate_id": "CE007_C1_ec6211901ed6b190",
+       "status": "collision",
+       "rho": -0.284514,
+       "argmin_contract": "C1",
+       "per_contract": {
+        "C1": -0.284514,
+        "C2": 1.794642,
+        "C3": 30.0,
+        "C4": 15.395658,
+        "C5": 1.0
+       },
+       "vacuous": [],
+       "phases_reached": [
+        "P1_approach",
+        "P2_yield_clear",
+        "P3_commit"
+       ],
+       "resolved": false,
+       "completed": false,
+       "entered": true
+      },
+      {
+       "file": "gap_guard_sweep/gap_s_10.0/sw10.0_CE008.json",
+       "episode_id": "sw10.0_CE008",
+       "certificate_id": "CE008_C2_62ca4fa36005920e",
+       "status": "collision",
+       "rho": -0.592849,
+       "argmin_contract": "C2",
+       "per_contract": {
+        "C1": -0.441745,
+        "C2": -0.592849,
+        "C3": 30.0,
+        "C4": 15.330667,
+        "C5": 1.0
+       },
+       "vacuous": [],
+       "phases_reached": [
+        "P1_approach",
+        "P2_yield_clear",
+        "P3_commit"
+       ],
+       "resolved": false,
+       "completed": false,
+       "entered": true
+      },
+      {
+       "file": "gap_guard_sweep/gap_s_10.0/sw10.0_CE009.json",
+       "episode_id": "sw10.0_CE009",
+       "certificate_id": "CE009_C1_bb1a8d764f269c24",
+       "status": "ok",
+       "rho": -0.081624,
+       "argmin_contract": "C1",
+       "per_contract": {
+        "C1": -0.081624,
+        "C2": 5.286936,
+        "C3": 7.3,
+        "C4": 10.08062,
+        "C5": 1.0
+       },
+       "vacuous": [],
+       "phases_reached": [
+        "P1_approach",
+        "P2_yield_clear",
+        "P3_commit",
+        "P4_settle"
+       ],
+       "resolved": false,
+       "completed": true,
+       "entered": true
+      },
+      {
+       "file": "gap_guard_sweep/gap_s_10.0/sw10.0_CE010.json",
+       "episode_id": "sw10.0_CE010",
+       "certificate_id": "CE010_C2_56c436b720d319ef",
+       "status": "collision",
+       "rho": -1.342611,
+       "argmin_contract": "C2",
+       "per_contract": {
+        "C1": -0.217182,
+        "C2": -1.342611,
+        "C3": 30.0,
+        "C4": 15.395686,
+        "C5": 1.0
+       },
+       "vacuous": [],
+       "phases_reached": [
+        "P1_approach",
+        "P2_yield_clear",
+        "P3_commit"
+       ],
+       "resolved": false,
+       "completed": false,
+       "entered": true
+      },
+      {
+       "file": "gap_guard_sweep/gap_s_10.0/sw10.0_CE011.json",
+       "episode_id": "sw10.0_CE011",
+       "certificate_id": "CE011_C2_1673111e21cbfa9e",
+       "status": "collision",
+       "rho": -1.28924,
+       "argmin_contract": "C2",
+       "per_contract": {
+        "C1": -0.210859,
+        "C2": -1.28924,
+        "C3": 30.0,
+        "C4": 15.351437,
+        "C5": 1.0
+       },
+       "vacuous": [],
+       "phases_reached": [
+        "P1_approach",
+        "P2_yield_clear",
+        "P3_commit"
+       ],
+       "resolved": false,
+       "completed": false,
+       "entered": true
+      },
+      {
+       "file": "gap_guard_sweep/gap_s_10.0/sw10.0_CE012.json",
+       "episode_id": "sw10.0_CE012",
+       "certificate_id": "CE012_C1_1ec6b8b64324dbd4",
+       "status": "collision",
+       "rho": -0.314797,
+       "argmin_contract": "C1",
+       "per_contract": {
+        "C1": -0.314797,
+        "C2": 3.646303,
+        "C3": 30.0,
+        "C4": 15.413637,
+        "C5": 1.0
+       },
+       "vacuous": [],
+       "phases_reached": [
+        "P1_approach",
+        "P2_yield_clear",
+        "P3_commit"
+       ],
+       "resolved": false,
+       "completed": false,
+       "entered": true
+      },
+      {
+       "file": "gap_guard_sweep/gap_s_10.0/sw10.0_CE013.json",
+       "episode_id": "sw10.0_CE013",
+       "certificate_id": "CE013_C2_ade4dfeb1e7cffee",
+       "status": "collision",
+       "rho": -1.123104,
+       "argmin_contract": "C2",
+       "per_contract": {
+        "C1": -0.26826,
+        "C2": -1.123104,
+        "C3": 30.0,
+        "C4": 16.207629,
+        "C5": 1.0
+       },
+       "vacuous": [],
+       "phases_reached": [
+        "P1_approach",
+        "P2_yield_clear",
+        "P3_commit"
+       ],
+       "resolved": false,
+       "completed": false,
+       "entered": true
+      },
+      {
+       "file": "gap_guard_sweep/gap_s_10.0/sw10.0_CE014.json",
+       "episode_id": "sw10.0_CE014",
+       "certificate_id": "CE014_C1_8efa0eee117bb95e",
+       "status": "collision",
+       "rho": -0.292612,
+       "argmin_contract": "C1",
+       "per_contract": {
+        "C1": -0.292612,
+        "C2": 4.801474,
+        "C3": 30.0,
+        "C4": 17.972583,
+        "C5": 1.0
+       },
+       "vacuous": [],
+       "phases_reached": [
+        "P1_approach",
+        "P2_yield_clear",
+        "P3_commit"
+       ],
+       "resolved": false,
+       "completed": false,
+       "entered": true
+      },
+      {
+       "file": "gap_guard_sweep/gap_s_10.0/sw10.0_CE015.json",
+       "episode_id": "sw10.0_CE015",
+       "certificate_id": "CE015_C1_40924ca98fb43db1",
+       "status": "collision",
+       "rho": -0.353556,
+       "argmin_contract": "C1",
+       "per_contract": {
+        "C1": -0.353556,
+        "C2": 27.0,
+        "C3": 30.0,
+        "C4": 17.976157,
+        "C5": 1.0
+       },
+       "vacuous": [],
+       "phases_reached": [
+        "P1_approach",
+        "P2_yield_clear",
+        "P3_commit"
+       ],
+       "resolved": false,
+       "completed": false,
+       "entered": true
+      },
+      {
+       "file": "gap_guard_sweep/gap_s_10.0/sw10.0_CE016.json",
+       "episode_id": "sw10.0_CE016",
+       "certificate_id": "CE016_C2_9d3ea4ae1a67ec58",
+       "status": "collision",
+       "rho": -1.585567,
+       "argmin_contract": "C2",
+       "per_contract": {
+        "C1": -0.274903,
+        "C2": -1.585567,
+        "C3": 30.0,
+        "C4": 17.965319,
+        "C5": 1.0
+       },
+       "vacuous": [],
+       "phases_reached": [
+        "P1_approach",
+        "P2_yield_clear",
+        "P3_commit"
+       ],
+       "resolved": false,
+       "completed": false,
+       "entered": true
+      },
+      {
+       "file": "gap_guard_sweep/gap_s_10.0/sw10.0_CE017.json",
+       "episode_id": "sw10.0_CE017",
+       "certificate_id": "CE017_C3_8280bf9852dc7834",
+       "status": "collision",
+       "rho": -0.65,
+       "argmin_contract": "C3",
+       "per_contract": {
+        "C1": -0.365661,
+        "C2": -0.28614,
+        "C3": -0.65,
+        "C4": 16.204811,
+        "C5": 1.0
+       },
+       "vacuous": [],
+       "phases_reached": [
+        "P1_approach",
+        "P2_yield_clear",
+        "P3_commit"
+       ],
+       "resolved": false,
+       "completed": false,
+       "entered": true
+      },
+      {
+       "file": "gap_guard_sweep/gap_s_10.0/sw10.0_CE018.json",
+       "episode_id": "sw10.0_CE018",
+       "certificate_id": "CE018_C2_80d8dfdf2253ea72",
+       "status": "collision",
+       "rho": -1.615144,
+       "argmin_contract": "C2",
+       "per_contract": {
+        "C1": -0.334732,
+        "C2": -1.615144,
+        "C3": 30.0,
+        "C4": 16.287702,
+        "C5": 1.0
+       },
+       "vacuous": [],
+       "phases_reached": [
+        "P1_approach",
+        "P2_yield_clear",
+        "P3_commit"
+       ],
+       "resolved": false,
+       "completed": false,
+       "entered": true
+      },
+      {
+       "file": "gap_guard_sweep/gap_s_10.0/sw10.0_CE019.json",
+       "episode_id": "sw10.0_CE019",
+       "certificate_id": "CE019_C1_0b3097eb9e85eede",
+       "status": "collision",
+       "rho": -0.271433,
+       "argmin_contract": "C1",
+       "per_contract": {
+        "C1": -0.271433,
+        "C2": 2.089413,
+        "C3": 30.0,
+        "C4": 19.648483,
+        "C5": 1.0
+       },
+       "vacuous": [],
+       "phases_reached": [
+        "P1_approach",
+        "P2_yield_clear",
+        "P3_commit"
+       ],
+       "resolved": false,
+       "completed": false,
+       "entered": true
+      },
+      {
+       "file": "gap_guard_sweep/gap_s_10.0/sw10.0_CE020.json",
+       "episode_id": "sw10.0_CE020",
+       "certificate_id": "CE020_C1_d3346d835dab0fd8",
+       "status": "collision",
+       "rho": -0.276562,
+       "argmin_contract": "C1",
+       "per_contract": {
+        "C1": -0.276562,
+        "C2": 4.904933,
+        "C3": 30.0,
+        "C4": 19.599225,
+        "C5": 1.0
+       },
+       "vacuous": [],
+       "phases_reached": [
+        "P1_approach",
+        "P2_yield_clear",
+        "P3_commit"
+       ],
+       "resolved": false,
+       "completed": false,
+       "entered": true
+      }
+     ]
+    },
+    {
+     "directory": "data/dsl_probe_traces/gap_guard_sweep/gap_s_12.0",
+     "program": "data/scenarios/dsl_probe/sweep_12.0.bt",
+     "program_sha": "3c3ab3c659ca7618",
+     "n": 20,
+     "resolved": 0,
+     "completed": 2,
+     "entered": 20,
+     "resolved_and_completed": 0,
+     "description": "OncomingGapExceeds(gap_s=12.0) added to the committing branch",
+     "episodes": [
+      {
+       "file": "gap_guard_sweep/gap_s_12.0/sw12.0_CE001.json",
+       "episode_id": "sw12.0_CE001",
+       "certificate_id": "CE001_C2_44b9f97d05fda474",
+       "status": "collision",
+       "rho": -1.301918,
+       "argmin_contract": "C2",
+       "per_contract": {
+        "C1": -0.226173,
+        "C2": -1.301918,
+        "C3": 30.0,
+        "C4": 15.409003,
+        "C5": 1.0
+       },
+       "vacuous": [],
+       "phases_reached": [
+        "P1_approach",
+        "P2_yield_clear",
+        "P3_commit"
+       ],
+       "resolved": false,
+       "completed": false,
+       "entered": true
+      },
+      {
+       "file": "gap_guard_sweep/gap_s_12.0/sw12.0_CE002.json",
+       "episode_id": "sw12.0_CE002",
+       "certificate_id": "CE002_C2_86714546fca524ca",
+       "status": "collision",
+       "rho": -1.012703,
+       "argmin_contract": "C2",
+       "per_contract": {
+        "C1": -0.233648,
+        "C2": -1.012703,
+        "C3": 30.0,
+        "C4": 17.16343,
+        "C5": 1.0
+       },
+       "vacuous": [],
+       "phases_reached": [
+        "P1_approach",
+        "P2_yield_clear",
+        "P3_commit"
+       ],
+       "resolved": false,
+       "completed": false,
+       "entered": true
+      },
+      {
+       "file": "gap_guard_sweep/gap_s_12.0/sw12.0_CE003.json",
+       "episode_id": "sw12.0_CE003",
+       "certificate_id": "CE003_C1_969f15c8657c8fa6",
+       "status": "collision",
+       "rho": -0.2961,
+       "argmin_contract": "C1",
+       "per_contract": {
+        "C1": -0.2961,
+        "C2": 1.109008,
+        "C3": 0.3,
+        "C4": 16.300962,
+        "C5": 1.0
+       },
+       "vacuous": [],
+       "phases_reached": [
+        "P1_approach",
+        "P2_yield_clear",
+        "P3_commit"
+       ],
+       "resolved": false,
+       "completed": false,
+       "entered": true
+      },
+      {
+       "file": "gap_guard_sweep/gap_s_12.0/sw12.0_CE004.json",
+       "episode_id": "sw12.0_CE004",
+       "certificate_id": "CE004_C1_445649d2b99e873a",
+       "status": "ok",
+       "rho": -0.229334,
+       "argmin_contract": "C1",
+       "per_contract": {
+        "C1": -0.229334,
+        "C2": 27.0,
+        "C3": 1.0,
+        "C4": 8.152775,
+        "C5": 1.0
+       },
+       "vacuous": [],
+       "phases_reached": [
+        "P1_approach",
+        "P2_yield_clear",
+        "P3_commit",
+        "P4_settle"
+       ],
+       "resolved": false,
+       "completed": true,
+       "entered": true
+      },
+      {
+       "file": "gap_guard_sweep/gap_s_12.0/sw12.0_CE005.json",
+       "episode_id": "sw12.0_CE005",
+       "certificate_id": "CE005_C1_5b773c94ec4bb251",
+       "status": "collision",
+       "rho": -0.323035,
+       "argmin_contract": "C1",
+       "per_contract": {
+        "C1": -0.323035,
+        "C2": 2.536193,
+        "C3": 30.0,
+        "C4": 15.406096,
+        "C5": 1.0
+       },
+       "vacuous": [],
+       "phases_reached": [
+        "P1_approach",
+        "P2_yield_clear",
+        "P3_commit"
+       ],
+       "resolved": false,
+       "completed": false,
+       "entered": true
+      },
+      {
+       "file": "gap_guard_sweep/gap_s_12.0/sw12.0_CE006.json",
+       "episode_id": "sw12.0_CE006",
+       "certificate_id": "CE006_C2_1e173dcbe748c286",
+       "status": "collision",
+       "rho": -0.768042,
+       "argmin_contract": "C2",
+       "per_contract": {
+        "C1": -0.452306,
+        "C2": -0.768042,
+        "C3": 30.0,
+        "C4": 15.398237,
+        "C5": 1.0
+       },
+       "vacuous": [],
+       "phases_reached": [
+        "P1_approach",
+        "P2_yield_clear",
+        "P3_commit"
+       ],
+       "resolved": false,
+       "completed": false,
+       "entered": true
+      },
+      {
+       "file": "gap_guard_sweep/gap_s_12.0/sw12.0_CE007.json",
+       "episode_id": "sw12.0_CE007",
+       "certificate_id": "CE007_C1_ec6211901ed6b190",
+       "status": "collision",
+       "rho": -0.284514,
+       "argmin_contract": "C1",
+       "per_contract": {
+        "C1": -0.284514,
+        "C2": 1.794642,
+        "C3": 30.0,
+        "C4": 15.425835,
+        "C5": 1.0
+       },
+       "vacuous": [],
+       "phases_reached": [
+        "P1_approach",
+        "P2_yield_clear",
+        "P3_commit"
+       ],
+       "resolved": false,
+       "completed": false,
+       "entered": true
+      },
+      {
+       "file": "gap_guard_sweep/gap_s_12.0/sw12.0_CE008.json",
+       "episode_id": "sw12.0_CE008",
+       "certificate_id": "CE008_C2_62ca4fa36005920e",
+       "status": "collision",
+       "rho": -0.467162,
+       "argmin_contract": "C1",
+       "per_contract": {
+        "C1": -0.467162,
+        "C2": -0.251427,
+        "C3": 30.0,
+        "C4": 15.384151,
+        "C5": 1.0
+       },
+       "vacuous": [],
+       "phases_reached": [
+        "P1_approach",
+        "P2_yield_clear",
+        "P3_commit"
+       ],
+       "resolved": false,
+       "completed": false,
+       "entered": true
+      },
+      {
+       "file": "gap_guard_sweep/gap_s_12.0/sw12.0_CE009.json",
+       "episode_id": "sw12.0_CE009",
+       "certificate_id": "CE009_C1_bb1a8d764f269c24",
+       "status": "ok",
+       "rho": -0.081624,
+       "argmin_contract": "C1",
+       "per_contract": {
+        "C1": -0.081624,
+        "C2": 5.286936,
+        "C3": 7.3,
+        "C4": 9.838916,
+        "C5": 1.0
+       },
+       "vacuous": [],
+       "phases_reached": [
+        "P1_approach",
+        "P2_yield_clear",
+        "P3_commit",
+        "P4_settle"
+       ],
+       "resolved": false,
+       "completed": true,
+       "entered": true
+      },
+      {
+       "file": "gap_guard_sweep/gap_s_12.0/sw12.0_CE010.json",
+       "episode_id": "sw12.0_CE010",
+       "certificate_id": "CE010_C2_56c436b720d319ef",
+       "status": "collision",
+       "rho": -1.38472,
+       "argmin_contract": "C2",
+       "per_contract": {
+        "C1": -0.250517,
+        "C2": -1.38472,
+        "C3": 30.0,
+        "C4": 15.431781,
+        "C5": 1.0
+       },
+       "vacuous": [],
+       "phases_reached": [
+        "P1_approach",
+        "P2_yield_clear",
+        "P3_commit"
+       ],
+       "resolved": false,
+       "completed": false,
+       "entered": true
+      },
+      {
+       "file": "gap_guard_sweep/gap_s_12.0/sw12.0_CE011.json",
+       "episode_id": "sw12.0_CE011",
+       "certificate_id": "CE011_C2_1673111e21cbfa9e",
+       "status": "collision",
+       "rho": -1.302786,
+       "argmin_contract": "C2",
+       "per_contract": {
+        "C1": -0.222805,
+        "C2": -1.302786,
+        "C3": 30.0,
+        "C4": 15.406096,
+        "C5": 1.0
+       },
+       "vacuous": [],
+       "phases_reached": [
+        "P1_approach",
+        "P2_yield_clear",
+        "P3_commit"
+       ],
+       "resolved": false,
+       "completed": false,
+       "entered": true
+      },
+      {
+       "file": "gap_guard_sweep/gap_s_12.0/sw12.0_CE012.json",
+       "episode_id": "sw12.0_CE012",
+       "certificate_id": "CE012_C1_1ec6b8b64324dbd4",
+       "status": "collision",
+       "rho": -0.313455,
+       "argmin_contract": "C1",
+       "per_contract": {
+        "C1": -0.313455,
+        "C2": 3.948133,
+        "C3": 30.0,
+        "C4": 15.440351,
+        "C5": 1.0
+       },
+       "vacuous": [],
+       "phases_reached": [
+        "P1_approach",
+        "P2_yield_clear",
+        "P3_commit"
+       ],
+       "resolved": false,
+       "completed": false,
+       "entered": true
+      },
+      {
+       "file": "gap_guard_sweep/gap_s_12.0/sw12.0_CE013.json",
+       "episode_id": "sw12.0_CE013",
+       "certificate_id": "CE013_C2_ade4dfeb1e7cffee",
+       "status": "collision",
+       "rho": -0.767035,
+       "argmin_contract": "C2",
+       "per_contract": {
+        "C1": -0.240415,
+        "C2": -0.767035,
+        "C3": 30.0,
+        "C4": 16.281653,
+        "C5": 1.0
+       },
+       "vacuous": [],
+       "phases_reached": [
+        "P1_approach",
+        "P2_yield_clear",
+        "P3_commit"
+       ],
+       "resolved": false,
+       "completed": false,
+       "entered": true
+      },
+      {
+       "file": "gap_guard_sweep/gap_s_12.0/sw12.0_CE014.json",
+       "episode_id": "sw12.0_CE014",
+       "certificate_id": "CE014_C1_8efa0eee117bb95e",
+       "status": "collision",
+       "rho": -0.292612,
+       "argmin_contract": "C1",
+       "per_contract": {
+        "C1": -0.292612,
+        "C2": 4.801449,
+        "C3": 30.0,
+        "C4": 17.960033,
+        "C5": 1.0
+       },
+       "vacuous": [],
+       "phases_reached": [
+        "P1_approach",
+        "P2_yield_clear",
+        "P3_commit"
+       ],
+       "resolved": false,
+       "completed": false,
+       "entered": true
+      },
+      {
+       "file": "gap_guard_sweep/gap_s_12.0/sw12.0_CE015.json",
+       "episode_id": "sw12.0_CE015",
+       "certificate_id": "CE015_C1_40924ca98fb43db1",
+       "status": "collision",
+       "rho": -0.353556,
+       "argmin_contract": "C1",
+       "per_contract": {
+        "C1": -0.353556,
+        "C2": 27.0,
+        "C3": 30.0,
+        "C4": 18.019686,
+        "C5": 1.0
+       },
+       "vacuous": [],
+       "phases_reached": [
+        "P1_approach",
+        "P2_yield_clear",
+        "P3_commit"
+       ],
+       "resolved": false,
+       "completed": false,
+       "entered": true
+      },
+      {
+       "file": "gap_guard_sweep/gap_s_12.0/sw12.0_CE016.json",
+       "episode_id": "sw12.0_CE016",
+       "certificate_id": "CE016_C2_9d3ea4ae1a67ec58",
+       "status": "collision",
+       "rho": -1.661041,
+       "argmin_contract": "C2",
+       "per_contract": {
+        "C1": -0.259711,
+        "C2": -1.661041,
+        "C3": 30.0,
+        "C4": 17.967331,
+        "C5": 1.0
+       },
+       "vacuous": [],
+       "phases_reached": [
+        "P1_approach",
+        "P2_yield_clear",
+        "P3_commit"
+       ],
+       "resolved": false,
+       "completed": false,
+       "entered": true
+      },
+      {
+       "file": "gap_guard_sweep/gap_s_12.0/sw12.0_CE017.json",
+       "episode_id": "sw12.0_CE017",
+       "certificate_id": "CE017_C3_8280bf9852dc7834",
+       "status": "collision",
+       "rho": -0.7,
+       "argmin_contract": "C3",
+       "per_contract": {
+        "C1": -0.365661,
+        "C2": -0.28614,
+        "C3": -0.7,
+        "C4": 16.375708,
+        "C5": 1.0
+       },
+       "vacuous": [],
+       "phases_reached": [
+        "P1_approach",
+        "P2_yield_clear",
+        "P3_commit"
+       ],
+       "resolved": false,
+       "completed": false,
+       "entered": true
+      },
+      {
+       "file": "gap_guard_sweep/gap_s_12.0/sw12.0_CE018.json",
+       "episode_id": "sw12.0_CE018",
+       "certificate_id": "CE018_C2_80d8dfdf2253ea72",
+       "status": "collision",
+       "rho": -1.615144,
+       "argmin_contract": "C2",
+       "per_contract": {
+        "C1": -0.334732,
+        "C2": -1.615144,
+        "C3": 30.0,
+        "C4": 16.303716,
+        "C5": 1.0
+       },
+       "vacuous": [],
+       "phases_reached": [
+        "P1_approach",
+        "P2_yield_clear",
+        "P3_commit"
+       ],
+       "resolved": false,
+       "completed": false,
+       "entered": true
+      },
+      {
+       "file": "gap_guard_sweep/gap_s_12.0/sw12.0_CE019.json",
+       "episode_id": "sw12.0_CE019",
+       "certificate_id": "CE019_C1_0b3097eb9e85eede",
+       "status": "collision",
+       "rho": -0.271433,
+       "argmin_contract": "C1",
+       "per_contract": {
+        "C1": -0.271433,
+        "C2": 2.089413,
+        "C3": 30.0,
+        "C4": 19.611053,
+        "C5": 1.0
+       },
+       "vacuous": [],
+       "phases_reached": [
+        "P1_approach",
+        "P2_yield_clear",
+        "P3_commit"
+       ],
+       "resolved": false,
+       "completed": false,
+       "entered": true
+      },
+      {
+       "file": "gap_guard_sweep/gap_s_12.0/sw12.0_CE020.json",
+       "episode_id": "sw12.0_CE020",
+       "certificate_id": "CE020_C1_d3346d835dab0fd8",
+       "status": "collision",
+       "rho": -0.276562,
+       "argmin_contract": "C1",
+       "per_contract": {
+        "C1": -0.276562,
+        "C2": 4.904933,
+        "C3": 30.0,
+        "C4": 19.63897,
+        "C5": 1.0
+       },
+       "vacuous": [],
+       "phases_reached": [
+        "P1_approach",
+        "P2_yield_clear",
+        "P3_commit"
+       ],
+       "resolved": false,
+       "completed": false,
+       "entered": true
+      }
+     ]
+    },
+    {
+     "directory": "data/dsl_probe_traces/gap_guard_sweep/gap_s_15.0",
+     "program": "data/scenarios/dsl_probe/sweep_15.0.bt",
+     "program_sha": "263ef83b8fba8a6f",
+     "n": 20,
+     "resolved": 0,
+     "completed": 2,
+     "entered": 20,
+     "resolved_and_completed": 0,
+     "description": "OncomingGapExceeds(gap_s=15.0) added to the committing branch",
+     "episodes": [
+      {
+       "file": "gap_guard_sweep/gap_s_15.0/sw15.0_CE001.json",
+       "episode_id": "sw15.0_CE001",
+       "certificate_id": "CE001_C2_44b9f97d05fda474",
+       "status": "collision",
+       "rho": -1.301918,
+       "argmin_contract": "C2",
+       "per_contract": {
+        "C1": -0.226173,
+        "C2": -1.301918,
+        "C3": 30.0,
+        "C4": 15.403261,
+        "C5": 1.0
+       },
+       "vacuous": [],
+       "phases_reached": [
+        "P1_approach",
+        "P2_yield_clear",
+        "P3_commit"
+       ],
+       "resolved": false,
+       "completed": false,
+       "entered": true
+      },
+      {
+       "file": "gap_guard_sweep/gap_s_15.0/sw15.0_CE002.json",
+       "episode_id": "sw15.0_CE002",
+       "certificate_id": "CE002_C2_86714546fca524ca",
+       "status": "collision",
+       "rho": -1.012703,
+       "argmin_contract": "C2",
+       "per_contract": {
+        "C1": -0.233648,
+        "C2": -1.012703,
+        "C3": 30.0,
+        "C4": 17.190566,
+        "C5": 1.0
+       },
+       "vacuous": [],
+       "phases_reached": [
+        "P1_approach",
+        "P2_yield_clear",
+        "P3_commit"
+       ],
+       "resolved": false,
+       "completed": false,
+       "entered": true
+      },
+      {
+       "file": "gap_guard_sweep/gap_s_15.0/sw15.0_CE003.json",
+       "episode_id": "sw15.0_CE003",
+       "certificate_id": "CE003_C1_969f15c8657c8fa6",
+       "status": "collision",
+       "rho": -0.2961,
+       "argmin_contract": "C1",
+       "per_contract": {
+        "C1": -0.2961,
+        "C2": 1.109008,
+        "C3": 0.3,
+        "C4": 16.31261,
+        "C5": 1.0
+       },
+       "vacuous": [],
+       "phases_reached": [
+        "P1_approach",
+        "P2_yield_clear",
+        "P3_commit"
+       ],
+       "resolved": false,
+       "completed": false,
+       "entered": true
+      },
+      {
+       "file": "gap_guard_sweep/gap_s_15.0/sw15.0_CE004.json",
+       "episode_id": "sw15.0_CE004",
+       "certificate_id": "CE004_C1_445649d2b99e873a",
+       "status": "ok",
+       "rho": -0.229334,
+       "argmin_contract": "C1",
+       "per_contract": {
+        "C1": -0.229334,
+        "C2": 27.0,
+        "C3": 1.0,
+        "C4": 8.101231,
+        "C5": 1.0
+       },
+       "vacuous": [],
+       "phases_reached": [
+        "P1_approach",
+        "P2_yield_clear",
+        "P3_commit",
+        "P4_settle"
+       ],
+       "resolved": false,
+       "completed": true,
+       "entered": true
+      },
+      {
+       "file": "gap_guard_sweep/gap_s_15.0/sw15.0_CE005.json",
+       "episode_id": "sw15.0_CE005",
+       "certificate_id": "CE005_C1_5b773c94ec4bb251",
+       "status": "collision",
+       "rho": -0.323035,
+       "argmin_contract": "C1",
+       "per_contract": {
+        "C1": -0.323035,
+        "C2": 2.536193,
+        "C3": 30.0,
+        "C4": 15.415164,
+        "C5": 1.0
+       },
+       "vacuous": [],
+       "phases_reached": [
+        "P1_approach",
+        "P2_yield_clear",
+        "P3_commit"
+       ],
+       "resolved": false,
+       "completed": false,
+       "entered": true
+      },
+      {
+       "file": "gap_guard_sweep/gap_s_15.0/sw15.0_CE006.json",
+       "episode_id": "sw15.0_CE006",
+       "certificate_id": "CE006_C2_1e173dcbe748c286",
+       "status": "collision",
+       "rho": -0.768042,
+       "argmin_contract": "C2",
+       "per_contract": {
+        "C1": -0.452306,
+        "C2": -0.768042,
+        "C3": 30.0,
+        "C4": 15.409883,
+        "C5": 1.0
+       },
+       "vacuous": [],
+       "phases_reached": [
+        "P1_approach",
+        "P2_yield_clear",
+        "P3_commit"
+       ],
+       "resolved": false,
+       "completed": false,
+       "entered": true
+      },
+      {
+       "file": "gap_guard_sweep/gap_s_15.0/sw15.0_CE007.json",
+       "episode_id": "sw15.0_CE007",
+       "certificate_id": "CE007_C1_ec6211901ed6b190",
+       "status": "collision",
+       "rho": -0.284514,
+       "argmin_contract": "C1",
+       "per_contract": {
+        "C1": -0.284514,
+        "C2": 1.794642,
+        "C3": 30.0,
+        "C4": 15.406096,
+        "C5": 1.0
+       },
+       "vacuous": [],
+       "phases_reached": [
+        "P1_approach",
+        "P2_yield_clear",
+        "P3_commit"
+       ],
+       "resolved": false,
+       "completed": false,
+       "entered": true
+      },
+      {
+       "file": "gap_guard_sweep/gap_s_15.0/sw15.0_CE008.json",
+       "episode_id": "sw15.0_CE008",
+       "certificate_id": "CE008_C2_62ca4fa36005920e",
+       "status": "collision",
+       "rho": -0.467162,
+       "argmin_contract": "C1",
+       "per_contract": {
+        "C1": -0.467162,
+        "C2": -0.251427,
+        "C3": 30.0,
+        "C4": 15.414245,
+        "C5": 1.0
+       },
+       "vacuous": [],
+       "phases_reached": [
+        "P1_approach",
+        "P2_yield_clear",
+        "P3_commit"
+       ],
+       "resolved": false,
+       "completed": false,
+       "entered": true
+      },
+      {
+       "file": "gap_guard_sweep/gap_s_15.0/sw15.0_CE009.json",
+       "episode_id": "sw15.0_CE009",
+       "certificate_id": "CE009_C1_bb1a8d764f269c24",
+       "status": "ok",
+       "rho": -0.081624,
+       "argmin_contract": "C1",
+       "per_contract": {
+        "C1": -0.081624,
+        "C2": 5.286936,
+        "C3": 7.3,
+        "C4": 9.574887,
+        "C5": 1.0
+       },
+       "vacuous": [],
+       "phases_reached": [
+        "P1_approach",
+        "P2_yield_clear",
+        "P3_commit",
+        "P4_settle"
+       ],
+       "resolved": false,
+       "completed": true,
+       "entered": true
+      },
+      {
+       "file": "gap_guard_sweep/gap_s_15.0/sw15.0_CE010.json",
+       "episode_id": "sw15.0_CE010",
+       "certificate_id": "CE010_C2_56c436b720d319ef",
+       "status": "collision",
+       "rho": -1.384721,
+       "argmin_contract": "C2",
+       "per_contract": {
+        "C1": -0.250517,
+        "C2": -1.384721,
+        "C3": 30.0,
+        "C4": 15.395687,
+        "C5": 1.0
+       },
+       "vacuous": [],
+       "phases_reached": [
+        "P1_approach",
+        "P2_yield_clear",
+        "P3_commit"
+       ],
+       "resolved": false,
+       "completed": false,
+       "entered": true
+      },
+      {
+       "file": "gap_guard_sweep/gap_s_15.0/sw15.0_CE011.json",
+       "episode_id": "sw15.0_CE011",
+       "certificate_id": "CE011_C2_1673111e21cbfa9e",
+       "status": "collision",
+       "rho": -1.302786,
+       "argmin_contract": "C2",
+       "per_contract": {
+        "C1": -0.222805,
+        "C2": -1.302786,
+        "C3": 30.0,
+        "C4": 15.406096,
+        "C5": 1.0
+       },
+       "vacuous": [],
+       "phases_reached": [
+        "P1_approach",
+        "P2_yield_clear",
+        "P3_commit"
+       ],
+       "resolved": false,
+       "completed": false,
+       "entered": true
+      },
+      {
+       "file": "gap_guard_sweep/gap_s_15.0/sw15.0_CE012.json",
+       "episode_id": "sw15.0_CE012",
+       "certificate_id": "CE012_C1_1ec6b8b64324dbd4",
+       "status": "collision",
+       "rho": -0.313455,
+       "argmin_contract": "C1",
+       "per_contract": {
+        "C1": -0.313455,
+        "C2": 3.948148,
+        "C3": 30.0,
+        "C4": 15.390474,
+        "C5": 1.0
+       },
+       "vacuous": [],
+       "phases_reached": [
+        "P1_approach",
+        "P2_yield_clear",
+        "P3_commit"
+       ],
+       "resolved": false,
+       "completed": false,
+       "entered": true
+      },
+      {
+       "file": "gap_guard_sweep/gap_s_15.0/sw15.0_CE013.json",
+       "episode_id": "sw15.0_CE013",
+       "certificate_id": "CE013_C2_ade4dfeb1e7cffee",
+       "status": "collision",
+       "rho": -0.767035,
+       "argmin_contract": "C2",
+       "per_contract": {
+        "C1": -0.240415,
+        "C2": -0.767035,
+        "C3": 30.0,
+        "C4": 16.326361,
+        "C5": 1.0
+       },
+       "vacuous": [],
+       "phases_reached": [
+        "P1_approach",
+        "P2_yield_clear",
+        "P3_commit"
+       ],
+       "resolved": false,
+       "completed": false,
+       "entered": true
+      },
+      {
+       "file": "gap_guard_sweep/gap_s_15.0/sw15.0_CE014.json",
+       "episode_id": "sw15.0_CE014",
+       "certificate_id": "CE014_C1_8efa0eee117bb95e",
+       "status": "collision",
+       "rho": -0.292612,
+       "argmin_contract": "C1",
+       "per_contract": {
+        "C1": -0.292612,
+        "C2": 4.801474,
+        "C3": 30.0,
+        "C4": 17.956156,
+        "C5": 1.0
+       },
+       "vacuous": [],
+       "phases_reached": [
+        "P1_approach",
+        "P2_yield_clear",
+        "P3_commit"
+       ],
+       "resolved": false,
+       "completed": false,
+       "entered": true
+      },
+      {
+       "file": "gap_guard_sweep/gap_s_15.0/sw15.0_CE015.json",
+       "episode_id": "sw15.0_CE015",
+       "certificate_id": "CE015_C1_40924ca98fb43db1",
+       "status": "collision",
+       "rho": -0.353556,
+       "argmin_contract": "C1",
+       "per_contract": {
+        "C1": -0.353556,
+        "C2": 27.0,
+        "C3": 30.0,
+        "C4": 17.947745,
+        "C5": 1.0
+       },
+       "vacuous": [],
+       "phases_reached": [
+        "P1_approach",
+        "P2_yield_clear",
+        "P3_commit"
+       ],
+       "resolved": false,
+       "completed": false,
+       "entered": true
+      },
+      {
+       "file": "gap_guard_sweep/gap_s_15.0/sw15.0_CE016.json",
+       "episode_id": "sw15.0_CE016",
+       "certificate_id": "CE016_C2_9d3ea4ae1a67ec58",
+       "status": "collision",
+       "rho": -1.637362,
+       "argmin_contract": "C2",
+       "per_contract": {
+        "C1": -0.302054,
+        "C2": -1.637362,
+        "C3": 30.0,
+        "C4": 17.928677,
+        "C5": 1.0
+       },
+       "vacuous": [],
+       "phases_reached": [
+        "P1_approach",
+        "P2_yield_clear",
+        "P3_commit"
+       ],
+       "resolved": false,
+       "completed": false,
+       "entered": true
+      },
+      {
+       "file": "gap_guard_sweep/gap_s_15.0/sw15.0_CE017.json",
+       "episode_id": "sw15.0_CE017",
+       "certificate_id": "CE017_C3_8280bf9852dc7834",
+       "status": "collision",
+       "rho": -0.7,
+       "argmin_contract": "C3",
+       "per_contract": {
+        "C1": -0.365661,
+        "C2": -0.28614,
+        "C3": -0.7,
+        "C4": 16.248079,
+        "C5": 1.0
+       },
+       "vacuous": [],
+       "phases_reached": [
+        "P1_approach",
+        "P2_yield_clear",
+        "P3_commit"
+       ],
+       "resolved": false,
+       "completed": false,
+       "entered": true
+      },
+      {
+       "file": "gap_guard_sweep/gap_s_15.0/sw15.0_CE018.json",
+       "episode_id": "sw15.0_CE018",
+       "certificate_id": "CE018_C2_80d8dfdf2253ea72",
+       "status": "collision",
+       "rho": -1.615144,
+       "argmin_contract": "C2",
+       "per_contract": {
+        "C1": -0.334732,
+        "C2": -1.615144,
+        "C3": 30.0,
+        "C4": 16.308503,
+        "C5": 1.0
+       },
+       "vacuous": [],
+       "phases_reached": [
+        "P1_approach",
+        "P2_yield_clear",
+        "P3_commit"
+       ],
+       "resolved": false,
+       "completed": false,
+       "entered": true
+      },
+      {
+       "file": "gap_guard_sweep/gap_s_15.0/sw15.0_CE019.json",
+       "episode_id": "sw15.0_CE019",
+       "certificate_id": "CE019_C1_0b3097eb9e85eede",
+       "status": "collision",
+       "rho": -0.271433,
+       "argmin_contract": "C1",
+       "per_contract": {
+        "C1": -0.271433,
+        "C2": 2.089413,
+        "C3": 30.0,
+        "C4": 19.664829,
+        "C5": 1.0
+       },
+       "vacuous": [],
+       "phases_reached": [
+        "P1_approach",
+        "P2_yield_clear",
+        "P3_commit"
+       ],
+       "resolved": false,
+       "completed": false,
+       "entered": true
+      },
+      {
+       "file": "gap_guard_sweep/gap_s_15.0/sw15.0_CE020.json",
+       "episode_id": "sw15.0_CE020",
+       "certificate_id": "CE020_C1_d3346d835dab0fd8",
+       "status": "collision",
+       "rho": -0.276562,
+       "argmin_contract": "C1",
+       "per_contract": {
+        "C1": -0.276562,
+        "C2": 4.904933,
+        "C3": 30.0,
+        "C4": 19.695185,
+        "C5": 1.0
+       },
+       "vacuous": [],
+       "phases_reached": [
+        "P1_approach",
+        "P2_yield_clear",
+        "P3_commit"
+       ],
+       "resolved": false,
+       "completed": false,
+       "entered": true
+      }
+     ]
+    }
+   ]
+  },
+  "geometric_guard": {
+   "label": "geometric guard on committing branch",
+   "variants": [
+    {
+     "directory": "data/dsl_probe_traces/geometric_guard/pathisclear_16m",
+     "program": "data/scenarios/dsl_probe/geometric_guard_16m.bt",
+     "program_sha": "83f66f99bf7d45d8",
+     "n": 20,
+     "resolved": 0,
+     "completed": 2,
+     "entered": 20,
+     "resolved_and_completed": 0,
+     "description": "PathIsClear(dist_m=16.0) added to the committing branch",
+     "episodes": [
+      {
+       "file": "geometric_guard/pathisclear_16m/pc901_CE001.json",
+       "episode_id": "pc901_CE001",
+       "certificate_id": "CE001_C2_44b9f97d05fda474",
+       "status": "collision",
+       "rho": -1.252868,
+       "argmin_contract": "C2",
+       "per_contract": {
+        "C1": -0.270529,
+        "C2": -1.252868,
+        "C3": 30.0,
+        "C4": 15.390474,
+        "C5": 1.0
+       },
+       "vacuous": [],
+       "phases_reached": [
+        "P1_approach",
+        "P2_yield_clear",
+        "P3_commit"
+       ],
+       "resolved": false,
+       "completed": false,
+       "entered": true
+      },
+      {
+       "file": "geometric_guard/pathisclear_16m/pc901_CE002.json",
+       "episode_id": "pc901_CE002",
+       "certificate_id": "CE002_C2_86714546fca524ca",
+       "status": "collision",
+       "rho": -0.589644,
+       "argmin_contract": "C2",
+       "per_contract": {
+        "C1": -0.329154,
+        "C2": -0.589644,
+        "C3": 30.0,
+        "C4": 17.160942,
+        "C5": 1.0
+       },
+       "vacuous": [],
+       "phases_reached": [
+        "P1_approach",
+        "P2_yield_clear",
+        "P3_commit"
+       ],
+       "resolved": false,
+       "completed": false,
+       "entered": true
+      },
+      {
+       "file": "geometric_guard/pathisclear_16m/pc901_CE003.json",
+       "episode_id": "pc901_CE003",
+       "certificate_id": "CE003_C1_969f15c8657c8fa6",
+       "status": "collision",
+       "rho": -1.8,
+       "argmin_contract": "C3",
+       "per_contract": {
+        "C1": -0.297077,
+        "C2": 15.486288,
+        "C3": -1.8,
+        "C4": 16.28074,
+        "C5": 1.0
+       },
+       "vacuous": [],
+       "phases_reached": [
+        "P1_approach",
+        "P2_yield_clear",
+        "P3_commit"
+       ],
+       "resolved": false,
+       "completed": false,
+       "entered": true
+      },
+      {
+       "file": "geometric_guard/pathisclear_16m/pc901_CE004.json",
+       "episode_id": "pc901_CE004",
+       "certificate_id": "CE004_C1_445649d2b99e873a",
+       "status": "ok",
+       "rho": -0.234096,
+       "argmin_contract": "C1",
+       "per_contract": {
+        "C1": -0.234096,
+        "C2": 27.0,
+        "C3": 1.05,
+        "C4": 7.400528,
+        "C5": 1.0
+       },
+       "vacuous": [],
+       "phases_reached": [
+        "P1_approach",
+        "P2_yield_clear",
+        "P3_commit",
+        "P4_settle"
+       ],
+       "resolved": false,
+       "completed": true,
+       "entered": true
+      },
+      {
+       "file": "geometric_guard/pathisclear_16m/pc901_CE005.json",
+       "episode_id": "pc901_CE005",
+       "certificate_id": "CE005_C1_5b773c94ec4bb251",
+       "status": "collision",
+       "rho": -0.55,
+       "argmin_contract": "C3",
+       "per_contract": {
+        "C1": -0.312872,
+        "C2": 4.386933,
+        "C3": -0.55,
+        "C4": 15.390474,
+        "C5": 1.0
+       },
+       "vacuous": [],
+       "phases_reached": [
+        "P1_approach",
+        "P2_yield_clear",
+        "P3_commit"
+       ],
+       "resolved": false,
+       "completed": false,
+       "entered": true
+      },
+      {
+       "file": "geometric_guard/pathisclear_16m/pc901_CE006.json",
+       "episode_id": "pc901_CE006",
+       "certificate_id": "CE006_C2_1e173dcbe748c286",
+       "status": "collision",
+       "rho": -0.36015,
+       "argmin_contract": "C1",
+       "per_contract": {
+        "C1": -0.36015,
+        "C2": 0.877093,
+        "C3": 0.4,
+        "C4": 15.340981,
+        "C5": 1.0
+       },
+       "vacuous": [],
+       "phases_reached": [
+        "P1_approach",
+        "P2_yield_clear",
+        "P3_commit"
+       ],
+       "resolved": false,
+       "completed": false,
+       "entered": true
+      },
+      {
+       "file": "geometric_guard/pathisclear_16m/pc901_CE007.json",
+       "episode_id": "pc901_CE007",
+       "certificate_id": "CE007_C1_ec6211901ed6b190",
+       "status": "collision",
+       "rho": -0.290955,
+       "argmin_contract": "C1",
+       "per_contract": {
+        "C1": -0.290955,
+        "C2": 6.692653,
+        "C3": 0.55,
+        "C4": 15.460365,
+        "C5": 1.0
+       },
+       "vacuous": [],
+       "phases_reached": [
+        "P1_approach",
+        "P2_yield_clear",
+        "P3_commit"
+       ],
+       "resolved": false,
+       "completed": false,
+       "entered": true
+      },
+      {
+       "file": "geometric_guard/pathisclear_16m/pc901_CE008.json",
+       "episode_id": "pc901_CE008",
+       "certificate_id": "CE008_C2_62ca4fa36005920e",
+       "status": "collision",
+       "rho": -0.421063,
+       "argmin_contract": "C1",
+       "per_contract": {
+        "C1": -0.421063,
+        "C2": 0.06178,
+        "C3": 30.0,
+        "C4": 15.419369,
+        "C5": 1.0
+       },
+       "vacuous": [],
+       "phases_reached": [
+        "P1_approach",
+        "P2_yield_clear",
+        "P3_commit"
+       ],
+       "resolved": false,
+       "completed": false,
+       "entered": true
+      },
+      {
+       "file": "geometric_guard/pathisclear_16m/pc901_CE009.json",
+       "episode_id": "pc901_CE009",
+       "certificate_id": "CE009_C1_bb1a8d764f269c24",
+       "status": "ok",
+       "rho": -0.081624,
+       "argmin_contract": "C1",
+       "per_contract": {
+        "C1": -0.081624,
+        "C2": 5.286936,
+        "C3": 7.3,
+        "C4": 10.116312,
+        "C5": 1.0
+       },
+       "vacuous": [],
+       "phases_reached": [
+        "P1_approach",
+        "P2_yield_clear",
+        "P3_commit",
+        "P4_settle"
+       ],
+       "resolved": false,
+       "completed": true,
+       "entered": true
+      },
+      {
+       "file": "geometric_guard/pathisclear_16m/pc901_CE010.json",
+       "episode_id": "pc901_CE010",
+       "certificate_id": "CE010_C2_56c436b720d319ef",
+       "status": "collision",
+       "rho": -1.384721,
+       "argmin_contract": "C2",
+       "per_contract": {
+        "C1": -0.250517,
+        "C2": -1.384721,
+        "C3": 30.0,
+        "C4": 15.440709,
+        "C5": 1.0
+       },
+       "vacuous": [],
+       "phases_reached": [
+        "P1_approach",
+        "P2_yield_clear",
+        "P3_commit"
+       ],
+       "resolved": false,
+       "completed": false,
+       "entered": true
+      },
+      {
+       "file": "geometric_guard/pathisclear_16m/pc901_CE011.json",
+       "episode_id": "pc901_CE011",
+       "certificate_id": "CE011_C2_1673111e21cbfa9e",
+       "status": "collision",
+       "rho": -1.251587,
+       "argmin_contract": "C2",
+       "per_contract": {
+        "C1": -0.253758,
+        "C2": -1.251587,
+        "C3": 30.0,
+        "C4": 15.390784,
+        "C5": 1.0
+       },
+       "vacuous": [],
+       "phases_reached": [
+        "P1_approach",
+        "P2_yield_clear",
+        "P3_commit"
+       ],
+       "resolved": false,
+       "completed": false,
+       "entered": true
+      },
+      {
+       "file": "geometric_guard/pathisclear_16m/pc901_CE012.json",
+       "episode_id": "pc901_CE012",
+       "certificate_id": "CE012_C1_1ec6b8b64324dbd4",
+       "status": "collision",
+       "rho": -0.310594,
+       "argmin_contract": "C1",
+       "per_contract": {
+        "C1": -0.310594,
+        "C2": 3.907527,
+        "C3": 30.0,
+        "C4": 15.396189,
+        "C5": 1.0
+       },
+       "vacuous": [],
+       "phases_reached": [
+        "P1_approach",
+        "P2_yield_clear",
+        "P3_commit"
+       ],
+       "resolved": false,
+       "completed": false,
+       "entered": true
+      },
+      {
+       "file": "geometric_guard/pathisclear_16m/pc901_CE013.json",
+       "episode_id": "pc901_CE013",
+       "certificate_id": "CE013_C2_ade4dfeb1e7cffee",
+       "status": "collision",
+       "rho": -0.767035,
+       "argmin_contract": "C2",
+       "per_contract": {
+        "C1": -0.240415,
+        "C2": -0.767035,
+        "C3": 30.0,
+        "C4": 16.33978,
+        "C5": 1.0
+       },
+       "vacuous": [],
+       "phases_reached": [
+        "P1_approach",
+        "P2_yield_clear",
+        "P3_commit"
+       ],
+       "resolved": false,
+       "completed": false,
+       "entered": true
+      },
+      {
+       "file": "geometric_guard/pathisclear_16m/pc901_CE014.json",
+       "episode_id": "pc901_CE014",
+       "certificate_id": "CE014_C1_8efa0eee117bb95e",
+       "status": "collision",
+       "rho": -0.292612,
+       "argmin_contract": "C1",
+       "per_contract": {
+        "C1": -0.292612,
+        "C2": 4.801474,
+        "C3": 30.0,
+        "C4": 17.927965,
+        "C5": 1.0
+       },
+       "vacuous": [],
+       "phases_reached": [
+        "P1_approach",
+        "P2_yield_clear",
+        "P3_commit"
+       ],
+       "resolved": false,
+       "completed": false,
+       "entered": true
+      },
+      {
+       "file": "geometric_guard/pathisclear_16m/pc901_CE015.json",
+       "episode_id": "pc901_CE015",
+       "certificate_id": "CE015_C1_40924ca98fb43db1",
+       "status": "collision",
+       "rho": -0.353556,
+       "argmin_contract": "C1",
+       "per_contract": {
+        "C1": -0.353556,
+        "C2": 27.0,
+        "C3": 30.0,
+        "C4": 17.972226,
+        "C5": 1.0
+       },
+       "vacuous": [],
+       "phases_reached": [
+        "P1_approach",
+        "P2_yield_clear",
+        "P3_commit"
+       ],
+       "resolved": false,
+       "completed": false,
+       "entered": true
+      },
+      {
+       "file": "geometric_guard/pathisclear_16m/pc901_CE016.json",
+       "episode_id": "pc901_CE016",
+       "certificate_id": "CE016_C2_9d3ea4ae1a67ec58",
+       "status": "collision",
+       "rho": -1.515559,
+       "argmin_contract": "C2",
+       "per_contract": {
+        "C1": -0.268248,
+        "C2": -1.515559,
+        "C3": 30.0,
+        "C4": 17.97676,
+        "C5": 1.0
+       },
+       "vacuous": [],
+       "phases_reached": [
+        "P1_approach",
+        "P2_yield_clear",
+        "P3_commit"
+       ],
+       "resolved": false,
+       "completed": false,
+       "entered": true
+      },
+      {
+       "file": "geometric_guard/pathisclear_16m/pc901_CE017.json",
+       "episode_id": "pc901_CE017",
+       "certificate_id": "CE017_C3_8280bf9852dc7834",
+       "status": "collision",
+       "rho": -2.75,
+       "argmin_contract": "C3",
+       "per_contract": {
+        "C1": -0.373767,
+        "C2": 1.186643,
+        "C3": -2.75,
+        "C4": 16.299313,
+        "C5": 1.0
+       },
+       "vacuous": [],
+       "phases_reached": [
+        "P1_approach",
+        "P2_yield_clear",
+        "P3_commit"
+       ],
+       "resolved": false,
+       "completed": false,
+       "entered": true
+      },
+      {
+       "file": "geometric_guard/pathisclear_16m/pc901_CE018.json",
+       "episode_id": "pc901_CE018",
+       "certificate_id": "CE018_C2_80d8dfdf2253ea72",
+       "status": "collision",
+       "rho": -1.462087,
+       "argmin_contract": "C2",
+       "per_contract": {
+        "C1": -0.291568,
+        "C2": -1.462087,
+        "C3": 1.0,
+        "C4": 16.290255,
+        "C5": 1.0
+       },
+       "vacuous": [],
+       "phases_reached": [
+        "P1_approach",
+        "P2_yield_clear",
+        "P3_commit"
+       ],
+       "resolved": false,
+       "completed": false,
+       "entered": true
+      },
+      {
+       "file": "geometric_guard/pathisclear_16m/pc901_CE019.json",
+       "episode_id": "pc901_CE019",
+       "certificate_id": "CE019_C1_0b3097eb9e85eede",
+       "status": "collision",
+       "rho": -0.271433,
+       "argmin_contract": "C1",
+       "per_contract": {
+        "C1": -0.271433,
+        "C2": 2.089413,
+        "C3": 30.0,
+        "C4": 19.623212,
+        "C5": 1.0
+       },
+       "vacuous": [],
+       "phases_reached": [
+        "P1_approach",
+        "P2_yield_clear",
+        "P3_commit"
+       ],
+       "resolved": false,
+       "completed": false,
+       "entered": true
+      },
+      {
+       "file": "geometric_guard/pathisclear_16m/pc901_CE020.json",
+       "episode_id": "pc901_CE020",
+       "certificate_id": "CE020_C1_d3346d835dab0fd8",
+       "status": "collision",
+       "rho": -0.276562,
+       "argmin_contract": "C1",
+       "per_contract": {
+        "C1": -0.276562,
+        "C2": 4.904933,
+        "C3": 30.0,
+        "C4": 19.613804,
+        "C5": 1.0
+       },
+       "vacuous": [],
+       "phases_reached": [
+        "P1_approach",
+        "P2_yield_clear",
+        "P3_commit"
+       ],
+       "resolved": false,
+       "completed": false,
+       "entered": true
+      }
+     ]
+    },
+    {
+     "directory": "data/dsl_probe_traces/geometric_guard/pathisclear_24m",
+     "program": "data/scenarios/dsl_probe/diag.bt",
+     "program_sha": "6d1bdc43d2ad6365",
+     "n": 20,
+     "resolved": 0,
+     "completed": 2,
+     "entered": 20,
+     "resolved_and_completed": 0,
+     "description": "PathIsClear(dist_m=24.0) added to the committing branch",
+     "episodes": [
+      {
+       "file": "geometric_guard/pathisclear_24m/pc207_CE001.json",
+       "episode_id": "pc207_CE001",
+       "certificate_id": "CE001_C2_44b9f97d05fda474",
+       "status": "collision",
+       "rho": -1.252868,
+       "argmin_contract": "C2",
+       "per_contract": {
+        "C1": -0.270529,
+        "C2": -1.252868,
+        "C3": 30.0,
+        "C4": 15.441316,
+        "C5": 1.0
+       },
+       "vacuous": [],
+       "phases_reached": [
+        "P1_approach",
+        "P2_yield_clear",
+        "P3_commit"
+       ],
+       "resolved": false,
+       "completed": false,
+       "entered": true
+      },
+      {
+       "file": "geometric_guard/pathisclear_24m/pc207_CE002.json",
+       "episode_id": "pc207_CE002",
+       "certificate_id": "CE002_C2_86714546fca524ca",
+       "status": "collision",
+       "rho": -0.589644,
+       "argmin_contract": "C2",
+       "per_contract": {
+        "C1": -0.329154,
+        "C2": -0.589644,
+        "C3": 30.0,
+        "C4": 17.17043,
+        "C5": 1.0
+       },
+       "vacuous": [],
+       "phases_reached": [
+        "P1_approach",
+        "P2_yield_clear",
+        "P3_commit"
+       ],
+       "resolved": false,
+       "completed": false,
+       "entered": true
+      },
+      {
+       "file": "geometric_guard/pathisclear_24m/pc207_CE003.json",
+       "episode_id": "pc207_CE003",
+       "certificate_id": "CE003_C1_969f15c8657c8fa6",
+       "status": "collision",
+       "rho": -1.8,
+       "argmin_contract": "C3",
+       "per_contract": {
+        "C1": -0.297077,
+        "C2": 15.486288,
+        "C3": -1.8,
+        "C4": 16.299024,
+        "C5": 1.0
+       },
+       "vacuous": [],
+       "phases_reached": [
+        "P1_approach",
+        "P2_yield_clear",
+        "P3_commit"
+       ],
+       "resolved": false,
+       "completed": false,
+       "entered": true
+      },
+      {
+       "file": "geometric_guard/pathisclear_24m/pc207_CE004.json",
+       "episode_id": "pc207_CE004",
+       "certificate_id": "CE004_C1_445649d2b99e873a",
+       "status": "ok",
+       "rho": -0.229334,
+       "argmin_contract": "C1",
+       "per_contract": {
+        "C1": -0.229334,
+        "C2": 27.0,
+        "C3": 1.0,
+        "C4": 7.979348,
+        "C5": 1.0
+       },
+       "vacuous": [],
+       "phases_reached": [
+        "P1_approach",
+        "P2_yield_clear",
+        "P3_commit",
+        "P4_settle"
+       ],
+       "resolved": false,
+       "completed": true,
+       "entered": true
+      },
+      {
+       "file": "geometric_guard/pathisclear_24m/pc207_CE005.json",
+       "episode_id": "pc207_CE005",
+       "certificate_id": "CE005_C1_5b773c94ec4bb251",
+       "status": "collision",
+       "rho": -0.55,
+       "argmin_contract": "C3",
+       "per_contract": {
+        "C1": -0.312872,
+        "C2": 4.386933,
+        "C3": -0.55,
+        "C4": 15.414245,
+        "C5": 1.0
+       },
+       "vacuous": [],
+       "phases_reached": [
+        "P1_approach",
+        "P2_yield_clear",
+        "P3_commit"
+       ],
+       "resolved": false,
+       "completed": false,
+       "entered": true
+      },
+      {
+       "file": "geometric_guard/pathisclear_24m/pc207_CE006.json",
+       "episode_id": "pc207_CE006",
+       "certificate_id": "CE006_C2_1e173dcbe748c286",
+       "status": "collision",
+       "rho": -0.36015,
+       "argmin_contract": "C1",
+       "per_contract": {
+        "C1": -0.36015,
+        "C2": 0.877093,
+        "C3": 0.4,
+        "C4": 15.41019,
+        "C5": 1.0
+       },
+       "vacuous": [],
+       "phases_reached": [
+        "P1_approach",
+        "P2_yield_clear",
+        "P3_commit"
+       ],
+       "resolved": false,
+       "completed": false,
+       "entered": true
+      },
+      {
+       "file": "geometric_guard/pathisclear_24m/pc207_CE007.json",
+       "episode_id": "pc207_CE007",
+       "certificate_id": "CE007_C1_ec6211901ed6b190",
+       "status": "collision",
+       "rho": -0.290955,
+       "argmin_contract": "C1",
+       "per_contract": {
+        "C1": -0.290955,
+        "C2": 6.692653,
+        "C3": 0.55,
+        "C4": 15.40713,
+        "C5": 1.0
+       },
+       "vacuous": [],
+       "phases_reached": [
+        "P1_approach",
+        "P2_yield_clear",
+        "P3_commit"
+       ],
+       "resolved": false,
+       "completed": false,
+       "entered": true
+      },
+      {
+       "file": "geometric_guard/pathisclear_24m/pc207_CE008.json",
+       "episode_id": "pc207_CE008",
+       "certificate_id": "CE008_C2_62ca4fa36005920e",
+       "status": "collision",
+       "rho": -0.421063,
+       "argmin_contract": "C1",
+       "per_contract": {
+        "C1": -0.421063,
+        "C2": 0.06178,
+        "C3": 30.0,
+        "C4": 15.406183,
+        "C5": 1.0
+       },
+       "vacuous": [],
+       "phases_reached": [
+        "P1_approach",
+        "P2_yield_clear",
+        "P3_commit"
+       ],
+       "resolved": false,
+       "completed": false,
+       "entered": true
+      },
+      {
+       "file": "geometric_guard/pathisclear_24m/pc207_CE009.json",
+       "episode_id": "pc207_CE009",
+       "certificate_id": "CE009_C1_bb1a8d764f269c24",
+       "status": "ok",
+       "rho": -0.081624,
+       "argmin_contract": "C1",
+       "per_contract": {
+        "C1": -0.081624,
+        "C2": 5.286936,
+        "C3": 7.3,
+        "C4": 10.075396,
+        "C5": 1.0
+       },
+       "vacuous": [],
+       "phases_reached": [
+        "P1_approach",
+        "P2_yield_clear",
+        "P3_commit",
+        "P4_settle"
+       ],
+       "resolved": false,
+       "completed": true,
+       "entered": true
+      },
+      {
+       "file": "geometric_guard/pathisclear_24m/pc207_CE010.json",
+       "episode_id": "pc207_CE010",
+       "certificate_id": "CE010_C2_56c436b720d319ef",
+       "status": "collision",
+       "rho": -1.384721,
+       "argmin_contract": "C2",
+       "per_contract": {
+        "C1": -0.250517,
+        "C2": -1.384721,
+        "C3": 30.0,
+        "C4": 15.44577,
+        "C5": 1.0
+       },
+       "vacuous": [],
+       "phases_reached": [
+        "P1_approach",
+        "P2_yield_clear",
+        "P3_commit"
+       ],
+       "resolved": false,
+       "completed": false,
+       "entered": true
+      },
+      {
+       "file": "geometric_guard/pathisclear_24m/pc207_CE011.json",
+       "episode_id": "pc207_CE011",
+       "certificate_id": "CE011_C2_1673111e21cbfa9e",
+       "status": "collision",
+       "rho": -1.251587,
+       "argmin_contract": "C2",
+       "per_contract": {
+        "C1": -0.253758,
+        "C2": -1.251587,
+        "C3": 30.0,
+        "C4": 15.330351,
+        "C5": 1.0
+       },
+       "vacuous": [],
+       "phases_reached": [
+        "P1_approach",
+        "P2_yield_clear",
+        "P3_commit"
+       ],
+       "resolved": false,
+       "completed": false,
+       "entered": true
+      },
+      {
+       "file": "geometric_guard/pathisclear_24m/pc207_CE012.json",
+       "episode_id": "pc207_CE012",
+       "certificate_id": "CE012_C1_1ec6b8b64324dbd4",
+       "status": "collision",
+       "rho": -0.310594,
+       "argmin_contract": "C1",
+       "per_contract": {
+        "C1": -0.310594,
+        "C2": 3.907527,
+        "C3": 30.0,
+        "C4": 15.466568,
+        "C5": 1.0
+       },
+       "vacuous": [],
+       "phases_reached": [
+        "P1_approach",
+        "P2_yield_clear",
+        "P3_commit"
+       ],
+       "resolved": false,
+       "completed": false,
+       "entered": true
+      },
+      {
+       "file": "geometric_guard/pathisclear_24m/pc207_CE013.json",
+       "episode_id": "pc207_CE013",
+       "certificate_id": "CE013_C2_ade4dfeb1e7cffee",
+       "status": "collision",
+       "rho": -0.767035,
+       "argmin_contract": "C2",
+       "per_contract": {
+        "C1": -0.240415,
+        "C2": -0.767035,
+        "C3": 30.0,
+        "C4": 16.280107,
+        "C5": 1.0
+       },
+       "vacuous": [],
+       "phases_reached": [
+        "P1_approach",
+        "P2_yield_clear",
+        "P3_commit"
+       ],
+       "resolved": false,
+       "completed": false,
+       "entered": true
+      },
+      {
+       "file": "geometric_guard/pathisclear_24m/pc207_CE014.json",
+       "episode_id": "pc207_CE014",
+       "certificate_id": "CE014_C1_8efa0eee117bb95e",
+       "status": "collision",
+       "rho": -0.292612,
+       "argmin_contract": "C1",
+       "per_contract": {
+        "C1": -0.292612,
+        "C2": 4.801474,
+        "C3": 30.0,
+        "C4": 18.007048,
+        "C5": 1.0
+       },
+       "vacuous": [],
+       "phases_reached": [
+        "P1_approach",
+        "P2_yield_clear",
+        "P3_commit"
+       ],
+       "resolved": false,
+       "completed": false,
+       "entered": true
+      },
+      {
+       "file": "geometric_guard/pathisclear_24m/pc207_CE015.json",
+       "episode_id": "pc207_CE015",
+       "certificate_id": "CE015_C1_40924ca98fb43db1",
+       "status": "collision",
+       "rho": -0.353556,
+       "argmin_contract": "C1",
+       "per_contract": {
+        "C1": -0.353556,
+        "C2": 27.0,
+        "C3": 30.0,
+        "C4": 17.9588,
+        "C5": 1.0
+       },
+       "vacuous": [],
+       "phases_reached": [
+        "P1_approach",
+        "P2_yield_clear",
+        "P3_commit"
+       ],
+       "resolved": false,
+       "completed": false,
+       "entered": true
+      },
+      {
+       "file": "geometric_guard/pathisclear_24m/pc207_CE016.json",
+       "episode_id": "pc207_CE016",
+       "certificate_id": "CE016_C2_9d3ea4ae1a67ec58",
+       "status": "collision",
+       "rho": -1.515559,
+       "argmin_contract": "C2",
+       "per_contract": {
+        "C1": -0.268248,
+        "C2": -1.515559,
+        "C3": 30.0,
+        "C4": 17.938889,
+        "C5": 1.0
+       },
+       "vacuous": [],
+       "phases_reached": [
+        "P1_approach",
+        "P2_yield_clear",
+        "P3_commit"
+       ],
+       "resolved": false,
+       "completed": false,
+       "entered": true
+      },
+      {
+       "file": "geometric_guard/pathisclear_24m/pc207_CE017.json",
+       "episode_id": "pc207_CE017",
+       "certificate_id": "CE017_C3_8280bf9852dc7834",
+       "status": "collision",
+       "rho": -2.75,
+       "argmin_contract": "C3",
+       "per_contract": {
+        "C1": -0.373767,
+        "C2": 1.186643,
+        "C3": -2.75,
+        "C4": 16.293127,
+        "C5": 1.0
+       },
+       "vacuous": [],
+       "phases_reached": [
+        "P1_approach",
+        "P2_yield_clear",
+        "P3_commit"
+       ],
+       "resolved": false,
+       "completed": false,
+       "entered": true
+      },
+      {
+       "file": "geometric_guard/pathisclear_24m/pc207_CE018.json",
+       "episode_id": "pc207_CE018",
+       "certificate_id": "CE018_C2_80d8dfdf2253ea72",
+       "status": "collision",
+       "rho": -1.462087,
+       "argmin_contract": "C2",
+       "per_contract": {
+        "C1": -0.291568,
+        "C2": -1.462087,
+        "C3": 1.0,
+        "C4": 16.300962,
+        "C5": 1.0
+       },
+       "vacuous": [],
+       "phases_reached": [
+        "P1_approach",
+        "P2_yield_clear",
+        "P3_commit"
+       ],
+       "resolved": false,
+       "completed": false,
+       "entered": true
+      },
+      {
+       "file": "geometric_guard/pathisclear_24m/pc207_CE019.json",
+       "episode_id": "pc207_CE019",
+       "certificate_id": "CE019_C1_0b3097eb9e85eede",
+       "status": "collision",
+       "rho": -0.271433,
+       "argmin_contract": "C1",
+       "per_contract": {
+        "C1": -0.271433,
+        "C2": 2.089413,
+        "C3": 30.0,
+        "C4": 19.637304,
+        "C5": 1.0
+       },
+       "vacuous": [],
+       "phases_reached": [
+        "P1_approach",
+        "P2_yield_clear",
+        "P3_commit"
+       ],
+       "resolved": false,
+       "completed": false,
+       "entered": true
+      },
+      {
+       "file": "geometric_guard/pathisclear_24m/pc207_CE020.json",
+       "episode_id": "pc207_CE020",
+       "certificate_id": "CE020_C1_d3346d835dab0fd8",
+       "status": "collision",
+       "rho": -0.276562,
+       "argmin_contract": "C1",
+       "per_contract": {
+        "C1": -0.276562,
+        "C2": 4.904933,
+        "C3": 30.0,
+        "C4": 19.587902,
+        "C5": 1.0
+       },
+       "vacuous": [],
+       "phases_reached": [
+        "P1_approach",
+        "P2_yield_clear",
+        "P3_commit"
+       ],
+       "resolved": false,
+       "completed": false,
+       "entered": true
+      }
+     ]
+    },
+    {
+     "directory": "data/dsl_probe_traces/geometric_guard/pathisclear_32m",
+     "program": "data/scenarios/dsl_probe/geometric_guard_32m.bt",
+     "program_sha": "9ff1eeb672bd1ac5",
+     "n": 20,
+     "resolved": 0,
+     "completed": 2,
+     "entered": 20,
+     "resolved_and_completed": 0,
+     "description": "PathIsClear(dist_m=32.0) added to the committing branch",
+     "episodes": [
+      {
+       "file": "geometric_guard/pathisclear_32m/pc524_CE001.json",
+       "episode_id": "pc524_CE001",
+       "certificate_id": "CE001_C2_44b9f97d05fda474",
+       "status": "collision",
+       "rho": -1.252868,
+       "argmin_contract": "C2",
+       "per_contract": {
+        "C1": -0.270529,
+        "C2": -1.252868,
+        "C3": 30.0,
+        "C4": 15.465929,
+        "C5": 1.0
+       },
+       "vacuous": [],
+       "phases_reached": [
+        "P1_approach",
+        "P2_yield_clear",
+        "P3_commit"
+       ],
+       "resolved": false,
+       "completed": false,
+       "entered": true
+      },
+      {
+       "file": "geometric_guard/pathisclear_32m/pc524_CE002.json",
+       "episode_id": "pc524_CE002",
+       "certificate_id": "CE002_C2_86714546fca524ca",
+       "status": "collision",
+       "rho": -0.589644,
+       "argmin_contract": "C2",
+       "per_contract": {
+        "C1": -0.329154,
+        "C2": -0.589644,
+        "C3": 30.0,
+        "C4": 17.073449,
+        "C5": 1.0
+       },
+       "vacuous": [],
+       "phases_reached": [
+        "P1_approach",
+        "P2_yield_clear",
+        "P3_commit"
+       ],
+       "resolved": false,
+       "completed": false,
+       "entered": true
+      },
+      {
+       "file": "geometric_guard/pathisclear_32m/pc524_CE003.json",
+       "episode_id": "pc524_CE003",
+       "certificate_id": "CE003_C1_969f15c8657c8fa6",
+       "status": "collision",
+       "rho": -1.8,
+       "argmin_contract": "C3",
+       "per_contract": {
+        "C1": -0.297077,
+        "C2": 15.486288,
+        "C3": -1.8,
+        "C4": 16.290041,
+        "C5": 1.0
+       },
+       "vacuous": [],
+       "phases_reached": [
+        "P1_approach",
+        "P2_yield_clear",
+        "P3_commit"
+       ],
+       "resolved": false,
+       "completed": false,
+       "entered": true
+      },
+      {
+       "file": "geometric_guard/pathisclear_32m/pc524_CE004.json",
+       "episode_id": "pc524_CE004",
+       "certificate_id": "CE004_C1_445649d2b99e873a",
+       "status": "ok",
+       "rho": -0.229334,
+       "argmin_contract": "C1",
+       "per_contract": {
+        "C1": -0.229334,
+        "C2": 27.0,
+        "C3": 1.0,
+        "C4": 8.086786,
+        "C5": 1.0
+       },
+       "vacuous": [],
+       "phases_reached": [
+        "P1_approach",
+        "P2_yield_clear",
+        "P3_commit",
+        "P4_settle"
+       ],
+       "resolved": false,
+       "completed": true,
+       "entered": true
+      },
+      {
+       "file": "geometric_guard/pathisclear_32m/pc524_CE005.json",
+       "episode_id": "pc524_CE005",
+       "certificate_id": "CE005_C1_5b773c94ec4bb251",
+       "status": "collision",
+       "rho": -0.55,
+       "argmin_contract": "C3",
+       "per_contract": {
+        "C1": -0.312872,
+        "C2": 4.386933,
+        "C3": -0.55,
+        "C4": 15.378596,
+        "C5": 1.0
+       },
+       "vacuous": [],
+       "phases_reached": [
+        "P1_approach",
+        "P2_yield_clear",
+        "P3_commit"
+       ],
+       "resolved": false,
+       "completed": false,
+       "entered": true
+      },
+      {
+       "file": "geometric_guard/pathisclear_32m/pc524_CE006.json",
+       "episode_id": "pc524_CE006",
+       "certificate_id": "CE006_C2_1e173dcbe748c286",
+       "status": "collision",
+       "rho": -0.36015,
+       "argmin_contract": "C1",
+       "per_contract": {
+        "C1": -0.36015,
+        "C2": 0.877093,
+        "C3": 0.4,
+        "C4": 15.399956,
+        "C5": 1.0
+       },
+       "vacuous": [],
+       "phases_reached": [
+        "P1_approach",
+        "P2_yield_clear",
+        "P3_commit"
+       ],
+       "resolved": false,
+       "completed": false,
+       "entered": true
+      },
+      {
+       "file": "geometric_guard/pathisclear_32m/pc524_CE007.json",
+       "episode_id": "pc524_CE007",
+       "certificate_id": "CE007_C1_ec6211901ed6b190",
+       "status": "collision",
+       "rho": -0.290955,
+       "argmin_contract": "C1",
+       "per_contract": {
+        "C1": -0.290955,
+        "C2": 6.692653,
+        "C3": 0.55,
+        "C4": 15.448516,
+        "C5": 1.0
+       },
+       "vacuous": [],
+       "phases_reached": [
+        "P1_approach",
+        "P2_yield_clear",
+        "P3_commit"
+       ],
+       "resolved": false,
+       "completed": false,
+       "entered": true
+      },
+      {
+       "file": "geometric_guard/pathisclear_32m/pc524_CE008.json",
+       "episode_id": "pc524_CE008",
+       "certificate_id": "CE008_C2_62ca4fa36005920e",
+       "status": "collision",
+       "rho": -0.421063,
+       "argmin_contract": "C1",
+       "per_contract": {
+        "C1": -0.421063,
+        "C2": 0.06178,
+        "C3": 30.0,
+        "C4": 15.436649,
+        "C5": 1.0
+       },
+       "vacuous": [],
+       "phases_reached": [
+        "P1_approach",
+        "P2_yield_clear",
+        "P3_commit"
+       ],
+       "resolved": false,
+       "completed": false,
+       "entered": true
+      },
+      {
+       "file": "geometric_guard/pathisclear_32m/pc524_CE009.json",
+       "episode_id": "pc524_CE009",
+       "certificate_id": "CE009_C1_bb1a8d764f269c24",
+       "status": "ok",
+       "rho": -0.081624,
+       "argmin_contract": "C1",
+       "per_contract": {
+        "C1": -0.081624,
+        "C2": 5.286936,
+        "C3": 7.35,
+        "C4": 9.93588,
+        "C5": 1.0
+       },
+       "vacuous": [],
+       "phases_reached": [
+        "P1_approach",
+        "P2_yield_clear",
+        "P3_commit",
+        "P4_settle"
+       ],
+       "resolved": false,
+       "completed": true,
+       "entered": true
+      },
+      {
+       "file": "geometric_guard/pathisclear_32m/pc524_CE010.json",
+       "episode_id": "pc524_CE010",
+       "certificate_id": "CE010_C2_56c436b720d319ef",
+       "status": "collision",
+       "rho": -1.384721,
+       "argmin_contract": "C2",
+       "per_contract": {
+        "C1": -0.250517,
+        "C2": -1.384721,
+        "C3": 30.0,
+        "C4": 15.465952,
+        "C5": 1.0
+       },
+       "vacuous": [],
+       "phases_reached": [
+        "P1_approach",
+        "P2_yield_clear",
+        "P3_commit"
+       ],
+       "resolved": false,
+       "completed": false,
+       "entered": true
+      },
+      {
+       "file": "geometric_guard/pathisclear_32m/pc524_CE011.json",
+       "episode_id": "pc524_CE011",
+       "certificate_id": "CE011_C2_1673111e21cbfa9e",
+       "status": "collision",
+       "rho": -1.251587,
+       "argmin_contract": "C2",
+       "per_contract": {
+        "C1": -0.253758,
+        "C2": -1.251587,
+        "C3": 30.0,
+        "C4": 15.412675,
+        "C5": 1.0
+       },
+       "vacuous": [],
+       "phases_reached": [
+        "P1_approach",
+        "P2_yield_clear",
+        "P3_commit"
+       ],
+       "resolved": false,
+       "completed": false,
+       "entered": true
+      },
+      {
+       "file": "geometric_guard/pathisclear_32m/pc524_CE012.json",
+       "episode_id": "pc524_CE012",
+       "certificate_id": "CE012_C1_1ec6b8b64324dbd4",
+       "status": "collision",
+       "rho": -0.310594,
+       "argmin_contract": "C1",
+       "per_contract": {
+        "C1": -0.310594,
+        "C2": 3.907527,
+        "C3": 30.0,
+        "C4": 15.41107,
+        "C5": 1.0
+       },
+       "vacuous": [],
+       "phases_reached": [
+        "P1_approach",
+        "P2_yield_clear",
+        "P3_commit"
+       ],
+       "resolved": false,
+       "completed": false,
+       "entered": true
+      },
+      {
+       "file": "geometric_guard/pathisclear_32m/pc524_CE013.json",
+       "episode_id": "pc524_CE013",
+       "certificate_id": "CE013_C2_ade4dfeb1e7cffee",
+       "status": "collision",
+       "rho": -0.767035,
+       "argmin_contract": "C2",
+       "per_contract": {
+        "C1": -0.240415,
+        "C2": -0.767035,
+        "C3": 30.0,
+        "C4": 16.403773,
+        "C5": 1.0
+       },
+       "vacuous": [],
+       "phases_reached": [
+        "P1_approach",
+        "P2_yield_clear",
+        "P3_commit"
+       ],
+       "resolved": false,
+       "completed": false,
+       "entered": true
+      },
+      {
+       "file": "geometric_guard/pathisclear_32m/pc524_CE014.json",
+       "episode_id": "pc524_CE014",
+       "certificate_id": "CE014_C1_8efa0eee117bb95e",
+       "status": "collision",
+       "rho": -0.292612,
+       "argmin_contract": "C1",
+       "per_contract": {
+        "C1": -0.292612,
+        "C2": 4.801474,
+        "C3": 30.0,
+        "C4": 18.07024,
+        "C5": 1.0
+       },
+       "vacuous": [],
+       "phases_reached": [
+        "P1_approach",
+        "P2_yield_clear",
+        "P3_commit"
+       ],
+       "resolved": false,
+       "completed": false,
+       "entered": true
+      },
+      {
+       "file": "geometric_guard/pathisclear_32m/pc524_CE015.json",
+       "episode_id": "pc524_CE015",
+       "certificate_id": "CE015_C1_40924ca98fb43db1",
+       "status": "collision",
+       "rho": -0.353556,
+       "argmin_contract": "C1",
+       "per_contract": {
+        "C1": -0.353556,
+        "C2": 27.0,
+        "C3": 30.0,
+        "C4": 17.987387,
+        "C5": 1.0
+       },
+       "vacuous": [],
+       "phases_reached": [
+        "P1_approach",
+        "P2_yield_clear",
+        "P3_commit"
+       ],
+       "resolved": false,
+       "completed": false,
+       "entered": true
+      },
+      {
+       "file": "geometric_guard/pathisclear_32m/pc524_CE016.json",
+       "episode_id": "pc524_CE016",
+       "certificate_id": "CE016_C2_9d3ea4ae1a67ec58",
+       "status": "collision",
+       "rho": -1.515559,
+       "argmin_contract": "C2",
+       "per_contract": {
+        "C1": -0.268248,
+        "C2": -1.515559,
+        "C3": 30.0,
+        "C4": 17.961108,
+        "C5": 1.0
+       },
+       "vacuous": [],
+       "phases_reached": [
+        "P1_approach",
+        "P2_yield_clear",
+        "P3_commit"
+       ],
+       "resolved": false,
+       "completed": false,
+       "entered": true
+      },
+      {
+       "file": "geometric_guard/pathisclear_32m/pc524_CE017.json",
+       "episode_id": "pc524_CE017",
+       "certificate_id": "CE017_C3_8280bf9852dc7834",
+       "status": "collision",
+       "rho": -2.8,
+       "argmin_contract": "C3",
+       "per_contract": {
+        "C1": -0.373767,
+        "C2": 1.186643,
+        "C3": -2.8,
+        "C4": 16.290041,
+        "C5": 1.0
+       },
+       "vacuous": [],
+       "phases_reached": [
+        "P1_approach",
+        "P2_yield_clear",
+        "P3_commit"
+       ],
+       "resolved": false,
+       "completed": false,
+       "entered": true
+      },
+      {
+       "file": "geometric_guard/pathisclear_32m/pc524_CE018.json",
+       "episode_id": "pc524_CE018",
+       "certificate_id": "CE018_C2_80d8dfdf2253ea72",
+       "status": "collision",
+       "rho": -1.462087,
+       "argmin_contract": "C2",
+       "per_contract": {
+        "C1": -0.291568,
+        "C2": -1.462087,
+        "C3": 1.0,
+        "C4": 16.281433,
+        "C5": 1.0
+       },
+       "vacuous": [],
+       "phases_reached": [
+        "P1_approach",
+        "P2_yield_clear",
+        "P3_commit"
+       ],
+       "resolved": false,
+       "completed": false,
+       "entered": true
+      },
+      {
+       "file": "geometric_guard/pathisclear_32m/pc524_CE019.json",
+       "episode_id": "pc524_CE019",
+       "certificate_id": "CE019_C1_0b3097eb9e85eede",
+       "status": "collision",
+       "rho": -0.271433,
+       "argmin_contract": "C1",
+       "per_contract": {
+        "C1": -0.271433,
+        "C2": 2.089413,
+        "C3": 30.0,
+        "C4": 19.69067,
+        "C5": 1.0
+       },
+       "vacuous": [],
+       "phases_reached": [
+        "P1_approach",
+        "P2_yield_clear",
+        "P3_commit"
+       ],
+       "resolved": false,
+       "completed": false,
+       "entered": true
+      },
+      {
+       "file": "geometric_guard/pathisclear_32m/pc524_CE020.json",
+       "episode_id": "pc524_CE020",
+       "certificate_id": "CE020_C1_d3346d835dab0fd8",
+       "status": "collision",
+       "rho": -0.276562,
+       "argmin_contract": "C1",
+       "per_contract": {
+        "C1": -0.276562,
+        "C2": 4.904933,
+        "C3": 30.0,
+        "C4": 19.623347,
+        "C5": 1.0
+       },
+       "vacuous": [],
+       "phases_reached": [
+        "P1_approach",
+        "P2_yield_clear",
+        "P3_commit"
+       ],
+       "resolved": false,
+       "completed": false,
+       "entered": true
+      }
+     ]
+    },
+    {
+     "directory": "data/dsl_probe_traces/geometric_guard/green_and_pathisclear_24m",
+     "program": "data/scenarios/dsl_probe/pc.bt",
+     "program_sha": "dd54c6d1929eb5b7",
+     "n": 20,
+     "resolved": 0,
+     "completed": 2,
+     "entered": 20,
+     "resolved_and_completed": 0,
+     "description": "TrafficLightIsGreen and PathIsClear(dist_m=24.0) added to the committing branch",
+     "episodes": [
+      {
+       "file": "geometric_guard/green_and_pathisclear_24m/pc75_CE001.json",
+       "episode_id": "pc75_CE001",
+       "certificate_id": "CE001_C2_44b9f97d05fda474",
+       "status": "collision",
+       "rho": -1.252868,
+       "argmin_contract": "C2",
+       "per_contract": {
+        "C1": -0.270529,
+        "C2": -1.252868,
+        "C3": 30.0,
+        "C4": 15.421951,
+        "C5": 1.0
+       },
+       "vacuous": [],
+       "phases_reached": [
+        "P1_approach",
+        "P2_yield_clear",
+        "P3_commit"
+       ],
+       "resolved": false,
+       "completed": false,
+       "entered": true
+      },
+      {
+       "file": "geometric_guard/green_and_pathisclear_24m/pc75_CE002.json",
+       "episode_id": "pc75_CE002",
+       "certificate_id": "CE002_C2_86714546fca524ca",
+       "status": "collision",
+       "rho": -0.589644,
+       "argmin_contract": "C2",
+       "per_contract": {
+        "C1": -0.329154,
+        "C2": -0.589644,
+        "C3": 30.0,
+        "C4": 17.181506,
+        "C5": 1.0
+       },
+       "vacuous": [],
+       "phases_reached": [
+        "P1_approach",
+        "P2_yield_clear",
+        "P3_commit"
+       ],
+       "resolved": false,
+       "completed": false,
+       "entered": true
+      },
+      {
+       "file": "geometric_guard/green_and_pathisclear_24m/pc75_CE003.json",
+       "episode_id": "pc75_CE003",
+       "certificate_id": "CE003_C1_969f15c8657c8fa6",
+       "status": "collision",
+       "rho": -1.8,
+       "argmin_contract": "C3",
+       "per_contract": {
+        "C1": -0.297077,
+        "C2": 15.486288,
+        "C3": -1.8,
+        "C4": 16.300689,
+        "C5": 1.0
+       },
+       "vacuous": [],
+       "phases_reached": [
+        "P1_approach",
+        "P2_yield_clear",
+        "P3_commit"
+       ],
+       "resolved": false,
+       "completed": false,
+       "entered": true
+      },
+      {
+       "file": "geometric_guard/green_and_pathisclear_24m/pc75_CE004.json",
+       "episode_id": "pc75_CE004",
+       "certificate_id": "CE004_C1_445649d2b99e873a",
+       "status": "ok",
+       "rho": -0.229334,
+       "argmin_contract": "C1",
+       "per_contract": {
+        "C1": -0.229334,
+        "C2": 27.0,
+        "C3": 1.0,
+        "C4": 7.71975,
+        "C5": 1.0
+       },
+       "vacuous": [],
+       "phases_reached": [
+        "P1_approach",
+        "P2_yield_clear",
+        "P3_commit",
+        "P4_settle"
+       ],
+       "resolved": false,
+       "completed": true,
+       "entered": true
+      },
+      {
+       "file": "geometric_guard/green_and_pathisclear_24m/pc75_CE005.json",
+       "episode_id": "pc75_CE005",
+       "certificate_id": "CE005_C1_5b773c94ec4bb251",
+       "status": "collision",
+       "rho": -0.55,
+       "argmin_contract": "C3",
+       "per_contract": {
+        "C1": -0.312872,
+        "C2": 4.386933,
+        "C3": -0.55,
+        "C4": 15.421473,
+        "C5": 1.0
+       },
+       "vacuous": [],
+       "phases_reached": [
+        "P1_approach",
+        "P2_yield_clear",
+        "P3_commit"
+       ],
+       "resolved": false,
+       "completed": false,
+       "entered": true
+      },
+      {
+       "file": "geometric_guard/green_and_pathisclear_24m/pc75_CE006.json",
+       "episode_id": "pc75_CE006",
+       "certificate_id": "CE006_C2_1e173dcbe748c286",
+       "status": "collision",
+       "rho": -0.36015,
+       "argmin_contract": "C1",
+       "per_contract": {
+        "C1": -0.36015,
+        "C2": 0.877093,
+        "C3": 0.4,
+        "C4": 15.40607,
+        "C5": 1.0
+       },
+       "vacuous": [],
+       "phases_reached": [
+        "P1_approach",
+        "P2_yield_clear",
+        "P3_commit"
+       ],
+       "resolved": false,
+       "completed": false,
+       "entered": true
+      },
+      {
+       "file": "geometric_guard/green_and_pathisclear_24m/pc75_CE007.json",
+       "episode_id": "pc75_CE007",
+       "certificate_id": "CE007_C1_ec6211901ed6b190",
+       "status": "collision",
+       "rho": -0.290955,
+       "argmin_contract": "C1",
+       "per_contract": {
+        "C1": -0.290955,
+        "C2": 6.692653,
+        "C3": 0.55,
+        "C4": 15.400595,
+        "C5": 1.0
+       },
+       "vacuous": [],
+       "phases_reached": [
+        "P1_approach",
+        "P2_yield_clear",
+        "P3_commit"
+       ],
+       "resolved": false,
+       "completed": false,
+       "entered": true
+      },
+      {
+       "file": "geometric_guard/green_and_pathisclear_24m/pc75_CE008.json",
+       "episode_id": "pc75_CE008",
+       "certificate_id": "CE008_C2_62ca4fa36005920e",
+       "status": "collision",
+       "rho": -0.421063,
+       "argmin_contract": "C1",
+       "per_contract": {
+        "C1": -0.421063,
+        "C2": 0.06178,
+        "C3": 30.0,
+        "C4": 15.406096,
+        "C5": 1.0
+       },
+       "vacuous": [],
+       "phases_reached": [
+        "P1_approach",
+        "P2_yield_clear",
+        "P3_commit"
+       ],
+       "resolved": false,
+       "completed": false,
+       "entered": true
+      },
+      {
+       "file": "geometric_guard/green_and_pathisclear_24m/pc75_CE009.json",
+       "episode_id": "pc75_CE009",
+       "certificate_id": "CE009_C1_bb1a8d764f269c24",
+       "status": "ok",
+       "rho": -0.081624,
+       "argmin_contract": "C1",
+       "per_contract": {
+        "C1": -0.081624,
+        "C2": 5.285896,
+        "C3": 7.3,
+        "C4": 10.064889,
+        "C5": 1.0
+       },
+       "vacuous": [],
+       "phases_reached": [
+        "P1_approach",
+        "P2_yield_clear",
+        "P3_commit",
+        "P4_settle"
+       ],
+       "resolved": false,
+       "completed": true,
+       "entered": true
+      },
+      {
+       "file": "geometric_guard/green_and_pathisclear_24m/pc75_CE010.json",
+       "episode_id": "pc75_CE010",
+       "certificate_id": "CE010_C2_56c436b720d319ef",
+       "status": "collision",
+       "rho": -1.38472,
+       "argmin_contract": "C2",
+       "per_contract": {
+        "C1": -0.250517,
+        "C2": -1.38472,
+        "C3": 30.0,
+        "C4": 15.38014,
+        "C5": 1.0
+       },
+       "vacuous": [],
+       "phases_reached": [
+        "P1_approach",
+        "P2_yield_clear",
+        "P3_commit"
+       ],
+       "resolved": false,
+       "completed": false,
+       "entered": true
+      },
+      {
+       "file": "geometric_guard/green_and_pathisclear_24m/pc75_CE011.json",
+       "episode_id": "pc75_CE011",
+       "certificate_id": "CE011_C2_1673111e21cbfa9e",
+       "status": "collision",
+       "rho": -1.251587,
+       "argmin_contract": "C2",
+       "per_contract": {
+        "C1": -0.253758,
+        "C2": -1.251587,
+        "C3": 30.0,
+        "C4": 15.421431,
+        "C5": 1.0
+       },
+       "vacuous": [],
+       "phases_reached": [
+        "P1_approach",
+        "P2_yield_clear",
+        "P3_commit"
+       ],
+       "resolved": false,
+       "completed": false,
+       "entered": true
+      },
+      {
+       "file": "geometric_guard/green_and_pathisclear_24m/pc75_CE012.json",
+       "episode_id": "pc75_CE012",
+       "certificate_id": "CE012_C1_1ec6b8b64324dbd4",
+       "status": "collision",
+       "rho": -0.310594,
+       "argmin_contract": "C1",
+       "per_contract": {
+        "C1": -0.310594,
+        "C2": 3.907528,
+        "C3": 30.0,
+        "C4": 15.438722,
+        "C5": 1.0
+       },
+       "vacuous": [],
+       "phases_reached": [
+        "P1_approach",
+        "P2_yield_clear",
+        "P3_commit"
+       ],
+       "resolved": false,
+       "completed": false,
+       "entered": true
+      },
+      {
+       "file": "geometric_guard/green_and_pathisclear_24m/pc75_CE013.json",
+       "episode_id": "pc75_CE013",
+       "certificate_id": "CE013_C2_ade4dfeb1e7cffee",
+       "status": "collision",
+       "rho": -0.767035,
+       "argmin_contract": "C2",
+       "per_contract": {
+        "C1": -0.240415,
+        "C2": -0.767035,
+        "C3": 30.0,
+        "C4": 16.298638,
+        "C5": 1.0
+       },
+       "vacuous": [],
+       "phases_reached": [
+        "P1_approach",
+        "P2_yield_clear",
+        "P3_commit"
+       ],
+       "resolved": false,
+       "completed": false,
+       "entered": true
+      },
+      {
+       "file": "geometric_guard/green_and_pathisclear_24m/pc75_CE014.json",
+       "episode_id": "pc75_CE014",
+       "certificate_id": "CE014_C1_8efa0eee117bb95e",
+       "status": "collision",
+       "rho": -0.292612,
+       "argmin_contract": "C1",
+       "per_contract": {
+        "C1": -0.292612,
+        "C2": 4.801449,
+        "C3": 30.0,
+        "C4": 17.948902,
+        "C5": 1.0
+       },
+       "vacuous": [],
+       "phases_reached": [
+        "P1_approach",
+        "P2_yield_clear",
+        "P3_commit"
+       ],
+       "resolved": false,
+       "completed": false,
+       "entered": true
+      },
+      {
+       "file": "geometric_guard/green_and_pathisclear_24m/pc75_CE015.json",
+       "episode_id": "pc75_CE015",
+       "certificate_id": "CE015_C1_40924ca98fb43db1",
+       "status": "collision",
+       "rho": -0.353556,
+       "argmin_contract": "C1",
+       "per_contract": {
+        "C1": -0.353556,
+        "C2": 27.0,
+        "C3": 30.0,
+        "C4": 17.961899,
+        "C5": 1.0
+       },
+       "vacuous": [],
+       "phases_reached": [
+        "P1_approach",
+        "P2_yield_clear",
+        "P3_commit"
+       ],
+       "resolved": false,
+       "completed": false,
+       "entered": true
+      },
+      {
+       "file": "geometric_guard/green_and_pathisclear_24m/pc75_CE016.json",
+       "episode_id": "pc75_CE016",
+       "certificate_id": "CE016_C2_9d3ea4ae1a67ec58",
+       "status": "collision",
+       "rho": -1.515559,
+       "argmin_contract": "C2",
+       "per_contract": {
+        "C1": -0.268248,
+        "C2": -1.515559,
+        "C3": 30.0,
+        "C4": 17.854455,
+        "C5": 1.0
+       },
+       "vacuous": [],
+       "phases_reached": [
+        "P1_approach",
+        "P2_yield_clear",
+        "P3_commit"
+       ],
+       "resolved": false,
+       "completed": false,
+       "entered": true
+      },
+      {
+       "file": "geometric_guard/green_and_pathisclear_24m/pc75_CE017.json",
+       "episode_id": "pc75_CE017",
+       "certificate_id": "CE017_C3_8280bf9852dc7834",
+       "status": "collision",
+       "rho": -2.8,
+       "argmin_contract": "C3",
+       "per_contract": {
+        "C1": -0.373767,
+        "C2": 1.186643,
+        "C3": -2.8,
+        "C4": 16.290041,
+        "C5": 1.0
+       },
+       "vacuous": [],
+       "phases_reached": [
+        "P1_approach",
+        "P2_yield_clear",
+        "P3_commit"
+       ],
+       "resolved": false,
+       "completed": false,
+       "entered": true
+      },
+      {
+       "file": "geometric_guard/green_and_pathisclear_24m/pc75_CE018.json",
+       "episode_id": "pc75_CE018",
+       "certificate_id": "CE018_C2_80d8dfdf2253ea72",
+       "status": "collision",
+       "rho": -1.462087,
+       "argmin_contract": "C2",
+       "per_contract": {
+        "C1": -0.291568,
+        "C2": -1.462087,
+        "C3": 1.0,
+        "C4": 16.310647,
+        "C5": 1.0
+       },
+       "vacuous": [],
+       "phases_reached": [
+        "P1_approach",
+        "P2_yield_clear",
+        "P3_commit"
+       ],
+       "resolved": false,
+       "completed": false,
+       "entered": true
+      },
+      {
+       "file": "geometric_guard/green_and_pathisclear_24m/pc75_CE019.json",
+       "episode_id": "pc75_CE019",
+       "certificate_id": "CE019_C1_0b3097eb9e85eede",
+       "status": "collision",
+       "rho": -0.271433,
+       "argmin_contract": "C1",
+       "per_contract": {
+        "C1": -0.271433,
+        "C2": 2.089413,
+        "C3": 30.0,
+        "C4": 19.726984,
+        "C5": 1.0
+       },
+       "vacuous": [],
+       "phases_reached": [
+        "P1_approach",
+        "P2_yield_clear",
+        "P3_commit"
+       ],
+       "resolved": false,
+       "completed": false,
+       "entered": true
+      },
+      {
+       "file": "geometric_guard/green_and_pathisclear_24m/pc75_CE020.json",
+       "episode_id": "pc75_CE020",
+       "certificate_id": "CE020_C1_d3346d835dab0fd8",
+       "status": "collision",
+       "rho": -0.276562,
+       "argmin_contract": "C1",
+       "per_contract": {
+        "C1": -0.276562,
+        "C2": 4.904933,
+        "C3": 30.0,
+        "C4": 19.582274,
+        "C5": 1.0
+       },
+       "vacuous": [],
+       "phases_reached": [
+        "P1_approach",
+        "P2_yield_clear",
+        "P3_commit"
+       ],
+       "resolved": false,
+       "completed": false,
+       "entered": true
+      }
+     ]
+    }
+   ]
+  },
+  "geometric_guard_true_stop": {
+   "label": "geometric guard + true stop",
+   "variants": [
+    {
+     "directory": "data/dsl_probe_traces/geometric_guard_true_stop",
+     "program": "data/scenarios/dsl_probe/fixFULL.bt",
+     "program_sha": "d0c0517aebf80609",
+     "n": 20,
+     "resolved": 20,
+     "completed": 0,
+     "entered": 0,
+     "resolved_and_completed": 0,
+     "description": "PathIsClear(dist_m=24.0) on the committing branch and fallback Decelerate(v_mps=0.0, decel_mps2=3.0)",
+     "episodes": [
+      {
+       "file": "geometric_guard_true_stop/full_fixF_CE001.json",
+       "episode_id": "full_fixF_CE001",
+       "certificate_id": "CE001_C2_44b9f97d05fda474",
+       "status": "timeout",
+       "rho": 0.0,
+       "argmin_contract": "C5",
+       "per_contract": {
+        "C1": 0.474023,
+        "C2": 999.0,
+        "C3": 999.0,
+        "C4": 20.178325,
+        "C5": 0.0
+       },
+       "vacuous": [
+        "C2",
+        "C3"
+       ],
+       "phases_reached": [
+        "P1_approach"
+       ],
+       "resolved": true,
+       "completed": false,
+       "entered": false
+      },
+      {
+       "file": "geometric_guard_true_stop/full_fixF_CE002.json",
+       "episode_id": "full_fixF_CE002",
+       "certificate_id": "CE002_C2_86714546fca524ca",
+       "status": "timeout",
+       "rho": 0.0,
+       "argmin_contract": "C5",
+       "per_contract": {
+        "C1": 0.757874,
+        "C2": 999.0,
+        "C3": 999.0,
+        "C4": 22.178323,
+        "C5": 0.0
+       },
+       "vacuous": [
+        "C2",
+        "C3"
+       ],
+       "phases_reached": [
+        "P1_approach"
+       ],
+       "resolved": true,
+       "completed": false,
+       "entered": false
+      },
+      {
+       "file": "geometric_guard_true_stop/full_fixF_CE003.json",
+       "episode_id": "full_fixF_CE003",
+       "certificate_id": "CE003_C1_969f15c8657c8fa6",
+       "status": "timeout",
+       "rho": 0.0,
+       "argmin_contract": "C5",
+       "per_contract": {
+        "C1": 1.028415,
+        "C2": 999.0,
+        "C3": 999.0,
+        "C4": 21.178326,
+        "C5": 0.0
+       },
+       "vacuous": [
+        "C2",
+        "C3"
+       ],
+       "phases_reached": [
+        "P1_approach"
+       ],
+       "resolved": true,
+       "completed": false,
+       "entered": false
+      },
+      {
+       "file": "geometric_guard_true_stop/full_fixF_CE004.json",
+       "episode_id": "full_fixF_CE004",
+       "certificate_id": "CE004_C1_445649d2b99e873a",
+       "status": "timeout",
+       "rho": 0.0,
+       "argmin_contract": "C5",
+       "per_contract": {
+        "C1": 0.934268,
+        "C2": 999.0,
+        "C3": 999.0,
+        "C4": 22.178323,
+        "C5": 0.0
+       },
+       "vacuous": [
+        "C2",
+        "C3"
+       ],
+       "phases_reached": [
+        "P1_approach"
+       ],
+       "resolved": true,
+       "completed": false,
+       "entered": false
+      },
+      {
+       "file": "geometric_guard_true_stop/full_fixF_CE005.json",
+       "episode_id": "full_fixF_CE005",
+       "certificate_id": "CE005_C1_5b773c94ec4bb251",
+       "status": "timeout",
+       "rho": 0.0,
+       "argmin_contract": "C5",
+       "per_contract": {
+        "C1": 0.883178,
+        "C2": 999.0,
+        "C3": 999.0,
+        "C4": 20.178325,
+        "C5": 0.0
+       },
+       "vacuous": [
+        "C2",
+        "C3"
+       ],
+       "phases_reached": [
+        "P1_approach"
+       ],
+       "resolved": true,
+       "completed": false,
+       "entered": false
+      },
+      {
+       "file": "geometric_guard_true_stop/full_fixF_CE006.json",
+       "episode_id": "full_fixF_CE006",
+       "certificate_id": "CE006_C2_1e173dcbe748c286",
+       "status": "timeout",
+       "rho": 0.0,
+       "argmin_contract": "C5",
+       "per_contract": {
+        "C1": 0.874134,
+        "C2": 999.0,
+        "C3": 999.0,
+        "C4": 20.178325,
+        "C5": 0.0
+       },
+       "vacuous": [
+        "C2",
+        "C3"
+       ],
+       "phases_reached": [
+        "P1_approach"
+       ],
+       "resolved": true,
+       "completed": false,
+       "entered": false
+      },
+      {
+       "file": "geometric_guard_true_stop/full_fixF_CE007.json",
+       "episode_id": "full_fixF_CE007",
+       "certificate_id": "CE007_C1_ec6211901ed6b190",
+       "status": "timeout",
+       "rho": 0.0,
+       "argmin_contract": "C5",
+       "per_contract": {
+        "C1": 0.916684,
+        "C2": 999.0,
+        "C3": 999.0,
+        "C4": 20.178325,
+        "C5": 0.0
+       },
+       "vacuous": [
+        "C2",
+        "C3"
+       ],
+       "phases_reached": [
+        "P1_approach"
+       ],
+       "resolved": true,
+       "completed": false,
+       "entered": false
+      },
+      {
+       "file": "geometric_guard_true_stop/full_fixF_CE008.json",
+       "episode_id": "full_fixF_CE008",
+       "certificate_id": "CE008_C2_62ca4fa36005920e",
+       "status": "timeout",
+       "rho": 0.0,
+       "argmin_contract": "C5",
+       "per_contract": {
+        "C1": 0.497516,
+        "C2": 999.0,
+        "C3": 999.0,
+        "C4": 20.178325,
+        "C5": 0.0
+       },
+       "vacuous": [
+        "C2",
+        "C3"
+       ],
+       "phases_reached": [
+        "P1_approach"
+       ],
+       "resolved": true,
+       "completed": false,
+       "entered": false
+      },
+      {
+       "file": "geometric_guard_true_stop/full_fixF_CE009.json",
+       "episode_id": "full_fixF_CE009",
+       "certificate_id": "CE009_C1_bb1a8d764f269c24",
+       "status": "timeout",
+       "rho": 0.0,
+       "argmin_contract": "C5",
+       "per_contract": {
+        "C1": 0.767412,
+        "C2": 999.0,
+        "C3": 999.0,
+        "C4": 20.503181,
+        "C5": 0.0
+       },
+       "vacuous": [
+        "C2",
+        "C3"
+       ],
+       "phases_reached": [
+        "P1_approach"
+       ],
+       "resolved": true,
+       "completed": false,
+       "entered": false
+      },
+      {
+       "file": "geometric_guard_true_stop/full_fixF_CE010.json",
+       "episode_id": "full_fixF_CE010",
+       "certificate_id": "CE010_C2_56c436b720d319ef",
+       "status": "timeout",
+       "rho": 0.0,
+       "argmin_contract": "C5",
+       "per_contract": {
+        "C1": 0.311584,
+        "C2": 999.0,
+        "C3": 999.0,
+        "C4": 20.178325,
+        "C5": 0.0
+       },
+       "vacuous": [
+        "C2",
+        "C3"
+       ],
+       "phases_reached": [
+        "P1_approach"
+       ],
+       "resolved": true,
+       "completed": false,
+       "entered": false
+      },
+      {
+       "file": "geometric_guard_true_stop/full_fixF_CE011.json",
+       "episode_id": "full_fixF_CE011",
+       "certificate_id": "CE011_C2_1673111e21cbfa9e",
+       "status": "timeout",
+       "rho": 0.0,
+       "argmin_contract": "C5",
+       "per_contract": {
+        "C1": 0.350844,
+        "C2": 999.0,
+        "C3": 999.0,
+        "C4": 20.178325,
+        "C5": 0.0
+       },
+       "vacuous": [
+        "C2",
+        "C3"
+       ],
+       "phases_reached": [
+        "P1_approach"
+       ],
+       "resolved": true,
+       "completed": false,
+       "entered": false
+      },
+      {
+       "file": "geometric_guard_true_stop/full_fixF_CE012.json",
+       "episode_id": "full_fixF_CE012",
+       "certificate_id": "CE012_C1_1ec6b8b64324dbd4",
+       "status": "timeout",
+       "rho": 0.0,
+       "argmin_contract": "C5",
+       "per_contract": {
+        "C1": 0.432231,
+        "C2": 999.0,
+        "C3": 999.0,
+        "C4": 20.178325,
+        "C5": 0.0
+       },
+       "vacuous": [
+        "C2",
+        "C3"
+       ],
+       "phases_reached": [
+        "P1_approach"
+       ],
+       "resolved": true,
+       "completed": false,
+       "entered": false
+      },
+      {
+       "file": "geometric_guard_true_stop/full_fixF_CE013.json",
+       "episode_id": "full_fixF_CE013",
+       "certificate_id": "CE013_C2_ade4dfeb1e7cffee",
+       "status": "timeout",
+       "rho": 0.0,
+       "argmin_contract": "C5",
+       "per_contract": {
+        "C1": 0.311584,
+        "C2": 999.0,
+        "C3": 999.0,
+        "C4": 21.178326,
+        "C5": 0.0
+       },
+       "vacuous": [
+        "C2",
+        "C3"
+       ],
+       "phases_reached": [
+        "P1_approach"
+       ],
+       "resolved": true,
+       "completed": false,
+       "entered": false
+      },
+      {
+       "file": "geometric_guard_true_stop/full_fixF_CE014.json",
+       "episode_id": "full_fixF_CE014",
+       "certificate_id": "CE014_C1_8efa0eee117bb95e",
+       "status": "timeout",
+       "rho": 0.0,
+       "argmin_contract": "C5",
+       "per_contract": {
+        "C1": 0.894678,
+        "C2": 999.0,
+        "C3": 999.0,
+        "C4": 23.178323,
+        "C5": 0.0
+       },
+       "vacuous": [
+        "C2",
+        "C3"
+       ],
+       "phases_reached": [
+        "P1_approach"
+       ],
+       "resolved": true,
+       "completed": false,
+       "entered": false
+      },
+      {
+       "file": "geometric_guard_true_stop/full_fixF_CE015.json",
+       "episode_id": "full_fixF_CE015",
+       "certificate_id": "CE015_C1_40924ca98fb43db1",
+       "status": "timeout",
+       "rho": 0.0,
+       "argmin_contract": "C5",
+       "per_contract": {
+        "C1": 0.881758,
+        "C2": 999.0,
+        "C3": 999.0,
+        "C4": 23.178323,
+        "C5": 0.0
+       },
+       "vacuous": [
+        "C2",
+        "C3"
+       ],
+       "phases_reached": [
+        "P1_approach"
+       ],
+       "resolved": true,
+       "completed": false,
+       "entered": false
+      },
+      {
+       "file": "geometric_guard_true_stop/full_fixF_CE016.json",
+       "episode_id": "full_fixF_CE016",
+       "certificate_id": "CE016_C2_9d3ea4ae1a67ec58",
+       "status": "timeout",
+       "rho": 0.0,
+       "argmin_contract": "C5",
+       "per_contract": {
+        "C1": 0.918528,
+        "C2": 999.0,
+        "C3": 999.0,
+        "C4": 23.178323,
+        "C5": 0.0
+       },
+       "vacuous": [
+        "C2",
+        "C3"
+       ],
+       "phases_reached": [
+        "P1_approach"
+       ],
+       "resolved": true,
+       "completed": false,
+       "entered": false
+      },
+      {
+       "file": "geometric_guard_true_stop/full_fixF_CE017.json",
+       "episode_id": "full_fixF_CE017",
+       "certificate_id": "CE017_C3_8280bf9852dc7834",
+       "status": "timeout",
+       "rho": 0.0,
+       "argmin_contract": "C5",
+       "per_contract": {
+        "C1": 1.289215,
+        "C2": 999.0,
+        "C3": 999.0,
+        "C4": 21.178326,
+        "C5": 0.0
+       },
+       "vacuous": [
+        "C2",
+        "C3"
+       ],
+       "phases_reached": [
+        "P1_approach"
+       ],
+       "resolved": true,
+       "completed": false,
+       "entered": false
+      },
+      {
+       "file": "geometric_guard_true_stop/full_fixF_CE018.json",
+       "episode_id": "full_fixF_CE018",
+       "certificate_id": "CE018_C2_80d8dfdf2253ea72",
+       "status": "timeout",
+       "rho": 0.0,
+       "argmin_contract": "C5",
+       "per_contract": {
+        "C1": 0.78981,
+        "C2": 999.0,
+        "C3": 999.0,
+        "C4": 21.178326,
+        "C5": 0.0
+       },
+       "vacuous": [
+        "C2",
+        "C3"
+       ],
+       "phases_reached": [
+        "P1_approach"
+       ],
+       "resolved": true,
+       "completed": false,
+       "entered": false
+      },
+      {
+       "file": "geometric_guard_true_stop/full_fixF_CE019.json",
+       "episode_id": "full_fixF_CE019",
+       "certificate_id": "CE019_C1_0b3097eb9e85eede",
+       "status": "timeout",
+       "rho": 0.0,
+       "argmin_contract": "C5",
+       "per_contract": {
+        "C1": 0.843466,
+        "C2": 999.0,
+        "C3": 999.0,
+        "C4": 20.503181,
+        "C5": 0.0
+       },
+       "vacuous": [
+        "C2",
+        "C3"
+       ],
+       "phases_reached": [
+        "P1_approach"
+       ],
+       "resolved": true,
+       "completed": false,
+       "entered": false
+      },
+      {
+       "file": "geometric_guard_true_stop/full_fixF_CE020.json",
+       "episode_id": "full_fixF_CE020",
+       "certificate_id": "CE020_C1_d3346d835dab0fd8",
+       "status": "timeout",
+       "rho": 0.0,
+       "argmin_contract": "C5",
+       "per_contract": {
+        "C1": 0.816516,
+        "C2": 999.0,
+        "C3": 999.0,
+        "C4": 20.503181,
+        "C5": 0.0
+       },
+       "vacuous": [
+        "C2",
+        "C3"
+       ],
+       "phases_reached": [
+        "P1_approach"
+       ],
+       "resolved": true,
+       "completed": false,
+       "entered": false
+      }
+     ]
+    }
+   ]
+  },
+  "clean_repair": {
+   "label": "the model's clean repair, from F1",
+   "variants": [
+    {
+     "directory": "data/dsl_probe_traces/clean_repair",
+     "program": "data/scenarios/dsl_probe/clean_repair.bt",
+     "program_sha": "507bfe02db54fed2",
+     "n": 20,
+     "resolved": 20,
+     "completed": 20,
+     "entered": 20,
+     "resolved_and_completed": 20,
+     "description": "the patched program of attempt F1__CE005_C1_5b773c94ec4bb251__s3",
+     "episodes": [
+      {
+       "file": "clean_repair/clean_CE001.json",
+       "episode_id": "clean_CE001",
+       "certificate_id": "CE001_C2_44b9f97d05fda474",
+       "status": "ok",
+       "rho": 0.295576,
+       "argmin_contract": "C1",
+       "per_contract": {
+        "C1": 0.295576,
+        "C2": 27.0,
+        "C3": 30.0,
+        "C4": 20.178325,
+        "C5": 0.5
+       },
+       "vacuous": [],
+       "phases_reached": [
+        "P1_approach",
+        "P2_yield_clear",
+        "P3_commit",
+        "P4_settle"
+       ],
+       "resolved": true,
+       "completed": true,
+       "entered": true
+      },
+      {
+       "file": "clean_repair/clean_CE002.json",
+       "episode_id": "clean_CE002",
+       "certificate_id": "CE002_C2_86714546fca524ca",
+       "status": "ok",
+       "rho": 0.5,
+       "argmin_contract": "C5",
+       "per_contract": {
+        "C1": 0.840143,
+        "C2": 27.0,
+        "C3": 30.0,
+        "C4": 22.178323,
+        "C5": 0.5
+       },
+       "vacuous": [],
+       "phases_reached": [
+        "P1_approach",
+        "P2_yield_clear",
+        "P3_commit",
+        "P4_settle"
+       ],
+       "resolved": true,
+       "completed": true,
+       "entered": true
+      },
+      {
+       "file": "clean_repair/clean_CE003.json",
+       "episode_id": "clean_CE003",
+       "certificate_id": "CE003_C1_969f15c8657c8fa6",
+       "status": "ok",
+       "rho": 0.5,
+       "argmin_contract": "C5",
+       "per_contract": {
+        "C1": 1.158623,
+        "C2": 27.0,
+        "C3": 2.7,
+        "C4": 21.178326,
+        "C5": 0.5
+       },
+       "vacuous": [],
+       "phases_reached": [
+        "P1_approach",
+        "P2_yield_clear",
+        "P3_commit",
+        "P4_settle"
+       ],
+       "resolved": true,
+       "completed": true,
+       "entered": true
+      },
+      {
+       "file": "clean_repair/clean_CE004.json",
+       "episode_id": "clean_CE004",
+       "certificate_id": "CE004_C1_445649d2b99e873a",
+       "status": "ok",
+       "rho": 0.5,
+       "argmin_contract": "C5",
+       "per_contract": {
+        "C1": 1.08711,
+        "C2": 27.0,
+        "C3": 2.05,
+        "C4": 22.178323,
+        "C5": 0.5
+       },
+       "vacuous": [],
+       "phases_reached": [
+        "P1_approach",
+        "P2_yield_clear",
+        "P3_commit",
+        "P4_settle"
+       ],
+       "resolved": true,
+       "completed": true,
+       "entered": true
+      },
+      {
+       "file": "clean_repair/clean_CE005.json",
+       "episode_id": "clean_CE005",
+       "certificate_id": "CE005_C1_5b773c94ec4bb251",
+       "status": "ok",
+       "rho": 0.5,
+       "argmin_contract": "C5",
+       "per_contract": {
+        "C1": 1.064996,
+        "C2": 27.0,
+        "C3": 4.0,
+        "C4": 20.178325,
+        "C5": 0.5
+       },
+       "vacuous": [],
+       "phases_reached": [
+        "P1_approach",
+        "P2_yield_clear",
+        "P3_commit",
+        "P4_settle"
+       ],
+       "resolved": true,
+       "completed": true,
+       "entered": true
+      },
+      {
+       "file": "clean_repair/clean_CE006.json",
+       "episode_id": "clean_CE006",
+       "certificate_id": "CE006_C2_1e173dcbe748c286",
+       "status": "ok",
+       "rho": 0.5,
+       "argmin_contract": "C5",
+       "per_contract": {
+        "C1": 1.069145,
+        "C2": 9.131938,
+        "C3": 5.0,
+        "C4": 20.178325,
+        "C5": 0.5
+       },
+       "vacuous": [],
+       "phases_reached": [
+        "P1_approach",
+        "P2_yield_clear",
+        "P3_commit",
+        "P4_settle"
+       ],
+       "resolved": true,
+       "completed": true,
+       "entered": true
+      },
+      {
+       "file": "clean_repair/clean_CE007.json",
+       "episode_id": "clean_CE007",
+       "certificate_id": "CE007_C1_ec6211901ed6b190",
+       "status": "ok",
+       "rho": 0.5,
+       "argmin_contract": "C5",
+       "per_contract": {
+        "C1": 1.091636,
+        "C2": 9.258491,
+        "C3": 5.3,
+        "C4": 20.178325,
+        "C5": 0.5
+       },
+       "vacuous": [],
+       "phases_reached": [
+        "P1_approach",
+        "P2_yield_clear",
+        "P3_commit",
+        "P4_settle"
+       ],
+       "resolved": true,
+       "completed": true,
+       "entered": true
+      },
+      {
+       "file": "clean_repair/clean_CE008.json",
+       "episode_id": "clean_CE008",
+       "certificate_id": "CE008_C2_62ca4fa36005920e",
+       "status": "ok",
+       "rho": 0.5,
+       "argmin_contract": "C5",
+       "per_contract": {
+        "C1": 1.008123,
+        "C2": 27.0,
+        "C3": 30.0,
+        "C4": 20.178325,
+        "C5": 0.5
+       },
+       "vacuous": [],
+       "phases_reached": [
+        "P1_approach",
+        "P2_yield_clear",
+        "P3_commit",
+        "P4_settle"
+       ],
+       "resolved": true,
+       "completed": true,
+       "entered": true
+      },
+      {
+       "file": "clean_repair/clean_CE009.json",
+       "episode_id": "clean_CE009",
+       "certificate_id": "CE009_C1_bb1a8d764f269c24",
+       "status": "ok",
+       "rho": 0.5,
+       "argmin_contract": "C5",
+       "per_contract": {
+        "C1": 1.293167,
+        "C2": 27.0,
+        "C3": 7.2,
+        "C4": 20.469661,
+        "C5": 0.5
+       },
+       "vacuous": [],
+       "phases_reached": [
+        "P1_approach",
+        "P2_yield_clear",
+        "P3_commit",
+        "P4_settle"
+       ],
+       "resolved": true,
+       "completed": true,
+       "entered": true
+      },
+      {
+       "file": "clean_repair/clean_CE010.json",
+       "episode_id": "clean_CE010",
+       "certificate_id": "CE010_C2_56c436b720d319ef",
+       "status": "ok",
+       "rho": 0.421297,
+       "argmin_contract": "C1",
+       "per_contract": {
+        "C1": 0.421297,
+        "C2": 9.26362,
+        "C3": 7.25,
+        "C4": 20.178325,
+        "C5": 0.5
+       },
+       "vacuous": [],
+       "phases_reached": [
+        "P1_approach",
+        "P2_yield_clear",
+        "P3_commit",
+        "P4_settle"
+       ],
+       "resolved": true,
+       "completed": true,
+       "entered": true
+      },
+      {
+       "file": "clean_repair/clean_CE011.json",
+       "episode_id": "clean_CE011",
+       "certificate_id": "CE011_C2_1673111e21cbfa9e",
+       "status": "ok",
+       "rho": 0.5,
+       "argmin_contract": "C5",
+       "per_contract": {
+        "C1": 0.527155,
+        "C2": 9.184414,
+        "C3": 7.05,
+        "C4": 20.178325,
+        "C5": 0.5
+       },
+       "vacuous": [],
+       "phases_reached": [
+        "P1_approach",
+        "P2_yield_clear",
+        "P3_commit",
+        "P4_settle"
+       ],
+       "resolved": true,
+       "completed": true,
+       "entered": true
+      },
+      {
+       "file": "clean_repair/clean_CE012.json",
+       "episode_id": "clean_CE012",
+       "certificate_id": "CE012_C1_1ec6b8b64324dbd4",
+       "status": "ok",
+       "rho": 0.5,
+       "argmin_contract": "C5",
+       "per_contract": {
+        "C1": 1.021594,
+        "C2": 27.0,
+        "C3": 7.05,
+        "C4": 20.178325,
+        "C5": 0.5
+       },
+       "vacuous": [],
+       "phases_reached": [
+        "P1_approach",
+        "P2_yield_clear",
+        "P3_commit",
+        "P4_settle"
+       ],
+       "resolved": true,
+       "completed": true,
+       "entered": true
+      },
+      {
+       "file": "clean_repair/clean_CE013.json",
+       "episode_id": "clean_CE013",
+       "certificate_id": "CE013_C2_ade4dfeb1e7cffee",
+       "status": "ok",
+       "rho": 0.350404,
+       "argmin_contract": "C1",
+       "per_contract": {
+        "C1": 0.350404,
+        "C2": 9.181482,
+        "C3": 30.0,
+        "C4": 21.178326,
+        "C5": 0.5
+       },
+       "vacuous": [],
+       "phases_reached": [
+        "P1_approach",
+        "P2_yield_clear",
+        "P3_commit",
+        "P4_settle"
+       ],
+       "resolved": true,
+       "completed": true,
+       "entered": true
+      },
+      {
+       "file": "clean_repair/clean_CE014.json",
+       "episode_id": "clean_CE014",
+       "certificate_id": "CE014_C1_8efa0eee117bb95e",
+       "status": "ok",
+       "rho": 0.5,
+       "argmin_contract": "C5",
+       "per_contract": {
+        "C1": 1.062951,
+        "C2": 27.0,
+        "C3": 30.0,
+        "C4": 23.178323,
+        "C5": 0.5
+       },
+       "vacuous": [],
+       "phases_reached": [
+        "P1_approach",
+        "P2_yield_clear",
+        "P3_commit",
+        "P4_settle"
+       ],
+       "resolved": true,
+       "completed": true,
+       "entered": true
+      },
+      {
+       "file": "clean_repair/clean_CE015.json",
+       "episode_id": "clean_CE015",
+       "certificate_id": "CE015_C1_40924ca98fb43db1",
+       "status": "ok",
+       "rho": 0.5,
+       "argmin_contract": "C5",
+       "per_contract": {
+        "C1": 1.05515,
+        "C2": 27.0,
+        "C3": 30.0,
+        "C4": 23.178323,
+        "C5": 0.5
+       },
+       "vacuous": [],
+       "phases_reached": [
+        "P1_approach",
+        "P2_yield_clear",
+        "P3_commit",
+        "P4_settle"
+       ],
+       "resolved": true,
+       "completed": true,
+       "entered": true
+      },
+      {
+       "file": "clean_repair/clean_CE016.json",
+       "episode_id": "clean_CE016",
+       "certificate_id": "CE016_C2_9d3ea4ae1a67ec58",
+       "status": "ok",
+       "rho": 0.5,
+       "argmin_contract": "C5",
+       "per_contract": {
+        "C1": 0.588358,
+        "C2": 27.0,
+        "C3": 30.0,
+        "C4": 23.178323,
+        "C5": 0.5
+       },
+       "vacuous": [],
+       "phases_reached": [
+        "P1_approach",
+        "P2_yield_clear",
+        "P3_commit",
+        "P4_settle"
+       ],
+       "resolved": true,
+       "completed": true,
+       "entered": true
+      },
+      {
+       "file": "clean_repair/clean_CE017.json",
+       "episode_id": "clean_CE017",
+       "certificate_id": "CE017_C3_8280bf9852dc7834",
+       "status": "ok",
+       "rho": 0.5,
+       "argmin_contract": "C5",
+       "per_contract": {
+        "C1": 1.327675,
+        "C2": 27.0,
+        "C3": 2.5,
+        "C4": 21.178326,
+        "C5": 0.5
+       },
+       "vacuous": [],
+       "phases_reached": [
+        "P1_approach",
+        "P2_yield_clear",
+        "P3_commit",
+        "P4_settle"
+       ],
+       "resolved": true,
+       "completed": true,
+       "entered": true
+      },
+      {
+       "file": "clean_repair/clean_CE018.json",
+       "episode_id": "clean_CE018",
+       "certificate_id": "CE018_C2_80d8dfdf2253ea72",
+       "status": "ok",
+       "rho": 0.5,
+       "argmin_contract": "C5",
+       "per_contract": {
+        "C1": 0.97067,
+        "C2": 8.70459,
+        "C3": 5.4,
+        "C4": 21.178326,
+        "C5": 0.5
+       },
+       "vacuous": [],
+       "phases_reached": [
+        "P1_approach",
+        "P2_yield_clear",
+        "P3_commit",
+        "P4_settle"
+       ],
+       "resolved": true,
+       "completed": true,
+       "entered": true
+      },
+      {
+       "file": "clean_repair/clean_CE019.json",
+       "episode_id": "clean_CE019",
+       "certificate_id": "CE019_C1_0b3097eb9e85eede",
+       "status": "ok",
+       "rho": 0.5,
+       "argmin_contract": "C5",
+       "per_contract": {
+        "C1": 1.253193,
+        "C2": 27.0,
+        "C3": 5.75,
+        "C4": 20.469661,
+        "C5": 0.5
+       },
+       "vacuous": [],
+       "phases_reached": [
+        "P1_approach",
+        "P2_yield_clear",
+        "P3_commit",
+        "P4_settle"
+       ],
+       "resolved": true,
+       "completed": true,
+       "entered": true
+      },
+      {
+       "file": "clean_repair/clean_CE020.json",
+       "episode_id": "clean_CE020",
+       "certificate_id": "CE020_C1_d3346d835dab0fd8",
+       "status": "ok",
+       "rho": 0.5,
+       "argmin_contract": "C5",
+       "per_contract": {
+        "C1": 1.240135,
+        "C2": 27.0,
+        "C3": 3.5,
+        "C4": 20.469661,
+        "C5": 0.5
+       },
+       "vacuous": [],
+       "phases_reached": [
+        "P1_approach",
+        "P2_yield_clear",
+        "P3_commit",
+        "P4_settle"
+       ],
+       "resolved": true,
+       "completed": true,
+       "entered": true
+      }
+     ]
+    }
+   ]
+  }
+ },
+ "status": "MATCH",
+ "failures": []
+}

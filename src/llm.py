@@ -61,7 +61,7 @@ def client():
     if not os.environ.get("ANTHROPIC_API_KEY"):
         raise RuntimeError(
             "ANTHROPIC_API_KEY is not set. Put it in .env (git-ignored) -- see "
-            "docs/RUNBOOK.md. Identity-linked keys ALSO need "
+            "README.md. Identity-linked keys ALSO need "
             "ANTHROPIC_WORKSPACE_ID or every request returns 400.")
     # The SDK reads ANTHROPIC_WORKSPACE_ID from the environment itself.
     return anthropic.Anthropic()

@@ -1,0 +1,32 @@
+cff-version: 1.2.0
+message: "If you use this code or data, please cite the paper as below."
+title: "What Does Formal Structure in Counterexample Feedback Buy? Code and data"
+type: software
+authors:
+  - family-names: Mistry
+    given-names: Neel
+repository-code: "https://github.com/mistryneel/counterexample-feedback"
+license:
+  - MIT
+  - CC-BY-4.0
+keywords:
+  - counterexample-guided repair
+  - falsification
+  - signal temporal logic
+  - behaviour trees
+  - large language models
+  - CARLA
+preferred-citation:
+  type: conference-paper
+  title: "What Does Formal Structure in Counterexample Feedback Buy?"
+  authors:
+    - family-names: Mistry
+      given-names: Neel
+    - family-names: Panat
+      given-names: Sreedath
+  year: 2026
+  collection-title: "NeurIPS 2026 Workshop on AI for Verifiable Coding"
+  conference:
+    name: "NeurIPS 2026 Workshop on AI for Verifiable Coding"
+  notes: "Poster."
+  repository-code: "https://github.com/mistryneel/counterexample-feedback"

@@ -27,7 +27,7 @@ REPO = pathlib.Path(__file__).resolve().parent.parent
 sys.path.insert(0, str(REPO / "src"))
 
 from certificate import (  # noqa: E402
-    CONDITIONS, Certificate, PromptTemplate, template)
+    CONDITIONS, Certificate, PromptTemplate, resolve_trace_path, template)
 
 PASS, FAIL = [], []
 
@@ -300,6 +300,40 @@ def test_f1_window(certs):
               for c in certs))
 
 
+def test_trace_resolution(certs):
+    """The certificates store absolute paths from the original machine and are
+    kept byte-identical, so the trace is resolved by basename under
+    data/certificates/traces/ first, and only then at the stored path."""
+    print("\n[trace path resolution]")
+    import tempfile
+    trace_dir = REPO / "data" / "certificates" / "traces"
+    check("every certificate's trace resolves to the copy inside the repo",
+          all(c.trace_path == trace_dir / pathlib.PurePosixPath(
+              c.trace_path_stored).name for c in certs),
+          ", ".join(c.certificate_id for c in certs
+                    if not c.trace_path.is_relative_to(trace_dir))[:200])
+    check("no stored trace_path has been rewritten (all still absolute)",
+          all(pathlib.PurePosixPath(c.trace_path_stored).is_absolute()
+              for c in certs))
+    with tempfile.TemporaryDirectory() as tmp:
+        tmp = pathlib.Path(tmp)
+        local, elsewhere = tmp / "local", tmp / "elsewhere"
+        local.mkdir()
+        elsewhere.mkdir()
+        stored = elsewhere / "t.parquet"
+        stored.write_bytes(b"stored")
+        check("falls back to the stored path when no repo copy exists",
+              resolve_trace_path(stored, trace_dir=local) == stored)
+        (local / "t.parquet").write_bytes(b"local")
+        check("prefers the repo copy when both exist",
+              resolve_trace_path(stored, trace_dir=local) == local / "t.parquet")
+        try:
+            resolve_trace_path(elsewhere / "missing.parquet", trace_dir=local)
+            check("raises FileNotFoundError when neither exists", False)
+        except FileNotFoundError:
+            check("raises FileNotFoundError when neither exists", True)
+
+
 def test_bad_condition_raises(certs):
     print("\n[misuse]")
     try:
@@ -326,6 +360,7 @@ def main() -> int:
     test_f4_is_f3_plus_one_block(certs)
     test_narrative_recomposition(certs)
     test_f1_window(certs)
+    test_trace_resolution(certs)
     test_bad_condition_raises(certs)
     print(f"\n{len(PASS)}/{len(PASS) + len(FAIL)} pass")
     if FAIL:

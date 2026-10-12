@@ -5,7 +5,7 @@ provably vacuous on the frozen baseline and the second is not, and a paper that
 reports only the second would be hiding a researcher degree of freedom.
 
 --------------------------------------------------------------------------
-DEFINITION 1 -- `active_node`. The PRE-REGISTERED definition (spec 7.5):
+DEFINITION 1 -- `active_node`. The PRE-SPECIFIED definition (spec 7.5):
 "the behaviour-tree leaf that was ticking at the argmin timestep of rho."
 
     Measured over the 20 admitted counterexamples: H(node | contract) = 0.000
@@ -48,7 +48,7 @@ before the argmin leaf's current run began.
 --------------------------------------------------------------------------
 HONESTY REQUIREMENT. Definition 2 was written after observing that definition
 1 gives zero. Report both, always, with definition 1 labelled as the
-pre-registered one. The finding is not "F4 beats F3"; it is that blame
+pre-specified one. The finding is not "F4 beats F3"; it is that blame
 localization is informative only when blame attaches to the DECISION rather
 than the CONSEQUENCE, and that the naive definition is vacuous by construction
 on any program whose commit branch is guarded by a region test.
@@ -58,7 +58,7 @@ from __future__ import annotations
 import collections
 import math
 
-# The leaf at the argmin. Pre-registered; spec 7.5.
+# The leaf at the argmin. Pre-specified; spec 7.5.
 ACTIVE = "active_node"
 # The leaf active immediately before the argmin leaf's run began.
 AUTHORISING = "authorising_node"

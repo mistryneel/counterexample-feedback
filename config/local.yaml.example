@@ -1,5 +1,5 @@
 # Machine-specific overrides. Copy to config/local.yaml (git-ignored) and edit.
-# Any key here shallow-overrides the same path in config/sim.yaml.
+# Any key here overrides the same path in config/sim.yaml (nested keys are merged).
 
 server:
   host: "127.0.0.1"

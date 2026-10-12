@@ -93,6 +93,14 @@ def main() -> int:
     j_comfort = float(contracts["C5_comfort"]["j_comfort_mps3"])
 
     paths = sorted(glob.glob(str(pathlib.Path(a.dir) / a.pattern)))
+    if not paths:
+        # The input trajectories (data/traces/) are not part of the public
+        # release. Fail loudly instead of writing an empty result over the
+        # committed output.
+        print(f"no trajectories match {pathlib.Path(a.dir) / a.pattern}; this script needs "
+              "the unreleased data/traces/ files and cannot be re-run from the public "
+              "release (see data/results/NOTES.md)", file=sys.stderr)
+        return 2
     print(f"loading {len(paths)} traces ...")
     dfs = [stl.load_trace(p)[0] for p in paths]
     print(f"a_comfort = {a_comfort} m/s^2   j_comfort = {j_comfort} m/s^3\n")

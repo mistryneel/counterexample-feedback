@@ -1,0 +1,64 @@
+{
+  "episode_id": "pc901_CE005",
+  "schema_version": "1.2.0",
+  "status": "collision",
+  "scenario_params": "{\"aggressiveness\": 0.0, \"headway\": 6.5347, \"lead_gap_s\": 3.123, \"light_offset\": 3.6724, \"n_oncoming\": 2, \"v_oncoming\": 6.3964}",
+  "param_hash": "5b773c94ec4bb251",
+  "seeds": "{\"numpy\": 20260823, \"python\": 20260823, \"traffic_manager\": 20260823}",
+  "carla_server_version": "0.9.16",
+  "carla_client_version": "0.9.16",
+  "map": "Town05",
+  "junction_id": "1126",
+  "fixed_delta_seconds": "0.05",
+  "max_substep_delta_time": "0.01",
+  "max_substeps": "10",
+  "n_ticks": "393",
+  "achieved_gap_s": "1.5228237433751688",
+  "spawn_clamped": "False",
+  "wall_clock_s": "13892.129699",
+  "git_commit": "4bf111147d470dfdd90048eaa02b9269d34e0b7a",
+  "program_source": "# ============================================================================\n# FROZEN BASELINE PROGRAM -- DO NOT EDIT.\n# ============================================================================\n# Frozen 2026-08-31. Every counterexample and every repair in E1 is measured\n# against THIS program; editing it invalidates the whole campaign.\n#\n# Provenance: LLM-synthesized, claude-opus-5, effort=high, one fixed prompt,\n# sampled 1 of 20 (14 valid). Selected -- not prompt-tuned -- and the full\n# distribution of all 14 candidates is reported in\n# data/results/baseline_calibration.json, which doubles as the\n# resample-and-select baseline data spec 9.4 asks for.\n# Synthesis call: see logs/llm_index.jsonl. Source file: candidates/cand_01.bt\n#\n# Calibration, 100 shared scenarios (scripts/calibrate_baseline.py):\n#   violation rate  20.0%   in the 20-40% band          [gate 1a PASS]\n#   ICR (P4_settle) 88.3%   enters the junction 100%    [gate 1b PASS]\n#   independent 60-scenario draw: SCVR 25.0%, ICR 88.3%, PCR 77.7%\n#   H(node | contract) 0.000 -- DIAGNOSTIC ONLY. Measured on uniform samples,\n#     but the F3/F4 comparison depends on entropy over the K counterexamples\n#     the falsifier SELECTS. That check runs post-falsification; if blame is\n#     still collapsed there, F4 is a placebo condition and the paper says so.\n#\n# It passes on merit rather than by hiding: a program can reach a low violation\n# rate simply by refusing to turn, and this one enters the junction in 100% of\n# scenarios and settles in 88.3%.\n# ============================================================================\n\n# Unprotected left turn at a signalised four-way junction.\n# Priority order: finish what you started > decide from a stop >\n# finish a rolling entry > enter on green with a real gap > stop at the line >\n# back off behind the lead > cruise the approach.\n\nSelector\n\n  # --- A. Already inside the conflict zone: never abandon the turn. ---\n  Sequence\n    InConflictZone\n    CommitTurn(v_mps=7.0, accel_mps2=2.0)\n\n  # --- B. Stopped at (or just over) the stop line: this is the decision point. ---\n  Sequence\n    EgoSpeedBelow(v_mps=1.0)\n    DistanceToStopLineBelow(dist_m=4.0)\n    Selector\n      # Normal go: green, a gap well beyond the 3.0 s contract, path physically clear.\n      Sequence\n        TrafficLightIsGreen\n        OncomingGapExceeds(gap_s=5.5)\n        PathIsClear(dist_m=16.0)\n        CommitTurn(v_mps=6.5, accel_mps2=2.0)\n      # Deadlock escape: nobody ever gives a big gap, so take a smaller but still legal one.\n      Sequence\n        TrafficLightIsGreen\n        WaitedLongerThan(t_s=12.0)\n        OncomingGapExceeds(gap_s=3.8)\n        PathIsClear(dist_m=14.0)\n        CommitTurn(v_mps=6.0, accel_mps2=2.0)\n      # Otherwise sit still, gently.\n      HoldAtStopLine(decel_mps2=2.0)\n\n  # --- C. Past the stop line and still rolling: committed, drive through. ---\n  # (The stopped-past-the-line case is caught by B above, so this only fires while moving.)\n  Sequence\n    DistanceToStopLineBelow(dist_m=0.0)\n    PathIsClear(dist_m=16.0)\n    CommitTurn(v_mps=7.0, accel_mps2=2.0)\n\n  # --- D. Rolling entry: green, generous gap, clear path, close to the line. ---\n  Sequence\n    TrafficLightIsGreen\n    DistanceToStopLineBelow(dist_m=14.0)\n    OncomingGapExceeds(gap_s=6.5)\n    PathIsClear(dist_m=20.0)\n    CommitTurn(v_mps=6.5, accel_mps2=2.0)\n\n  # --- E. Near the junction, road ahead clear: settle onto the stop line and wait. ---\n  Sequence\n    DistanceToStopLineBelow(dist_m=18.0)\n    PathIsClear(dist_m=20.0)\n    HoldAtStopLine(decel_mps2=2.0)\n\n  # --- F. Near the junction but something (lead or crossing traffic) is in the way. ---\n  Sequence\n    DistanceToStopLineBelow(dist_m=30.0)\n    Decelerate(v_mps=1.0, decel_mps2=2.0)\n\n  # --- G. Open approach: cruise, but keep an RSS-safe buffer behind the lead. ---\n  Selector\n    Sequence\n      PathIsClear(dist_m=28.0)\n      Cruise(v_mps=7.0, accel_mps2=1.5)\n    Decelerate(v_mps=4.0, decel_mps2=1.5)\n",
+  "program_sha": "83f66f99bf7d45d8",
+  "result": {
+    "episode_id": "pc901_CE005",
+    "status": "collision",
+    "param_hash": "5b773c94ec4bb251",
+    "scenario_params": {
+      "n_oncoming": 2,
+      "v_oncoming": 6.3964,
+      "headway": 6.5347,
+      "aggressiveness": 0.0,
+      "light_offset": 3.6724,
+      "lead_gap_s": 3.123
+    },
+    "n_ticks": 393,
+    "wall_clock_s": 0.0,
+    "real_time_factor": 0.0,
+    "trace_path": null,
+    "error": null,
+    "meta": {
+      "seeds": {
+        "python": 20260823,
+        "numpy": 20260823,
+        "traffic_manager": 20260823
+      },
+      "junction_id": 1126,
+      "traffic_lights": {
+        "ego_tl_id": 94,
+        "oncoming_tl_id": 92
+      },
+      "phase_final": "P3_commit",
+      "phases_reached": [
+        "P1_approach",
+        "P2_yield_clear",
+        "P3_commit"
+      ],
+      "route_len": 95,
+      "entry_idx": 40,
+      "achieved_gap_s": 1.5228237433751688,
+      "spawn_clamped": false,
+      "n_oncoming_spawned": 2,
+      "n_oncoming_surviving": 2
+    }
+  }
+}

@@ -1,0 +1,253 @@
+You patch behaviour-tree programs for an autonomous vehicle in a driving simulator. You output ONLY a program in the .bt DSL described below, inside a single ``` fenced block, with no prose before or after it.
+
+# Available behaviour-tree nodes. Use ONLY these.
+# Indentation is two spaces per level. Parameters are name=value.
+
+# --- composites (take children) ---
+Sequence(*children)
+    # Run children in order. Fail at the first child that fails. Succeed only if every child succeeds. Use for 'do A, then B'.
+    # Takes 1 to 8 children. More than 8 is rejected.
+Selector(*children)
+    # Run children in order. Succeed at the first child that succeeds. Use for 'try A, otherwise B' -- the LAST child is the fallback.
+    # Takes 1 to 8 children. More than 8 is rejected.
+
+# --- conditions (return SUCCESS or FAILURE) ---
+OncomingGapExceeds(gap_s: float)
+    # SUCCESS if the nearest oncoming vehicle needs at least gap_s seconds to reach the conflict zone. This is the yield test.
+EgoSpeedBelow(v_mps: float)
+    # SUCCESS if the ego is travelling slower than v_mps.
+DistanceToStopLineBelow(dist_m: float)
+    # SUCCESS if the ego is within dist_m of the stop line. Becomes negative-distance (still SUCCESS) once past it.
+InConflictZone()
+    # SUCCESS if the ego bounding box is inside the conflict zone.
+TrafficLightIsGreen()
+    # SUCCESS if the signal governing the ego approach is green.
+PathIsClear(dist_m: float)
+    # SUCCESS if no actor lies within dist_m along the ego's turn path.
+WaitedLongerThan(t_s: float)
+    # SUCCESS if the ego has been essentially stationary for t_s seconds. Use to escape a deadlock where no acceptable gap ever appears.
+
+# --- actions (drive the vehicle) ---
+Cruise(v_mps: float, accel_mps2: float)
+    # Drive along the route at v_mps, changing speed no faster than accel_mps2. Returns RUNNING.
+Decelerate(v_mps: float, decel_mps2: float)
+    # Slow to v_mps at decel_mps2. A large decel_mps2 is uncomfortable and is penalised by contract C5. Returns RUNNING.
+HoldAtStopLine(decel_mps2: float)
+    # Come to a stop at the stop line at decel_mps2 and hold there. Returns RUNNING.
+CommitTurn(v_mps: float, accel_mps2: float)
+    # Commit to the left turn and drive through the conflict zone at v_mps. Returns RUNNING until the ego has cleared the junction.
+Creep(v_mps: float, accel_mps2: float)
+    # Edge forward slowly to improve visibility without entering the conflict zone. Returns RUNNING.
+EmergencyStop(decel_mps2: float)
+    # Brake as hard as decel_mps2 allows. Returns RUNNING.
+
+# Parameter ranges are enforced by the validator:
+#   accel_mps2: [0.1, 6.0]  -- acceleration limit while reaching it
+#   decel_mps2: [0.1, 8.0]  -- deceleration to use
+#   dist_m: [0.0, 60.0]  -- distance threshold
+#   gap_s: [0.0, 15.0]  -- required time-to-conflict-zone of the nearest oncoming vehicle
+#   t_s: [0.0, 30.0]  -- elapsed stationary time
+#   v_mps: [0.0, 20.0]  -- speed threshold
+#   maximum tree depth: 8
+
+GRAMMAR -- there are only five rules:
+1. One node per line.
+2. Two spaces of indentation per level. Tabs are rejected.
+3. NodeName(param=value, param=value). The () may be omitted when there are no
+   parameters.
+4. # starts a comment. Blank lines are ignored.
+5. Exactly one root.
+
+Composite semantics, which matter:
+- Sequence runs children in order, fails at the first failure, succeeds only if
+  all succeed.
+- Selector runs children in order and succeeds at the first success; its LAST
+  child is the fallback.
+- Both re-evaluate every condition from the top on EVERY tick (20 Hz). There is
+  no memory of which child was running last tick. A Sequence will therefore
+  abandon a running action the moment one of its earlier conditions stops
+  holding.
+
+THE MANOEUVRE
+The program performs an UNPROTECTED LEFT TURN at a signalised four-way junction.
+"Unprotected" means the ego has a circular green ball, not a green arrow: the
+turn is legally permitted but oncoming traffic has right of way, and the ego
+must find its own gap.
+
+- The ego approaches the junction, must yield to oncoming traffic, turn left
+  across their path, and settle into the target lane.
+- Between one and three oncoming vehicles travel straight through at a constant
+  6 to 16 m/s. They do not always slow down for the ego.
+- One LEAD VEHICLE travels ahead of the ego in the ego's own lane at 6 m/s. It
+  decelerates to a stop at the stop line, waits, then drives on and clears.
+- The ego's signal is green on approach, then turns yellow for 3 s, then red for
+  6 s, then returns to green.
+
+THE FIVE SAFETY CONTRACTS
+Each is a signed margin: positive means satisfied, negative means violated.
+
+  C1  no collision -- minimum bounding-box clearance to any actor, in metres.
+  C2  yield -- while inside the conflict zone, the nearest oncoming vehicle
+      must need at least 3.0 s to reach it. Margin in seconds.
+  C3  do not ENTER the intersection on red. Margin in seconds: positive is the
+      green time remaining at the moment of entry, negative is how long the
+      light had already been red. Being caught inside when the light changes is
+      NOT penalised -- once you have lawfully entered you are expected to clear.
+  C4  keep an RSS-safe longitudinal distance to the LEAD vehicle. The required
+      distance grows with your speed and shrinks with the lead's. At 8 m/s
+      behind a lead doing 6 m/s it is about 20 metres. Margin in metres.
+  C5  comfort -- commanded longitudinal acceleration must stay within
+      3.0 m/s^2.
+
+The overall score rho is the MINIMUM of the five, so the weakest one decides.
+
+AND ON COMPLETING THE TASK
+A program that never enters the junction violates nothing and still fails. It
+must actually complete the turn and settle into the target lane. Waiting
+forever is not a solution; there is a deadlock-escape condition in the
+vocabulary for the case where no acceptable gap ever appears.
+
+THE PROGRAM YOU ARE PATCHING
+
+```
+# ============================================================================
+# FROZEN BASELINE PROGRAM -- DO NOT EDIT.
+# ============================================================================
+# Frozen 2026-08-31. Every counterexample and every repair in E1 is measured
+# against THIS program; editing it invalidates the whole campaign.
+#
+# Provenance: LLM-synthesized, claude-opus-5, effort=high, one fixed prompt,
+# sampled 1 of 20 (14 valid). Selected -- not prompt-tuned -- and the full
+# distribution of all 14 candidates is reported in
+# data/results/baseline_calibration.json, which doubles as the
+# resample-and-select baseline data spec 9.4 asks for.
+# Synthesis call: see logs/llm_index.jsonl. Source file: candidates/cand_01.bt
+#
+# Calibration, 100 shared scenarios (scripts/calibrate_baseline.py):
+#   violation rate  20.0%   in the 20-40% band          [gate 1a PASS]
+#   ICR (P4_settle) 88.3%   enters the junction 100%    [gate 1b PASS]
+#   independent 60-scenario draw: SCVR 25.0%, ICR 88.3%, PCR 77.7%
+#   H(node | contract) 0.000 -- DIAGNOSTIC ONLY. Measured on uniform samples,
+#     but the F3/F4 comparison depends on entropy over the K counterexamples
+#     the falsifier SELECTS. That check runs post-falsification; if blame is
+#     still collapsed there, F4 is a placebo condition and the paper says so.
+#
+# It passes on merit rather than by hiding: a program can reach a low violation
+# rate simply by refusing to turn, and this one enters the junction in 100% of
+# scenarios and settles in 88.3%.
+# ============================================================================
+
+# Unprotected left turn at a signalised four-way junction.
+# Priority order: finish what you started > decide from a stop >
+# finish a rolling entry > enter on green with a real gap > stop at the line >
+# back off behind the lead > cruise the approach.
+
+Selector
+
+  # --- A. Already inside the conflict zone: never abandon the turn. ---
+  Sequence
+    InConflictZone
+    CommitTurn(v_mps=7.0, accel_mps2=2.0)
+
+  # --- B. Stopped at (or just over) the stop line: this is the decision point. ---
+  Sequence
+    EgoSpeedBelow(v_mps=1.0)
+    DistanceToStopLineBelow(dist_m=4.0)
+    Selector
+      # Normal go: green, a gap well beyond the 3.0 s contract, path physically clear.
+      Sequence
+        TrafficLightIsGreen
+        OncomingGapExceeds(gap_s=5.5)
+        PathIsClear(dist_m=16.0)
+        CommitTurn(v_mps=6.5, accel_mps2=2.0)
+      # Deadlock escape: nobody ever gives a big gap, so take a smaller but still legal one.
+      Sequence
+        TrafficLightIsGreen
+        WaitedLongerThan(t_s=12.0)
+        OncomingGapExceeds(gap_s=3.8)
+        PathIsClear(dist_m=14.0)
+        CommitTurn(v_mps=6.0, accel_mps2=2.0)
+      # Otherwise sit still, gently.
+      HoldAtStopLine(decel_mps2=2.0)
+
+  # --- C. Past the stop line and still rolling: committed, drive through. ---
+  # (The stopped-past-the-line case is caught by B above, so this only fires while moving.)
+  Sequence
+    DistanceToStopLineBelow(dist_m=0.0)
+    CommitTurn(v_mps=7.0, accel_mps2=2.0)
+
+  # --- D. Rolling entry: green, generous gap, clear path, close to the line. ---
+  Sequence
+    TrafficLightIsGreen
+    DistanceToStopLineBelow(dist_m=14.0)
+    OncomingGapExceeds(gap_s=6.5)
+    PathIsClear(dist_m=20.0)
+    CommitTurn(v_mps=6.5, accel_mps2=2.0)
+
+  # --- E. Near the junction, road ahead clear: settle onto the stop line and wait. ---
+  Sequence
+    DistanceToStopLineBelow(dist_m=18.0)
+    PathIsClear(dist_m=20.0)
+    HoldAtStopLine(decel_mps2=2.0)
+
+  # --- F. Near the junction but something (lead or crossing traffic) is in the way. ---
+  Sequence
+    DistanceToStopLineBelow(dist_m=30.0)
+    Decelerate(v_mps=1.0, decel_mps2=2.0)
+
+  # --- G. Open approach: cruise, but keep an RSS-safe buffer behind the lead. ---
+  Selector
+    Sequence
+      PathIsClear(dist_m=28.0)
+      Cruise(v_mps=7.0, accel_mps2=1.5)
+    Decelerate(v_mps=4.0, decel_mps2=1.5)
+```
+
+WHAT YOU ARE ASKED TO DO
+This program was run on one traffic situation and violated a safety contract.
+Patch it so that it no longer violates a contract in that situation, while still
+completing the turn in general.
+
+PATCH, DO NOT REWRITE. Make the smallest edit that fixes the failure -- change a
+threshold, add a guard condition, insert a node, or reorder branches. Do not
+restructure the program, do not rename anything, and do not change parts that
+are unrelated to the failure. A rewrite that happens to pass is not a repair.
+
+Also bear in mind:
+- The failure below is one situation, not the whole space. A patch tuned so
+  tightly that it only fixes this situation will fail the regression suite, and
+  a patch so conservative that the ego stops turning fails the task.
+- Conditions are re-checked every tick. If you gate the turn on a condition that
+  stops holding halfway through, the ego will abandon the turn inside the
+  junction, which is far more dangerous than completing it.
+
+REPORT ON THE OBSERVED FAILURE
+
+===== USER =====
+
+trace: logged trajectory, rows 328-348 of 349, all 45 columns, comma-separated
+frame,t_s,sim_elapsed_s,delta_s,ego_x_m,ego_y_m,ego_z_m,ego_yaw_deg,ego_pitch_deg,ego_roll_deg,ego_vx_mps,ego_vy_mps,ego_vz_mps,ego_speed_mps,ego_ax_mps2,ego_ay_mps2,ego_az_mps2,ego_accel_long_mps2,ego_jerk_long_mps3,ego_throttle,ego_brake,ego_steer,ego_extent_x_m,ego_extent_y_m,ego_extent_z_m,tl_state,tl_elapsed_s,bt_node_id,bt_node_type,bt_node_path,bt_tick_path,cmd_accel_mps2,phase,actor_id,actor_type,actor_role,actor_x_m,actor_y_m,actor_z_m,actor_yaw_deg,actor_vx_mps,actor_vy_mps,actor_speed_mps,actor_extent_x_m,actor_extent_y_m
+714055,16.400000244379044,19269.524188081647,0.05000000074505806,-38.583560943603516,-91.0040283203125,0.0015263557434082031,171.48121643066406,0.03587215021252632,0.04344528540968895,-4.359644412994385,1.0883363485336304,0.0016904735239222646,4.49343692681812,-1.475687026977539,3.7329041957855225,0.03378353267908096,2.0123749693784423,-12.841116880064973,0.5256699323654175,0.0,-0.17639443278312683,2.3958897590637207,1.081725001335144,0.7438300251960754,Green,0.0,n_22,CommitTurn,Selector/Sequence/CommitTurn,"n_2,n_5,n_21,n_22",2.0,P3_commit,[3824 3825 3826],['vehicle.audi.tt' 'vehicle.audi.tt' 'vehicle.audi.tt'],['oncoming' 'oncoming' 'lead'],[-47.52442169 -94.83145905 -84.26112366],[-88.02604675 -88.10003662 -91.52964783],[ 0.00059977 -0.01132246 -0.01119352],[-1.62353501e-01 -1.52984619e-01 -1.79889511e+02],[ 0.04455252  0.04530236 -6.23374987],[-0.00022296 -0.00012089 -0.01201887],[0.04455308 0.04530253 6.23376145],[2.09060502 2.09060502 2.09060502],[0.99705857 0.99705857 0.99705857]
+714056,16.4500002451241,19269.57418808239,0.05000000074505806,-38.805564880371094,-90.95172882080078,0.0022568702697753906,170.65621948242188,0.07528916746377945,-0.027099603787064552,-4.453708171844482,1.1955759525299072,0.034699343144893646,4.6113900657201095,-1.8812751770019531,2.144792079925537,0.6601774096488953,2.2045381322015603,3.8432632564623592,0.5256699323654175,0.0,-0.15372993052005768,2.3958897590637207,1.081725001335144,0.7438300251960754,Green,0.0,n_3,CommitTurn,Selector/Sequence/CommitTurn,"n_2,n_3",2.0,P3_commit,[3824 3825 3826],['vehicle.audi.tt' 'vehicle.audi.tt' 'vehicle.audi.tt'],['oncoming' 'oncoming' 'lead'],[-47.52577972 -94.83279419 -84.55406189],[-88.02604675 -88.10003662 -91.53020477],[ 0.00060091 -0.01131922 -0.0111709 ],[-1.62353501e-01 -1.52984619e-01 -1.79889511e+02],[-0.04605204 -0.04530244 -5.76038074],[ 3.36564590e-05  1.20900353e-04 -1.11062489e-02],[0.04605205 0.0453026  5.76039145],[2.09060502 2.09060502 2.09060502],[0.99705857 0.99705857 0.99705857]
+714057,16.50000024586916,19269.624188083137,0.05000000074505806,-39.033226013183594,-90.89564514160156,0.004737338982522488,169.8775634765625,0.1982530653476715,-0.16644282639026642,-4.555379390716553,1.2529926300048828,0.08861736208200455,4.724560500640421,-2.0334243774414062,1.1483335494995117,1.0783603191375732,2.203595161222657,-0.018859419578065584,0.5256699323654175,0.0,-0.13192570209503174,2.3958897590637207,1.081725001335144,0.7438300251960754,Green,0.0,n_3,CommitTurn,Selector/Sequence/CommitTurn,"n_2,n_3",2.0,P3_commit,[3824 3825 3826],['vehicle.audi.tt' 'vehicle.audi.tt' 'vehicle.audi.tt'],['oncoming' 'oncoming' 'lead'],[-47.52446747 -94.83145905 -84.86103058],[-88.02604675 -88.10003662 -91.53079224],[ 0.00059969 -0.0113225  -0.01119333],[-1.62353501e-01 -1.52984619e-01 -1.79889511e+02],[ 0.04455262  0.04530233 -6.23374796],[-0.00022325 -0.00012084 -0.01201884],[0.04455318 0.04530249 6.23375955],[2.09060502 2.09060502 2.09060502],[0.99705857 0.99705857 0.99705857]
+714058,16.550000246614218,19269.67418808388,0.05000000074505806,-39.26628112792969,-90.83595275878906,0.008077754639089108,169.1705322265625,0.34148895740509033,-0.0690002366900444,-4.673922538757324,1.2658323049545288,0.082517109811306,4.842301448956912,-2.3708629608154297,0.2567934989929199,-0.12200504541397095,2.3768876958578953,3.465850692704766,0.5256699323654175,0.0,-0.20735885202884674,2.3958897590637207,1.081725001335144,0.7438300251960754,Yellow,0.0,n_3,CommitTurn,Selector/Sequence/CommitTurn,"n_2,n_3",2.0,P3_commit,[3824 3825 3826],['vehicle.audi.tt' 'vehicle.audi.tt' 'vehicle.audi.tt'],['oncoming' 'oncoming' 'lead'],[-47.5258255  -94.83279419 -85.15397644],[-88.02604675 -88.10003662 -91.53134918],[ 0.00060087 -0.01131922 -0.01117067],[-1.62353501e-01 -1.52984619e-01 -1.79889511e+02],[-0.04605258 -0.04530239 -5.76038074],[ 3.36532830e-05  1.20887817e-04 -1.11062778e-02],[0.04605259 0.04530255 5.76039145],[2.09060502 2.09060502 2.09060502],[0.99705857 0.99705857 0.99705857]
+714059,16.600000247359276,19269.724188084627,0.05000000074505806,-39.503170013427734,-90.77110290527344,0.010589046403765678,168.3403778076172,0.42770642042160034,0.06751956790685654,-4.731009006500244,1.4508459568023682,0.0414101779460907,4.9484745336271265,-1.1417293548583984,3.700273036956787,-0.8221386671066284,1.8659849919467753,-10.2180540782224,0.5256699323654175,0.0,-0.18592533469200134,2.3958897590637207,1.081725001335144,0.7438300251960754,Yellow,0.0,n_3,CommitTurn,Selector/Sequence/CommitTurn,"n_2,n_3",2.0,P3_commit,[3824 3825 3826],['vehicle.audi.tt' 'vehicle.audi.tt' 'vehicle.audi.tt'],['oncoming' 'oncoming' 'lead'],[-47.52450943 -94.83145905 -85.46094513],[-88.02604675 -88.10003662 -91.53192902],[ 0.00059961 -0.0113225  -0.01119318],[-1.62353501e-01 -1.52984619e-01 -1.79889511e+02],[ 0.04455251  0.04530241 -6.23374939],[-0.00022305 -0.00012103 -0.0120188 ],[0.04455306 0.04530258 6.23376098],[2.09060502 2.09060502 2.09060502],[0.99705857 0.99705857 0.99705857]
+714060,16.650000248104334,19269.774188085372,0.05000000074505806,-39.743507385253906,-90.6998062133789,0.011693019419908524,167.40090942382812,0.44604548811912537,0.10546711832284927,-4.816291809082031,1.578116774559021,0.02176310494542122,5.068246180324633,-1.7056560516357422,2.5454163551330566,-0.3929414749145508,2.219810181843352,7.076503797931539,0.5256699323654175,0.0,-0.16025646030902863,2.3958897590637207,1.081725001335144,0.7438300251960754,Yellow,0.0,n_3,CommitTurn,Selector/Sequence/CommitTurn,"n_2,n_3",2.0,P3_commit,[3824 3825 3826],['vehicle.audi.tt' 'vehicle.audi.tt' 'vehicle.audi.tt'],['oncoming' 'oncoming' 'lead'],[-47.52586746 -94.83279419 -85.75388336],[-88.02604675 -88.10003662 -91.53248596],[ 0.0006008  -0.01131922 -0.01117056],[-1.62353501e-01 -1.52984619e-01 -1.79889511e+02],[-0.04605174 -0.04530247 -5.76038074],[ 3.35432123e-05  1.20900506e-04 -1.11062229e-02],[0.04605176 0.04530263 5.76039145],[2.09060502 2.09060502 2.09060502],[0.99705857 0.99705857 0.99705857]
+714061,16.700000248849392,19269.824188086117,0.05000000074505806,-39.98867416381836,-90.62403869628906,0.012105541303753853,166.52854919433594,0.44015786051750183,0.10632108896970749,-4.919013023376465,1.6450257301330566,0.0006199359777383506,5.186790797491939,-2.054424285888672,1.338179111480713,-0.4228633642196655,2.30964241278897,1.796644618912353,0.5256699323654175,0.0,-0.23373977839946747,2.3958897590637207,1.081725001335144,0.7438300251960754,Yellow,0.0,n_3,CommitTurn,Selector/Sequence/CommitTurn,"n_2,n_3",2.0,P3_commit,[3824 3825 3826],['vehicle.audi.tt' 'vehicle.audi.tt' 'vehicle.audi.tt'],['oncoming' 'oncoming' 'lead'],[-47.52455521 -94.83145905 -86.06085968],[-88.02604675 -88.10003662 -91.53307343],[ 0.00059958 -0.0113225  -0.01119303],[-1.62353486e-01 -1.52984619e-01 -1.79889511e+02],[ 0.04455202  0.04530243 -6.23374796],[-0.00022344 -0.00012103 -0.01201873],[0.04455258 0.04530259 6.23375955],[2.09060502 2.09060502 2.09060502],[0.99705857 0.99705857 0.99705857]
+714062,16.75000024959445,19269.874188086862,0.05000000074505806,-40.23243713378906,-90.54412078857422,0.011982783675193787,165.53482055664062,0.42080792784690857,0.11301398277282715,-4.8029255867004395,1.7582749128341675,-0.007123527582734823,5.114648068096549,2.321748733520508,2.264983654022217,-0.15486927330493927,-1.682374579342319,-79.84033984262577,0.5256699323654175,0.0,-0.20827056467533112,2.3958897590637207,1.081725001335144,0.7438300251960754,Yellow,0.0,n_3,CommitTurn,Selector/Sequence/CommitTurn,"n_2,n_3",2.0,P3_commit,[3824 3825 3826],['vehicle.audi.tt' 'vehicle.audi.tt' 'vehicle.audi.tt'],['oncoming' 'oncoming' 'lead'],[-47.52591324 -94.83279419 -86.35379791],[-88.02604675 -88.10003662 -91.53363037],[ 0.00060076 -0.01131922 -0.01117041],[-1.62353501e-01 -1.52984619e-01 -1.79889511e+02],[-0.04605201 -0.04530244 -5.76038074],[ 3.33443277e-05  1.20907192e-04 -1.11062508e-02],[0.04605202 0.0453026  5.76039145],[2.09060502 2.09060502 2.09060502],[0.99705857 0.99705857 0.99705857]
+714063,16.800000250339508,19269.924188087607,0.05000000074505806,-40.47214126586914,-90.45958709716797,0.01166955940425396,164.51197814941406,0.4003310203552246,0.11480052024126053,-4.74601411819458,1.839634656906128,-0.009188594296574593,5.090079142900668,1.1382293701171875,1.627194881439209,-0.04130133241415024,-0.6623749488534066,20.39999260977825,0.5256699323654175,0.0,-0.18083125352859497,2.3958897590637207,1.081725001335144,0.7438300251960754,Yellow,0.0,n_3,CommitTurn,Selector/Sequence/CommitTurn,"n_2,n_3",2.0,P3_commit,[3824 3825 3826],['vehicle.audi.tt' 'vehicle.audi.tt' 'vehicle.audi.tt'],['oncoming' 'oncoming' 'lead'],[-47.52459717 -94.83145905 -86.6607666 ],[-88.02604675 -88.10003662 -91.53421783],[ 0.0005995  -0.0113225  -0.01119291],[-1.62353501e-01 -1.52984619e-01 -1.79889511e+02],[ 0.04455276  0.04530243 -6.2337513 ],[-0.00022341 -0.00012098 -0.01201873],[0.04455332 0.04530259 6.23376288],[2.09060502 2.09060502 2.09060502],[0.99705857 0.99705857 0.99705857]
+714064,16.850000251084566,19269.974188088352,0.05000000074505806,-40.71039581298828,-90.37229919433594,0.011303996667265892,163.46347045898438,0.38424593210220337,0.11111945658922195,-4.726353168487549,1.8855526447296143,-0.008990240283310413,5.0885875298867695,0.393218994140625,0.9183597564697266,0.003967080265283585,-0.11556524372029686,10.936194102662196,0.5256699323654175,0.0,-0.15205709636211395,2.3958897590637207,1.081725001335144,0.7438300251960754,Yellow,0.0,n_3,CommitTurn,Selector/Sequence/CommitTurn,"n_2,n_3",2.0,P3_commit,[3824 3825 3826],['vehicle.audi.tt' 'vehicle.audi.tt' 'vehicle.audi.tt'],['oncoming' 'oncoming' 'lead'],[-47.5259552  -94.83279419 -86.95371246],[-88.02604675 -88.10003662 -91.53477478],[ 0.00060068 -0.01131922 -0.01117037],[-1.62353501e-01 -1.52984619e-01 -1.79889511e+02],[-0.04605209 -0.04530248 -5.76038122],[ 3.36119047e-05  1.20912649e-04 -1.11061372e-02],[0.0460521  0.04530264 5.76039193],[2.09060502 2.09060502 2.09060502],[0.99705857 0.99705857 0.99705857]
+714065,16.900000251829624,19270.024188089097,0.05000000074505806,-40.94871139526367,-90.28215789794922,0.010950793512165546,162.5952606201172,0.3722384572029114,0.10093946754932404,-4.745702743530273,1.919329285621643,-0.008051890879869461,5.119132684019399,-0.3869915008544922,0.6755328178405762,0.018766988068819046,0.5713385129694419,13.738075133794775,0.5256699323654175,0.0,-0.2301693856716156,2.3958897590637207,1.081725001335144,0.7438300251960754,Yellow,0.0,n_3,CommitTurn,Selector/Sequence/CommitTurn,"n_2,n_3",2.0,P3_commit,[3824 3825 3826],['vehicle.audi.tt' 'vehicle.audi.tt' 'vehicle.audi.tt'],['oncoming' 'oncoming' 'lead'],[-47.52464294 -94.83145905 -87.26068115],[-88.02604675 -88.10003662 -91.53536224],[ 0.00059942 -0.0113225  -0.01119287],[-1.62353501e-01 -1.52984619e-01 -1.79889511e+02],[ 0.04455232  0.04530242 -6.23374796],[-0.00022336 -0.00012102 -0.01201868],[0.04455287 0.04530259 6.23375955],[2.09060502 2.09060502 2.09060502],[0.99705857 0.99705857 0.99705857]
+714066,16.950000252574682,19270.074188089842,0.05000000074505806,-41.186527252197266,-90.18709564208984,0.010640010237693787,161.59092712402344,0.36287426948547363,0.11182772368192673,-4.70389461517334,2.0813405513763428,-0.006795921362936497,5.143792670924862,0.8361625671386719,3.240225315093994,0.025119390338659286,0.22988805315541505,-6.829009196280538,0.5256699323654175,0.0,-0.20454111695289612,2.3958897590637207,1.081725001335144,0.7438300251960754,Yellow,0.0,n_3,CommitTurn,Selector/Sequence/CommitTurn,"n_2,n_3",2.0,P3_commit,[3824 3825 3826],['vehicle.audi.tt' 'vehicle.audi.tt' 'vehicle.audi.tt'],['oncoming' 'oncoming' 'lead'],[-47.52600098 -94.83279419 -87.55361938],[-88.02604675 -88.10003662 -91.53591919],[ 0.0006006  -0.01131922 -0.01117029],[-1.62353501e-01 -1.52984619e-01 -1.79889511e+02],[-0.04605212 -0.04530246 -5.76038074],[ 3.36351222e-05  1.20898709e-04 -1.11061474e-02],[0.04605213 0.04530262 5.76039145],[2.09060502 2.09060502 2.09060502],[0.99705857 0.99705857 0.99705857]
+714067,17.00000025331974,19270.124188090587,0.05000000074505806,-41.423763275146484,-90.08523559570312,0.010455646552145481,160.56016540527344,0.35229429602622986,0.11168478429317474,-4.7120771408081055,2.199220657348633,-0.004561691079288721,5.200023315393427,-0.1636505126953125,2.357602119445801,0.044684603810310364,0.9389706873867676,14.18165268462705,0.5256699323654175,0.0,-0.1768985092639923,2.3958897590637207,1.081725001335144,0.7438300251960754,Yellow,0.0,n_3,CommitTurn,Selector/Sequence/CommitTurn,"n_2,n_3",2.0,P3_commit,[3824 3825 3826],['vehicle.audi.tt' 'vehicle.audi.tt' 'vehicle.audi.tt'],['oncoming' 'oncoming' 'lead'],[-47.52468491 -94.83145905 -87.8605957 ],[-88.02604675 -88.10003662 -91.53649902],[ 0.00059935 -0.01132246 -0.0111928 ],[-1.62353501e-01 -1.52984619e-01 -1.79889511e+02],[ 0.04455257  0.04530241 -6.23375034],[-0.00022354 -0.00012104 -0.01201871],[0.04455313 0.04530257 6.23376193],[2.09060502 2.09060502 2.09060502],[0.99705857 0.99705857 0.99705857]
+714068,17.0500002540648,19270.174188091332,0.05000000074505806,-41.66191864013672,-89.97982025146484,0.01190889347344637,159.52740478515625,0.27399301528930664,-0.024475090205669403,-4.735942363739014,2.2781858444213867,0.03400570899248123,5.255404914407629,-0.47730445861816406,1.5793037414550781,0.7713479995727539,0.9995339265628989,1.2112647835226253,0.5256699323654175,0.0,-0.14868749678134918,2.3958897590637207,1.081725001335144,0.7438300251960754,Yellow,0.0,n_3,CommitTurn,Selector/Sequence/CommitTurn,"n_2,n_3",2.0,P3_commit,[3824 3825 3826],['vehicle.audi.tt' 'vehicle.audi.tt' 'vehicle.audi.tt'],['oncoming' 'oncoming' 'lead'],[-47.52604294 -94.83279419 -88.15353394],[-88.02604675 -88.10003662 -91.53705597],[ 0.00060057 -0.01131918 -0.01117021],[-1.62353501e-01 -1.52984619e-01 -1.79889511e+02],[-0.04605236 -0.04530224 -5.76038074],[ 3.35008190e-05  1.20896999e-04 -1.11060794e-02],[0.04605237 0.0453024  5.76039145],[2.09060502 2.09060502 2.09060502],[0.99705857 0.99705857 0.99705857]
+714069,17.100000254809856,19270.224188092077,0.05000000074505806,-41.9017333984375,-89.87018585205078,0.014572085812687874,158.673583984375,0.1604343056678772,-0.18273921310901642,-4.807787895202637,2.3483200073242188,0.032234400510787964,5.35064774602629,-1.436910629272461,1.4026832580566406,-0.035426169633865356,1.8486451302249902,16.982224073241827,0.5256699323654175,0.0,-0.22994695603847504,2.3958897590637207,1.081725001335144,0.7438300251960754,Yellow,0.0,n_3,CommitTurn,Selector/Sequence/CommitTurn,"n_2,n_3",2.0,P3_commit,[3824 3825 3826],['vehicle.audi.tt' 'vehicle.audi.tt' 'vehicle.audi.tt'],['oncoming' 'oncoming' 'lead'],[-47.52473068 -94.83145905 -88.46050262],[-88.02604675 -88.10003662 -91.53764343],[ 0.00059931 -0.01132246 -0.01119276],[-1.62353501e-01 -1.52984619e-01 -1.79889511e+02],[ 0.04455243  0.04530219 -6.23374748],[-0.00022277 -0.00012097 -0.01201865],[0.04455299 0.04530236 6.23375907],[2.09060502 2.09060502 2.09060502],[0.99705857 0.99705857 0.99705857]
+714070,17.150000255554914,19270.274188092822,0.05000000074505806,-42.14301300048828,-89.75301361083984,0.016623934730887413,157.64364624023438,0.0818188339471817,-0.0950927734375,-4.782414436340332,2.516693115234375,0.03683536499738693,5.40418653241952,0.5074691772460938,3.367462158203125,0.09201928973197937,0.8115422320878707,-20.74205796274239,0.5256699323654175,0.0,-0.20352979004383087,2.3958897590637207,1.081725001335144,0.7438300251960754,Yellow,0.0,n_3,CommitTurn,Selector/Sequence/CommitTurn,"n_2,n_3",2.0,P3_commit,[3824 3825 3826],['vehicle.audi.tt' 'vehicle.audi.tt' 'vehicle.audi.tt'],['oncoming' 'oncoming' 'lead'],[-47.52608871 -94.83279419 -88.75344849],[-88.02604675 -88.10003662 -91.53820038],[ 0.00060053 -0.01131918 -0.01117018],[-1.62353501e-01 -1.52984619e-01 -1.79889511e+02],[-0.04605188 -0.04530233 -5.76038265],[ 3.33134813e-05  1.20903416e-04 -1.11060794e-02],[0.04605189 0.04530249 5.76039336],[2.09060502 2.09060502 2.09060502],[0.99705857 0.99705857 0.99705857]
+714071,17.200000256299973,19270.324188093567,0.05000000074505806,-42.38408279418945,-89.62825012207031,0.019453907385468483,156.56887817382812,-0.027764717116951942,0.09927241504192352,-4.810606479644775,2.641815185546875,0.0487215593457222,5.4882713286231,-0.5638408660888672,2.50244140625,0.23772388696670532,1.5124325111016015,14.017805580274615,0.5256699323654175,0.0,-0.17449210584163666,2.3958897590637207,1.081725001335144,0.7438300251960754,Yellow,0.0,n_3,CommitTurn,Selector/Sequence/CommitTurn,"n_2,n_3",2.0,P3_commit,[3824 3825 3826],['vehicle.audi.tt' 'vehicle.audi.tt' 'vehicle.audi.tt'],['oncoming' 'oncoming' 'lead'],[-47.52477264 -94.83145905 -89.06041718],[-88.02604675 -88.10003662 -91.53878784],[ 0.00059927 -0.01132246 -0.01119272],[-1.62353501e-01 -1.52984619e-01 -1.79889511e+02],[ 0.04455238  0.04530224 -6.23374987],[-0.00022328 -0.00012092 -0.0120186 ],[0.04455294 0.0453024  6.23376145],[2.09060502 2.09060502 2.09060502],[0.99705857 0.99705857 0.99705857]
+714072,17.25000025704503,19270.374188094313,0.05000000074505806,-42.62879180908203,-89.49910736083984,0.02098936028778553,155.47909545898438,-0.07577411085367203,0.15996526181697845,-4.872578144073486,2.737004280090332,0.013119801878929138,5.588668016561318,-1.2394332885742188,1.9037818908691406,-0.7120351791381836,1.917766179290421,8.106673363776391,0.5256699323654175,0.0,-0.24942995607852936,2.3958897590637207,1.081725001335144,0.7438300251960754,Yellow,0.0,n_3,CommitTurn,Selector/Sequence/CommitTurn,"n_2,n_3",2.0,P3_commit,[3824 3825 3826],['vehicle.audi.tt' 'vehicle.audi.tt' 'vehicle.audi.tt'],['oncoming' 'oncoming' 'lead'],[-47.52613068 -94.83279419 -89.35335541],[-88.02604675 -88.10003662 -91.53934479],[ 0.00060045 -0.01131918 -0.0111701 ],[-1.62353501e-01 -1.52984619e-01 -1.79889511e+02],[-0.04605184 -0.0453023  -5.76038074],[ 3.38711579e-05  1.20898294e-04 -1.11060413e-02],[0.04605185 0.04530246 5.76039145],[2.09060502 2.09060502 2.09060502],[0.99705857 0.99705857 0.99705857]
+714073,17.30000025779009,19270.424188095058,0.05000000074505806,-42.87418746948242,-89.36203002929688,0.0211580079048872,154.35499572753906,-0.07849252969026566,0.1787111759185791,-4.833436489105225,2.9497475624084473,-0.0018689632415771484,5.662430483118395,0.7828330993652344,4.254865646362305,-0.29977530241012573,1.135761791674398,-15.64008775232046,0.5256699323654175,0.0,-0.2209632843732834,2.3958897590637207,1.081725001335144,0.7438300251960754,Yellow,0.0,n_3,CommitTurn,Selector/Sequence/CommitTurn,"n_2,n_3",2.0,P3_commit,[3824 3825 3826],['vehicle.audi.tt' 'vehicle.audi.tt' 'vehicle.audi.tt'],['oncoming' 'oncoming' 'lead'],[-47.52481842 -94.83145905 -89.66033173],[-88.02604675 -88.10003662 -91.53993225],[ 0.00059919 -0.01132246 -0.01119265],[-1.62353501e-01 -1.52984619e-01 -1.79889511e+02],[ 0.04455257  0.04530246 -6.23374844],[-0.00022317 -0.00012092 -0.0120186 ],[0.04455313 0.04530262 6.23376002],[2.09060502 2.09060502 2.09060502],[0.99705857 0.99705857 0.99705857]
+714074,17.350000258535147,19270.474188095803,0.05000000074505806,-43.1193733215332,-89.21680450439453,0.02082563377916813,153.06629943847656,-0.0710749477148056,0.186186283826828,-4.837444305419922,3.0978546142578125,-0.007563819643110037,5.74435119218159,-0.08015632629394531,2.9621410369873047,-0.11389712989330292,1.4131908268287443,5.548580703086925,0.5256699323654175,0.0,-0.18644718825817108,2.3958897590637207,1.081725001335144,0.7438300251960754,Yellow,0.0,n_3,CommitTurn,Selector/Sequence/CommitTurn,"n_2,n_3",2.0,P3_commit,[3824 3825 3826],['vehicle.audi.tt' 'vehicle.audi.tt' 'vehicle.audi.tt'],['oncoming' 'oncoming' 'lead'],[-47.52617645 -94.83279419 -89.95326996],[-88.02604675 -88.10003662 -91.5404892 ],[ 0.00060038 -0.01131918 -0.01117006],[-1.62353501e-01 -1.52984619e-01 -1.79889511e+02],[-0.04605234 -0.04530248 -5.76038122],[ 3.34704382e-05  1.20915669e-04 -1.11059817e-02],[0.04605235 0.04530264 5.76039193],[2.09060502 2.09060502 2.09060502],[0.99705857 0.99705857 0.99705857]
+714075,17.400000259280205,19270.524188096548,0.05000000074505806,-43.28485107421875,-89.09395599365234,0.022130373865365982,152.4242706298828,-0.40740710496902466,0.3291560113430023,-2.463794469833374,2.1206538677215576,-0.016938839107751846,3.2507623746229,47.47299575805664,-19.54401397705078,-0.18750038743019104,-51.12737830615184,-1050.8113826596116,0.5256699323654175,0.0,-0.04762060195207596,2.3958897590637207,1.081725001335144,0.7438300251960754,Yellow,0.0,n_3,CommitTurn,Selector/Sequence/CommitTurn,"n_2,n_3",2.0,P3_commit,[3824 3825 3826],['vehicle.audi.tt' 'vehicle.audi.tt' 'vehicle.audi.tt'],['oncoming' 'oncoming' 'lead'],[-47.6439209  -94.83145905 -90.26023865],[-87.99068451 -88.10003662 -91.54106903],[ 0.00451242 -0.01132246 -0.01119261],[ 7.12216794e-01 -1.52984619e-01 -1.79889511e+02],[-3.85308456  0.04530244 -6.23374796],[ 1.04578483e+00 -1.20911383e-04 -1.20185530e-02],[3.99248376 0.0453026  6.23375954],[2.09060502 2.09060502 2.09060502],[0.99705857 0.99705857 0.99705857]
+
+Output the complete patched program in a single ``` fenced block, with no prose
+before or after it.

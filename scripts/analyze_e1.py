@@ -1,18 +1,23 @@
 #!/usr/bin/env python3
 """Analyse the E1 campaign. Reads attempts.jsonl, emits the tables and the grid.
 
-READ THE NEGATIVE CONTROL FIRST. F4a's extra field, `active_node`, is provably
-constant on this baseline -- the root Selector's first child is
+ON F4a AGAINST F3. F4a's extra field, `active_node`, is provably constant on
+this baseline -- the root Selector's first child is
 Sequence(InConflictZone, CommitTurn), a Selector stops at its first succeeding
 child, and C1/C2/C3 all take their argmin inside the conflict zone, so exactly
 one leaf can ever tick there. H(active_node | contract) = 0.000 bits over all
-20 certificates. F4a therefore carries ZERO information beyond F3, and
+20 certificates. F4a therefore carries no information beyond F3.
 
-    |F4a - F3| IS THIS EXPERIMENT'S NOISE FLOOR.
+That does not make F4a a noise replicate of F3, and |F4a - F3| is not a noise
+floor. The F4a prompt is 91 tokens longer than the F3 prompt on every
+certificate (data/results/prompt_budget.json), and a model's output can shift
+because text was added even when that text carries no information. The
+F4a - F3 difference bounds the effect of adding one uninformative field; it
+sets no resolution for the experiment, and no measured noise floor exists.
 
-Every other difference in this output must be compared against it before it is
-called a difference at all. A condition that beats F3 by less than the F4a-F3
-gap has not been shown to beat F3.
+Differences printed here are point estimates only. Every interval in the paper
+comes from the paired cluster bootstrap over certificates in
+scripts/uncertainty.py (output: data/results/uncertainty.json).
 
 Reported deliberately and separately, never pooled:
   * malformed vs truncated vs api_error -- three different failures with three
@@ -115,7 +120,7 @@ def main() -> int:
             "fix_rate": round(fix, 4) if fix is not None else None,
             "fix_rate_of_evaluated": (round(len(resolved) / len(ev), 4)
                                       if ev else None),
-            # See the analysis header. `fix_rate` is the pre-registered metric
+            # See the analysis header. `fix_rate` is the pre-specified metric
             # and is reported unchanged; these say what is inside it.
             "n_resolved_by_refusal": len(refusals),
             "n_resolved_genuine": len(genuine),
@@ -167,7 +172,7 @@ def main() -> int:
 
     # ------------------------------------------------------------------
     print("\n== RESOLUTION BY REFUSAL ==")
-    print("  `resolved` is pre-registered as rho >= 0 on the counterexample "
+    print("  `resolved` is pre-specified as rho >= 0 on the counterexample "
           "scenario. A program that never enters the junction satisfies that "
           "trivially: C2 and C3 go vacuous and rho falls through to C5.")
     tot_res = sum(summary[c]["n_resolved"] for c in conds)
@@ -188,27 +193,29 @@ def main() -> int:
               "measurement of repair. Report both numbers, lead with neither "
               "alone. **")
 
-    print("\n== NEGATIVE CONTROL: F4a vs F3 ==")
-    noise = None
+    print("\n== F4a vs F3, AND POINT DIFFERENCES AGAINST F3 ==")
     if "F3" in summary and "F4a" in summary:
-        noise = abs(summary["F4a"]["fix_rate"] - summary["F3"]["fix_rate"])
+        d4a = summary["F4a"]["fix_rate"] - summary["F3"]["fix_rate"]
         print(f"  F3  fix rate {_p(summary['F3']['fix_rate'])}   "
               f"F4a fix rate {_p(summary['F4a']['fix_rate'])}")
-        print(f"  |F4a - F3| = {noise:.4f} ({noise*100:.1f} points)")
+        print(f"  F4a - F3 = {d4a:+.4f} ({d4a*100:+.1f} points)")
         print("  F4a adds `active_node`, which is CONSTANT over this corpus "
-              "(H = 0.000 bits).")
-        print("  This gap is therefore pure noise, and NOTHING SMALLER THAN IT "
-              "IS A DIFFERENCE.")
-        if noise > 0.20:
-            print("  ** WARNING: a >20-point gap on a zero-information field "
-                  "means something is wrong with the setup. Investigate before "
-                  "reporting any other comparison. **")
+              "(H = 0.000 bits), so F4a carries no information beyond F3.")
+        print("  It is not a noise replicate: the added text can still shift "
+              "the model's output. This difference is not a noise floor and "
+              "sets no threshold for the comparisons below.")
+        if abs(d4a) > 0.20:
+            print("  ** WARNING: a gap of more than 20 points from adding a "
+                  "field that carries no information is implausibly large. "
+                  "Check prompt rendering and the campaign setup before "
+                  "interpreting any other comparison. **")
+        print("  Point differences only. Intervals: paired cluster bootstrap, "
+              "scripts/uncertainty.py -> data/results/uncertainty.json.")
         for c in conds:
             if c in ("F3", "F4a"):
                 continue
             d = summary[c]["fix_rate"] - summary["F3"]["fix_rate"]
-            verdict = "ABOVE the noise floor" if abs(d) > noise else "within noise"
-            print(f"  {c} - F3 = {d:+.4f}   {verdict}")
+            print(f"  {c} - F3 = {d:+.4f}")
 
     # ------------------------------------------------------------------
     print("\n== OUTCOME GRID (fraction of replicates resolved) ==")
@@ -320,7 +327,6 @@ def main() -> int:
     out = {
         "n_attempts": len(rows), "n_certificates": n_certs, "n_seeds": n_seeds,
         "conditions": conds, "summary": summary,
-        "noise_floor_f4a_minus_f3": noise,
         "outcome_grid": grid, "set_relationships": setrel,
         "baseline_reference": base,
         "patch_type_crosstab": patch_x,

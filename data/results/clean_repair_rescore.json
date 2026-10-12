@@ -1,0 +1,890 @@
+{
+ "script": "scripts/rescore_dsl_probes.py",
+ "scorer": "src/stl.py compute_rho; resolved = rho >= 0; completed = 'P4_settle' in phases_reached; entered = C2 not vacuous (src/evaluate.py)",
+ "inputs_sha256": {
+  "config/contracts.yaml": "d8da9d81f160fbb412ae171c22041f2878365f7e728f1bb40ddd07931513d8fd",
+  "data/scenarios/junction.yaml": "12a0cf1f22c1a4dff1c32cf6ed148863e43461c1b21462447c53f2689e68f580",
+  "data/results/control_map.json": "4eb394a32437545d741ebcbdb6b77ebd8f0d1af992690df1e0f70dad36213f31",
+  "data/scenarios/baseline_program.bt": "59218be8676bd5e54f5fa3d6385cefb3935975daa41dce03b1f22575c68d9ed8",
+  "data/scenarios/dsl_probe/clean_repair.bt": "507bfe02db54fed2808d4f1916a21fc8cb80a7ceca8356acb045d342f981a874",
+  "data/scenarios/dsl_probe/diag.bt": "6d1bdc43d2ad6365dca8af509eae3e722c0ebab5ed7234d70d169516f629c78b",
+  "data/scenarios/dsl_probe/fixA_bigger_gap.bt": "8543c504cff895eb09ec2c1bcbc4579439fa4d2b8bf749241b45d606c55eb4ba",
+  "data/scenarios/dsl_probe/fixFULL.bt": "d0c0517aebf806092c43dba7e643d7da7623a0efddcf8638b0bfbe4f6a870508",
+  "data/scenarios/dsl_probe/geometric_guard_16m.bt": "83f66f99bf7d45d8d417d9c458e610581f37bfdbedd413cebb341e5db5ce6f08",
+  "data/scenarios/dsl_probe/geometric_guard_32m.bt": "9ff1eeb672bd1ac55313e483a5c3a51b60c6ed97f852b560804814a5d892a955",
+  "data/scenarios/dsl_probe/pc.bt": "dd54c6d1929eb5b7396f6134b0258fb7b2ea70c7a78433f9b33572652106d774",
+  "data/scenarios/dsl_probe/sweep_10.0.bt": "74e03b2339bfed5643c6ec4e078481b64cd984d49cdd8173491563abd3ad07e7",
+  "data/scenarios/dsl_probe/sweep_12.0.bt": "3c3ab3c659ca7618ae1aa94b077f472ee26363cf7520c84e583f73a977824d50",
+  "data/scenarios/dsl_probe/sweep_15.0.bt": "263ef83b8fba8a6fdb650cf8af682ca596dc87bc7c301bbcfa740878277bd43d",
+  "data/scenarios/dsl_probe/sweep_5.5.bt": "42da805bb1b387cd22fad942257c5ddbdf6bfc19a41ca98f86c9271accc7135f",
+  "data/scenarios/dsl_probe/sweep_8.0.bt": "3cc16db50abf493744ae4a325b62ad8beb11d62f16fe60f13ac23adea443b6e8"
+ },
+ "traces": {
+  "directory": "data/dsl_probe_traces",
+  "files": 532,
+  "bytes": 39954045,
+  "sha256_verified": 532
+ },
+ "program": "data/scenarios/dsl_probe/clean_repair.bt",
+ "program_sha": "507bfe02db54fed2",
+ "attempt_id": "F1__CE005_C1_5b773c94ec4bb251__s3",
+ "generalisation": {
+  "own_counterexample": {
+   "certificate_id": "CE005_C1_5b773c94ec4bb251",
+   "rho": 0.5,
+   "argmin_contract": "C5",
+   "per_contract": {
+    "C1": 1.064996,
+    "C2": 27.0,
+    "C3": 4.0,
+    "C4": 20.178325,
+    "C5": 0.5
+   },
+   "resolved": true,
+   "completed": true,
+   "entered": true
+  },
+  "other_19": {
+   "resolved": "19/19",
+   "completed": "19/19",
+   "entered": "19/19",
+   "binding": {
+    "C1": 3,
+    "C5": 16
+   },
+   "c1_binding": {
+    "CE001_C2_44b9f97d05fda474": 0.295576,
+    "CE010_C2_56c436b720d319ef": 0.421297,
+    "CE013_C2_ade4dfeb1e7cffee": 0.350404
+   }
+  },
+  "all_20": {
+   "resolved": "20/20",
+   "completed": "20/20",
+   "entered": "20/20",
+   "resolved_and_completed": "20/20"
+  }
+ },
+ "repeats": {
+  "n": 6,
+  "certificate_id": [
+   "CE005_C1_5b773c94ec4bb251"
+  ],
+  "rho": [
+   0.5,
+   0.5,
+   0.5,
+   0.5,
+   0.5,
+   0.5
+  ],
+  "rho4_m": [
+   20.178325,
+   20.178325,
+   20.178325,
+   20.178325,
+   20.178325,
+   20.178325
+  ],
+  "argmin_contract": [
+   "C5",
+   "C5",
+   "C5",
+   "C5",
+   "C5",
+   "C5"
+  ],
+  "rho_spread": 0.0,
+  "rho4_spread_m": 0.0,
+  "c4_ever_binding": false,
+  "resolved_all": true,
+  "completed_all": true,
+  "entered_all": true,
+  "equal_to_20_counterexample_run": true,
+  "episodes": [
+   {
+    "file": "repeats/rss_rep0.json",
+    "episode_id": "rss_rep0",
+    "certificate_id": "CE005_C1_5b773c94ec4bb251",
+    "status": "ok",
+    "rho": 0.5,
+    "argmin_contract": "C5",
+    "per_contract": {
+     "C1": 1.064996,
+     "C2": 27.0,
+     "C3": 4.0,
+     "C4": 20.178325,
+     "C5": 0.5
+    },
+    "vacuous": [],
+    "phases_reached": [
+     "P1_approach",
+     "P2_yield_clear",
+     "P3_commit",
+     "P4_settle"
+    ],
+    "resolved": true,
+    "completed": true,
+    "entered": true
+   },
+   {
+    "file": "repeats/rss_rep1.json",
+    "episode_id": "rss_rep1",
+    "certificate_id": "CE005_C1_5b773c94ec4bb251",
+    "status": "ok",
+    "rho": 0.5,
+    "argmin_contract": "C5",
+    "per_contract": {
+     "C1": 1.064996,
+     "C2": 27.0,
+     "C3": 4.0,
+     "C4": 20.178325,
+     "C5": 0.5
+    },
+    "vacuous": [],
+    "phases_reached": [
+     "P1_approach",
+     "P2_yield_clear",
+     "P3_commit",
+     "P4_settle"
+    ],
+    "resolved": true,
+    "completed": true,
+    "entered": true
+   },
+   {
+    "file": "repeats/rss_rep2.json",
+    "episode_id": "rss_rep2",
+    "certificate_id": "CE005_C1_5b773c94ec4bb251",
+    "status": "ok",
+    "rho": 0.5,
+    "argmin_contract": "C5",
+    "per_contract": {
+     "C1": 1.064996,
+     "C2": 27.0,
+     "C3": 4.0,
+     "C4": 20.178325,
+     "C5": 0.5
+    },
+    "vacuous": [],
+    "phases_reached": [
+     "P1_approach",
+     "P2_yield_clear",
+     "P3_commit",
+     "P4_settle"
+    ],
+    "resolved": true,
+    "completed": true,
+    "entered": true
+   },
+   {
+    "file": "repeats/rss_rep3.json",
+    "episode_id": "rss_rep3",
+    "certificate_id": "CE005_C1_5b773c94ec4bb251",
+    "status": "ok",
+    "rho": 0.5,
+    "argmin_contract": "C5",
+    "per_contract": {
+     "C1": 1.064996,
+     "C2": 27.0,
+     "C3": 4.0,
+     "C4": 20.178325,
+     "C5": 0.5
+    },
+    "vacuous": [],
+    "phases_reached": [
+     "P1_approach",
+     "P2_yield_clear",
+     "P3_commit",
+     "P4_settle"
+    ],
+    "resolved": true,
+    "completed": true,
+    "entered": true
+   },
+   {
+    "file": "repeats/rss_rep4.json",
+    "episode_id": "rss_rep4",
+    "certificate_id": "CE005_C1_5b773c94ec4bb251",
+    "status": "ok",
+    "rho": 0.5,
+    "argmin_contract": "C5",
+    "per_contract": {
+     "C1": 1.064996,
+     "C2": 27.0,
+     "C3": 4.0,
+     "C4": 20.178325,
+     "C5": 0.5
+    },
+    "vacuous": [],
+    "phases_reached": [
+     "P1_approach",
+     "P2_yield_clear",
+     "P3_commit",
+     "P4_settle"
+    ],
+    "resolved": true,
+    "completed": true,
+    "entered": true
+   },
+   {
+    "file": "repeats/rss_rep5.json",
+    "episode_id": "rss_rep5",
+    "certificate_id": "CE005_C1_5b773c94ec4bb251",
+    "status": "ok",
+    "rho": 0.5,
+    "argmin_contract": "C5",
+    "per_contract": {
+     "C1": 1.064996,
+     "C2": 27.0,
+     "C3": 4.0,
+     "C4": 20.178325,
+     "C5": 0.5
+    },
+    "vacuous": [],
+    "phases_reached": [
+     "P1_approach",
+     "P2_yield_clear",
+     "P3_commit",
+     "P4_settle"
+    ],
+    "resolved": true,
+    "completed": true,
+    "entered": true
+   }
+  ]
+ },
+ "cross_check_clean_repair_validation_json": [
+  {
+   "field": "test_1.own_counterexample.resolved",
+   "committed": true,
+   "recomputed": true,
+   "status": "MATCH"
+  },
+  {
+   "field": "test_1.own_counterexample.completed",
+   "committed": true,
+   "recomputed": true,
+   "status": "MATCH"
+  },
+  {
+   "field": "test_1.own_counterexample.rho",
+   "committed": 0.5,
+   "recomputed": 0.5,
+   "status": "MATCH"
+  },
+  {
+   "field": "test_1.own_counterexample.binding",
+   "committed": "C5",
+   "recomputed": "C5",
+   "status": "MATCH"
+  },
+  {
+   "field": "test_1.other_19_never_shown.resolved",
+   "committed": "19/19",
+   "recomputed": "19/19",
+   "status": "MATCH"
+  },
+  {
+   "field": "test_1.other_19_never_shown.completed",
+   "committed": "19/19",
+   "recomputed": "19/19",
+   "status": "MATCH"
+  },
+  {
+   "field": "test_1.other_19_never_shown.entered",
+   "committed": "19/19",
+   "recomputed": "19/19",
+   "status": "MATCH"
+  },
+  {
+   "field": "test_1.other_19_never_shown.binding",
+   "committed": {
+    "C1": 3,
+    "C5": 16
+   },
+   "recomputed": {
+    "C1": 3,
+    "C5": 16
+   },
+   "status": "MATCH"
+  },
+  {
+   "field": "test_1.all_20.resolved_and_completed",
+   "committed": "20/20",
+   "recomputed": "20/20",
+   "status": "MATCH"
+  },
+  {
+   "field": "test_2.repeats",
+   "committed": 6,
+   "recomputed": 6,
+   "status": "MATCH"
+  },
+  {
+   "field": "test_2.rho_spread",
+   "committed": 0.0,
+   "recomputed": 0.0,
+   "status": "MATCH"
+  },
+  {
+   "field": "test_2.C4_spread_m",
+   "committed": 0.0,
+   "recomputed": 0.0,
+   "status": "MATCH"
+  },
+  {
+   "field": "test_2.C4_ever_binding",
+   "committed": false,
+   "recomputed": false,
+   "status": "MATCH"
+  },
+  {
+   "field": "test_2.resolved_all_repeats",
+   "committed": true,
+   "recomputed": true,
+   "status": "MATCH"
+  },
+  {
+   "field": "test_2.completed_all_repeats",
+   "committed": true,
+   "recomputed": true,
+   "status": "MATCH"
+  }
+ ],
+ "cross_check_attempts_jsonl": {
+  "attempt_id": "F1__CE005_C1_5b773c94ec4bb251__s3",
+  "program_identical_to_bt_source_after": true,
+  "campaign": {
+   "rho": 0.5,
+   "C1": 1.064996,
+   "C2": 27.0,
+   "C3": 4.0,
+   "C4": 20.178325,
+   "C5": 0.5,
+   "argmin": "C5",
+   "resolved": true,
+   "completed": true,
+   "entered": true
+  },
+  "rescored": {
+   "rho": 0.5,
+   "C1": 1.064996,
+   "C2": 27.0,
+   "C3": 4.0,
+   "C4": 20.178325,
+   "C5": 0.5,
+   "argmin": "C5",
+   "resolved": true,
+   "completed": true,
+   "entered": true
+  },
+  "max_abs_delta": 0.0,
+  "tolerance": 1e-05,
+  "status": "MATCH"
+ },
+ "episodes": [
+  {
+   "file": "clean_repair/clean_CE001.json",
+   "episode_id": "clean_CE001",
+   "certificate_id": "CE001_C2_44b9f97d05fda474",
+   "status": "ok",
+   "rho": 0.295576,
+   "argmin_contract": "C1",
+   "per_contract": {
+    "C1": 0.295576,
+    "C2": 27.0,
+    "C3": 30.0,
+    "C4": 20.178325,
+    "C5": 0.5
+   },
+   "vacuous": [],
+   "phases_reached": [
+    "P1_approach",
+    "P2_yield_clear",
+    "P3_commit",
+    "P4_settle"
+   ],
+   "resolved": true,
+   "completed": true,
+   "entered": true
+  },
+  {
+   "file": "clean_repair/clean_CE002.json",
+   "episode_id": "clean_CE002",
+   "certificate_id": "CE002_C2_86714546fca524ca",
+   "status": "ok",
+   "rho": 0.5,
+   "argmin_contract": "C5",
+   "per_contract": {
+    "C1": 0.840143,
+    "C2": 27.0,
+    "C3": 30.0,
+    "C4": 22.178323,
+    "C5": 0.5
+   },
+   "vacuous": [],
+   "phases_reached": [
+    "P1_approach",
+    "P2_yield_clear",
+    "P3_commit",
+    "P4_settle"
+   ],
+   "resolved": true,
+   "completed": true,
+   "entered": true
+  },
+  {
+   "file": "clean_repair/clean_CE003.json",
+   "episode_id": "clean_CE003",
+   "certificate_id": "CE003_C1_969f15c8657c8fa6",
+   "status": "ok",
+   "rho": 0.5,
+   "argmin_contract": "C5",
+   "per_contract": {
+    "C1": 1.158623,
+    "C2": 27.0,
+    "C3": 2.7,
+    "C4": 21.178326,
+    "C5": 0.5
+   },
+   "vacuous": [],
+   "phases_reached": [
+    "P1_approach",
+    "P2_yield_clear",
+    "P3_commit",
+    "P4_settle"
+   ],
+   "resolved": true,
+   "completed": true,
+   "entered": true
+  },
+  {
+   "file": "clean_repair/clean_CE004.json",
+   "episode_id": "clean_CE004",
+   "certificate_id": "CE004_C1_445649d2b99e873a",
+   "status": "ok",
+   "rho": 0.5,
+   "argmin_contract": "C5",
+   "per_contract": {
+    "C1": 1.08711,
+    "C2": 27.0,
+    "C3": 2.05,
+    "C4": 22.178323,
+    "C5": 0.5
+   },
+   "vacuous": [],
+   "phases_reached": [
+    "P1_approach",
+    "P2_yield_clear",
+    "P3_commit",
+    "P4_settle"
+   ],
+   "resolved": true,
+   "completed": true,
+   "entered": true
+  },
+  {
+   "file": "clean_repair/clean_CE005.json",
+   "episode_id": "clean_CE005",
+   "certificate_id": "CE005_C1_5b773c94ec4bb251",
+   "status": "ok",
+   "rho": 0.5,
+   "argmin_contract": "C5",
+   "per_contract": {
+    "C1": 1.064996,
+    "C2": 27.0,
+    "C3": 4.0,
+    "C4": 20.178325,
+    "C5": 0.5
+   },
+   "vacuous": [],
+   "phases_reached": [
+    "P1_approach",
+    "P2_yield_clear",
+    "P3_commit",
+    "P4_settle"
+   ],
+   "resolved": true,
+   "completed": true,
+   "entered": true
+  },
+  {
+   "file": "clean_repair/clean_CE006.json",
+   "episode_id": "clean_CE006",
+   "certificate_id": "CE006_C2_1e173dcbe748c286",
+   "status": "ok",
+   "rho": 0.5,
+   "argmin_contract": "C5",
+   "per_contract": {
+    "C1": 1.069145,
+    "C2": 9.131938,
+    "C3": 5.0,
+    "C4": 20.178325,
+    "C5": 0.5
+   },
+   "vacuous": [],
+   "phases_reached": [
+    "P1_approach",
+    "P2_yield_clear",
+    "P3_commit",
+    "P4_settle"
+   ],
+   "resolved": true,
+   "completed": true,
+   "entered": true
+  },
+  {
+   "file": "clean_repair/clean_CE007.json",
+   "episode_id": "clean_CE007",
+   "certificate_id": "CE007_C1_ec6211901ed6b190",
+   "status": "ok",
+   "rho": 0.5,
+   "argmin_contract": "C5",
+   "per_contract": {
+    "C1": 1.091636,
+    "C2": 9.258491,
+    "C3": 5.3,
+    "C4": 20.178325,
+    "C5": 0.5
+   },
+   "vacuous": [],
+   "phases_reached": [
+    "P1_approach",
+    "P2_yield_clear",
+    "P3_commit",
+    "P4_settle"
+   ],
+   "resolved": true,
+   "completed": true,
+   "entered": true
+  },
+  {
+   "file": "clean_repair/clean_CE008.json",
+   "episode_id": "clean_CE008",
+   "certificate_id": "CE008_C2_62ca4fa36005920e",
+   "status": "ok",
+   "rho": 0.5,
+   "argmin_contract": "C5",
+   "per_contract": {
+    "C1": 1.008123,
+    "C2": 27.0,
+    "C3": 30.0,
+    "C4": 20.178325,
+    "C5": 0.5
+   },
+   "vacuous": [],
+   "phases_reached": [
+    "P1_approach",
+    "P2_yield_clear",
+    "P3_commit",
+    "P4_settle"
+   ],
+   "resolved": true,
+   "completed": true,
+   "entered": true
+  },
+  {
+   "file": "clean_repair/clean_CE009.json",
+   "episode_id": "clean_CE009",
+   "certificate_id": "CE009_C1_bb1a8d764f269c24",
+   "status": "ok",
+   "rho": 0.5,
+   "argmin_contract": "C5",
+   "per_contract": {
+    "C1": 1.293167,
+    "C2": 27.0,
+    "C3": 7.2,
+    "C4": 20.469661,
+    "C5": 0.5
+   },
+   "vacuous": [],
+   "phases_reached": [
+    "P1_approach",
+    "P2_yield_clear",
+    "P3_commit",
+    "P4_settle"
+   ],
+   "resolved": true,
+   "completed": true,
+   "entered": true
+  },
+  {
+   "file": "clean_repair/clean_CE010.json",
+   "episode_id": "clean_CE010",
+   "certificate_id": "CE010_C2_56c436b720d319ef",
+   "status": "ok",
+   "rho": 0.421297,
+   "argmin_contract": "C1",
+   "per_contract": {
+    "C1": 0.421297,
+    "C2": 9.26362,
+    "C3": 7.25,
+    "C4": 20.178325,
+    "C5": 0.5
+   },
+   "vacuous": [],
+   "phases_reached": [
+    "P1_approach",
+    "P2_yield_clear",
+    "P3_commit",
+    "P4_settle"
+   ],
+   "resolved": true,
+   "completed": true,
+   "entered": true
+  },
+  {
+   "file": "clean_repair/clean_CE011.json",
+   "episode_id": "clean_CE011",
+   "certificate_id": "CE011_C2_1673111e21cbfa9e",
+   "status": "ok",
+   "rho": 0.5,
+   "argmin_contract": "C5",
+   "per_contract": {
+    "C1": 0.527155,
+    "C2": 9.184414,
+    "C3": 7.05,
+    "C4": 20.178325,
+    "C5": 0.5
+   },
+   "vacuous": [],
+   "phases_reached": [
+    "P1_approach",
+    "P2_yield_clear",
+    "P3_commit",
+    "P4_settle"
+   ],
+   "resolved": true,
+   "completed": true,
+   "entered": true
+  },
+  {
+   "file": "clean_repair/clean_CE012.json",
+   "episode_id": "clean_CE012",
+   "certificate_id": "CE012_C1_1ec6b8b64324dbd4",
+   "status": "ok",
+   "rho": 0.5,
+   "argmin_contract": "C5",
+   "per_contract": {
+    "C1": 1.021594,
+    "C2": 27.0,
+    "C3": 7.05,
+    "C4": 20.178325,
+    "C5": 0.5
+   },
+   "vacuous": [],
+   "phases_reached": [
+    "P1_approach",
+    "P2_yield_clear",
+    "P3_commit",
+    "P4_settle"
+   ],
+   "resolved": true,
+   "completed": true,
+   "entered": true
+  },
+  {
+   "file": "clean_repair/clean_CE013.json",
+   "episode_id": "clean_CE013",
+   "certificate_id": "CE013_C2_ade4dfeb1e7cffee",
+   "status": "ok",
+   "rho": 0.350404,
+   "argmin_contract": "C1",
+   "per_contract": {
+    "C1": 0.350404,
+    "C2": 9.181482,
+    "C3": 30.0,
+    "C4": 21.178326,
+    "C5": 0.5
+   },
+   "vacuous": [],
+   "phases_reached": [
+    "P1_approach",
+    "P2_yield_clear",
+    "P3_commit",
+    "P4_settle"
+   ],
+   "resolved": true,
+   "completed": true,
+   "entered": true
+  },
+  {
+   "file": "clean_repair/clean_CE014.json",
+   "episode_id": "clean_CE014",
+   "certificate_id": "CE014_C1_8efa0eee117bb95e",
+   "status": "ok",
+   "rho": 0.5,
+   "argmin_contract": "C5",
+   "per_contract": {
+    "C1": 1.062951,
+    "C2": 27.0,
+    "C3": 30.0,
+    "C4": 23.178323,
+    "C5": 0.5
+   },
+   "vacuous": [],
+   "phases_reached": [
+    "P1_approach",
+    "P2_yield_clear",
+    "P3_commit",
+    "P4_settle"
+   ],
+   "resolved": true,
+   "completed": true,
+   "entered": true
+  },
+  {
+   "file": "clean_repair/clean_CE015.json",
+   "episode_id": "clean_CE015",
+   "certificate_id": "CE015_C1_40924ca98fb43db1",
+   "status": "ok",
+   "rho": 0.5,
+   "argmin_contract": "C5",
+   "per_contract": {
+    "C1": 1.05515,
+    "C2": 27.0,
+    "C3": 30.0,
+    "C4": 23.178323,
+    "C5": 0.5
+   },
+   "vacuous": [],
+   "phases_reached": [
+    "P1_approach",
+    "P2_yield_clear",
+    "P3_commit",
+    "P4_settle"
+   ],
+   "resolved": true,
+   "completed": true,
+   "entered": true
+  },
+  {
+   "file": "clean_repair/clean_CE016.json",
+   "episode_id": "clean_CE016",
+   "certificate_id": "CE016_C2_9d3ea4ae1a67ec58",
+   "status": "ok",
+   "rho": 0.5,
+   "argmin_contract": "C5",
+   "per_contract": {
+    "C1": 0.588358,
+    "C2": 27.0,
+    "C3": 30.0,
+    "C4": 23.178323,
+    "C5": 0.5
+   },
+   "vacuous": [],
+   "phases_reached": [
+    "P1_approach",
+    "P2_yield_clear",
+    "P3_commit",
+    "P4_settle"
+   ],
+   "resolved": true,
+   "completed": true,
+   "entered": true
+  },
+  {
+   "file": "clean_repair/clean_CE017.json",
+   "episode_id": "clean_CE017",
+   "certificate_id": "CE017_C3_8280bf9852dc7834",
+   "status": "ok",
+   "rho": 0.5,
+   "argmin_contract": "C5",
+   "per_contract": {
+    "C1": 1.327675,
+    "C2": 27.0,
+    "C3": 2.5,
+    "C4": 21.178326,
+    "C5": 0.5
+   },
+   "vacuous": [],
+   "phases_reached": [
+    "P1_approach",
+    "P2_yield_clear",
+    "P3_commit",
+    "P4_settle"
+   ],
+   "resolved": true,
+   "completed": true,
+   "entered": true
+  },
+  {
+   "file": "clean_repair/clean_CE018.json",
+   "episode_id": "clean_CE018",
+   "certificate_id": "CE018_C2_80d8dfdf2253ea72",
+   "status": "ok",
+   "rho": 0.5,
+   "argmin_contract": "C5",
+   "per_contract": {
+    "C1": 0.97067,
+    "C2": 8.70459,
+    "C3": 5.4,
+    "C4": 21.178326,
+    "C5": 0.5
+   },
+   "vacuous": [],
+   "phases_reached": [
+    "P1_approach",
+    "P2_yield_clear",
+    "P3_commit",
+    "P4_settle"
+   ],
+   "resolved": true,
+   "completed": true,
+   "entered": true
+  },
+  {
+   "file": "clean_repair/clean_CE019.json",
+   "episode_id": "clean_CE019",
+   "certificate_id": "CE019_C1_0b3097eb9e85eede",
+   "status": "ok",
+   "rho": 0.5,
+   "argmin_contract": "C5",
+   "per_contract": {
+    "C1": 1.253193,
+    "C2": 27.0,
+    "C3": 5.75,
+    "C4": 20.469661,
+    "C5": 0.5
+   },
+   "vacuous": [],
+   "phases_reached": [
+    "P1_approach",
+    "P2_yield_clear",
+    "P3_commit",
+    "P4_settle"
+   ],
+   "resolved": true,
+   "completed": true,
+   "entered": true
+  },
+  {
+   "file": "clean_repair/clean_CE020.json",
+   "episode_id": "clean_CE020",
+   "certificate_id": "CE020_C1_d3346d835dab0fd8",
+   "status": "ok",
+   "rho": 0.5,
+   "argmin_contract": "C5",
+   "per_contract": {
+    "C1": 1.240135,
+    "C2": 27.0,
+    "C3": 3.5,
+    "C4": 20.469661,
+    "C5": 0.5
+   },
+   "vacuous": [],
+   "phases_reached": [
+    "P1_approach",
+    "P2_yield_clear",
+    "P3_commit",
+    "P4_settle"
+   ],
+   "resolved": true,
+   "completed": true,
+   "entered": true
+  }
+ ],
+ "status": "MATCH",
+ "failures": []
+}

@@ -1,0 +1,3681 @@
+{
+  "description": "The frozen baseline's calibration run, re-scored from its saved trajectories by scripts/rescore_calibration.py. Supplies the junction entry and turn completion counts of paper Section 3.2, which data/results/baseline_calibration.json does not record.",
+  "generated_by": "scripts/rescore_calibration.py",
+  "calibration": {
+    "source": "data/results/baseline_calibration.json",
+    "seed": 20260830,
+    "n_calibration_scenarios": 100,
+    "sampler": "scripts/run_campaign.py:sample, as in scripts/calibrate_baseline.py",
+    "active_contracts": [
+      "C1",
+      "C2",
+      "C3",
+      "C4",
+      "C5"
+    ]
+  },
+  "program": {
+    "frozen_baseline": "data/scenarios/baseline_program.bt",
+    "frozen_baseline_sha16": "59218be8676bd5e5",
+    "calibrated_as": "data/scenarios/candidates/cand_01.bt",
+    "calibrated_as_sha16": "3ca9767d8383945e",
+    "relation": "data/scenarios/baseline_program.bt is 27 comment lines followed by data/scenarios/candidates/cand_01.bt byte for byte; the parsed trees are equal. Traces record the candidate's hash because calibration ran before the freeze.",
+    "comment_header_lines": 27,
+    "trees_equal": true
+  },
+  "trace_dir": "data/calibration_traces",
+  "definitions": {
+    "violated": "rho < 0, rho = min over active contracts (src/stl.py)",
+    "entered": "C2 not vacuous: the ego was in the conflict zone on at least one tick (as src/evaluate.py)",
+    "reached_P4_settle": "P4_settle in the sidecar's phases_reached (the ICR of scripts/calibrate_baseline.py)",
+    "argmin_node": "bt_node_type:bt_node_path at the argmin row (as scripts/calibrate_baseline.py)",
+    "rho_values": "rounded to 6 decimal places; 999.0 is the vacuity sentinel"
+  },
+  "totals": {
+    "n_scored": 100,
+    "n_unscoreable": 0,
+    "violations": 20,
+    "violation_rate": 0.2,
+    "argmin_contract": {
+      "C3": 4,
+      "C2": 14,
+      "C1": 2
+    },
+    "distinct_blamed_nodes": 1,
+    "H_node_given_contract_bits": 0.0,
+    "blame_detail": {
+      "C3": {
+        "n": 4,
+        "distinct_nodes": 1,
+        "H_bits": 0.0,
+        "nodes": {
+          "CommitTurn:Selector/Sequence/CommitTurn": 4
+        }
+      },
+      "C2": {
+        "n": 14,
+        "distinct_nodes": 1,
+        "H_bits": 0.0,
+        "nodes": {
+          "CommitTurn:Selector/Sequence/CommitTurn": 14
+        }
+      },
+      "C1": {
+        "n": 2,
+        "distinct_nodes": 1,
+        "H_bits": 0.0,
+        "nodes": {
+          "CommitTurn:Selector/Sequence/CommitTurn": 2
+        }
+      }
+    },
+    "entered": 100,
+    "completed": 90,
+    "ICR": 0.9,
+    "PCR": 0.78,
+    "phases_reached": {
+      "P1_approach": 100,
+      "P2_yield_clear": 100,
+      "P2_yield_hold": 0,
+      "P3_commit": 100,
+      "P4_settle": 90
+    },
+    "status": {
+      "collision": 10,
+      "ok": 90
+    },
+    "violations_entered": 20,
+    "violations_completed": 10
+  },
+  "paper_section_3_2": {
+    "n_scored": 100,
+    "violations": 20,
+    "entered": 100,
+    "completed": 90
+  },
+  "checks": [
+    {
+      "check": "frozen baseline = comment-only header + candidate, byte for byte",
+      "pass": true,
+      "detail": "data/scenarios/baseline_program.bt = 27 comment lines + data/scenarios/candidates/cand_01.bt"
+    },
+    {
+      "check": "frozen baseline and candidate parse to equal trees",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "check": "sidecar and Parquet param_hash equal the regenerated hash",
+      "pass": true,
+      "detail": "100/100"
+    },
+    {
+      "check": "recorded parameters equal the regenerated parameters",
+      "pass": true,
+      "detail": "100/100"
+    },
+    {
+      "check": "every trace ran data/scenarios/candidates/cand_01.bt (sha16 3ca9767d8383945e)",
+      "pass": true,
+      "detail": "100/100"
+    },
+    {
+      "check": "phases_reached agrees with the trace's phase column on P4_settle",
+      "pass": true,
+      "detail": "100/100"
+    },
+    {
+      "check": "n_scored",
+      "pass": true,
+      "detail": "re-scored 100, committed 100"
+    },
+    {
+      "check": "n_unscoreable",
+      "pass": true,
+      "detail": "re-scored 0, committed 0"
+    },
+    {
+      "check": "violations",
+      "pass": true,
+      "detail": "re-scored 20, committed 20"
+    },
+    {
+      "check": "violation_rate",
+      "pass": true,
+      "detail": "re-scored 0.2, committed 0.2"
+    },
+    {
+      "check": "argmin_contract",
+      "pass": true,
+      "detail": "re-scored {'C3': 4, 'C2': 14, 'C1': 2}, committed {'C3': 4, 'C2': 14, 'C1': 2}"
+    },
+    {
+      "check": "distinct_blamed_nodes",
+      "pass": true,
+      "detail": "re-scored 1, committed 1"
+    },
+    {
+      "check": "H_node_given_contract_bits",
+      "pass": true,
+      "detail": "re-scored 0.0, committed 0.0"
+    },
+    {
+      "check": "blame_detail",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "check": "n_scored",
+      "pass": true,
+      "detail": "re-scored 100, paper 100"
+    },
+    {
+      "check": "violations",
+      "pass": true,
+      "detail": "re-scored 20, paper 20"
+    },
+    {
+      "check": "entered",
+      "pass": true,
+      "detail": "re-scored 100, paper 100"
+    },
+    {
+      "check": "completed",
+      "pass": true,
+      "detail": "re-scored 90, paper 90"
+    }
+  ],
+  "all_checks_pass": true,
+  "scenarios": [
+    {
+      "index": 0,
+      "param_hash": "9e1abd977fc8946a",
+      "params": {
+        "n_oncoming": 1,
+        "v_oncoming": 15.8251,
+        "headway": 4.511,
+        "aggressiveness": 0.6683,
+        "light_offset": 9.5911,
+        "lead_gap_s": 2.3655
+      },
+      "trace": "cal_cand_01_00000_9e1abd977fc8946a.parquet",
+      "trace_sha256": "bf427701a226703d5f515ae9a36d5766826c16fb7c11a6902d71e3ffd859f1bb",
+      "status": "ok",
+      "entered": true,
+      "reached_P4_settle": true,
+      "phases_reached": [
+        "P1_approach",
+        "P2_yield_clear",
+        "P3_commit",
+        "P4_settle"
+      ],
+      "rho": 1.0,
+      "violated": false,
+      "argmin_contract": "C5",
+      "argmin_node": "Decelerate:Selector/Sequence/Decelerate",
+      "rho_per_contract": {
+        "C1": 1.709091,
+        "C2": 27.0,
+        "C3": 30.0,
+        "C4": 7.786925,
+        "C5": 1.0
+      },
+      "vacuous_contracts": []
+    },
+    {
+      "index": 1,
+      "param_hash": "1d7b6ba469ddc34d",
+      "params": {
+        "n_oncoming": 3,
+        "v_oncoming": 15.0675,
+        "headway": 7.7806,
+        "aggressiveness": 0.5426,
+        "light_offset": 3.175,
+        "lead_gap_s": 3.9716
+      },
+      "trace": "cal_cand_01_00001_1d7b6ba469ddc34d.parquet",
+      "trace_sha256": "bc0afaebbf13e09ba01e66c39538bd80047f0d235f218eb1b5ccf77d80ea9abd",
+      "status": "ok",
+      "entered": true,
+      "reached_P4_settle": true,
+      "phases_reached": [
+        "P1_approach",
+        "P2_yield_clear",
+        "P3_commit",
+        "P4_settle"
+      ],
+      "rho": 1.0,
+      "violated": false,
+      "argmin_contract": "C5",
+      "argmin_node": "Decelerate:Selector/Sequence/Decelerate",
+      "rho_per_contract": {
+        "C1": 1.718248,
+        "C2": 2.122199,
+        "C3": 2.35,
+        "C4": 10.195295,
+        "C5": 1.0
+      },
+      "vacuous_contracts": []
+    },
+    {
+      "index": 2,
+      "param_hash": "f2ef6d75382426a3",
+      "params": {
+        "n_oncoming": 1,
+        "v_oncoming": 8.0825,
+        "headway": 7.6662,
+        "aggressiveness": 0.5549,
+        "light_offset": 5.2212,
+        "lead_gap_s": 3.865
+      },
+      "trace": "cal_cand_01_00002_f2ef6d75382426a3.parquet",
+      "trace_sha256": "03820d0c82d69a58037fc30d2f57d89847a16e0295ad018db69bfa196503662b",
+      "status": "ok",
+      "entered": true,
+      "reached_P4_settle": true,
+      "phases_reached": [
+        "P1_approach",
+        "P2_yield_clear",
+        "P3_commit",
+        "P4_settle"
+      ],
+      "rho": 0.122701,
+      "violated": false,
+      "argmin_contract": "C1",
+      "argmin_node": "CommitTurn:Selector/Sequence/CommitTurn",
+      "rho_per_contract": {
+        "C1": 0.122701,
+        "C2": 27.0,
+        "C3": 3.95,
+        "C4": 11.660917,
+        "C5": 1.0
+      },
+      "vacuous_contracts": []
+    },
+    {
+      "index": 3,
+      "param_hash": "fd3efc404359523e",
+      "params": {
+        "n_oncoming": 3,
+        "v_oncoming": 12.7839,
+        "headway": 7.1108,
+        "aggressiveness": 0.1745,
+        "light_offset": 5.4117,
+        "lead_gap_s": 2.5906
+      },
+      "trace": "cal_cand_01_00003_fd3efc404359523e.parquet",
+      "trace_sha256": "894a5b76409a8b1a68985e9ff44af1724b1f50df0f0e2454f176af5331be5d30",
+      "status": "ok",
+      "entered": true,
+      "reached_P4_settle": true,
+      "phases_reached": [
+        "P1_approach",
+        "P2_yield_clear",
+        "P3_commit",
+        "P4_settle"
+      ],
+      "rho": 1.0,
+      "violated": false,
+      "argmin_contract": "C5",
+      "argmin_node": "Decelerate:Selector/Sequence/Decelerate",
+      "rho_per_contract": {
+        "C1": 1.615475,
+        "C2": 2.536425,
+        "C3": 4.95,
+        "C4": 14.195628,
+        "C5": 1.0
+      },
+      "vacuous_contracts": []
+    },
+    {
+      "index": 4,
+      "param_hash": "897ea0c8f9b1b6a6",
+      "params": {
+        "n_oncoming": 1,
+        "v_oncoming": 7.5227,
+        "headway": 6.7563,
+        "aggressiveness": 0.6295,
+        "light_offset": 8.9872,
+        "lead_gap_s": 2.8792
+      },
+      "trace": "cal_cand_01_00004_897ea0c8f9b1b6a6.parquet",
+      "trace_sha256": "45d2953104d9dfa3ceaabaa61381866ec655535e53ebb14ced84a9893e73c5ae",
+      "status": "ok",
+      "entered": true,
+      "reached_P4_settle": true,
+      "phases_reached": [
+        "P1_approach",
+        "P2_yield_clear",
+        "P3_commit",
+        "P4_settle"
+      ],
+      "rho": 1.0,
+      "violated": false,
+      "argmin_contract": "C5",
+      "argmin_node": "Decelerate:Selector/Sequence/Decelerate",
+      "rho_per_contract": {
+        "C1": 1.359333,
+        "C2": 12.008372,
+        "C3": 30.0,
+        "C4": 15.132371,
+        "C5": 1.0
+      },
+      "vacuous_contracts": []
+    },
+    {
+      "index": 5,
+      "param_hash": "344ee4452b3d587f",
+      "params": {
+        "n_oncoming": 3,
+        "v_oncoming": 9.2321,
+        "headway": 6.9994,
+        "aggressiveness": 0.304,
+        "light_offset": 3.4508,
+        "lead_gap_s": 3.7897
+      },
+      "trace": "cal_cand_01_00005_344ee4452b3d587f.parquet",
+      "trace_sha256": "a4c45ba0771dd4459678a3e26f0d05954a29c1b262ca8b10fece7c604dd7f8c9",
+      "status": "ok",
+      "entered": true,
+      "reached_P4_settle": true,
+      "phases_reached": [
+        "P1_approach",
+        "P2_yield_clear",
+        "P3_commit",
+        "P4_settle"
+      ],
+      "rho": 0.833875,
+      "violated": false,
+      "argmin_contract": "C1",
+      "argmin_node": "CommitTurn:Selector/Sequence/CommitTurn",
+      "rho_per_contract": {
+        "C1": 0.833875,
+        "C2": 27.0,
+        "C3": 2.75,
+        "C4": 9.355725,
+        "C5": 1.0
+      },
+      "vacuous_contracts": []
+    },
+    {
+      "index": 6,
+      "param_hash": "c3ebd3423b1e44e5",
+      "params": {
+        "n_oncoming": 1,
+        "v_oncoming": 11.6502,
+        "headway": 7.1458,
+        "aggressiveness": 0.7403,
+        "light_offset": 1.6701,
+        "lead_gap_s": 4.0272
+      },
+      "trace": "cal_cand_01_00006_c3ebd3423b1e44e5.parquet",
+      "trace_sha256": "f2cc25534c9cf86b4e2fc834e279b986e9f7e520d70b5ac22d4cda4264a97d3c",
+      "status": "ok",
+      "entered": true,
+      "reached_P4_settle": true,
+      "phases_reached": [
+        "P1_approach",
+        "P2_yield_clear",
+        "P3_commit",
+        "P4_settle"
+      ],
+      "rho": 0.85,
+      "violated": false,
+      "argmin_contract": "C3",
+      "argmin_node": "CommitTurn:Selector/Sequence/CommitTurn",
+      "rho_per_contract": {
+        "C1": 1.481184,
+        "C2": 1.579651,
+        "C3": 0.85,
+        "C4": 11.140031,
+        "C5": 1.0
+      },
+      "vacuous_contracts": []
+    },
+    {
+      "index": 7,
+      "param_hash": "575cefcc28c244ed",
+      "params": {
+        "n_oncoming": 3,
+        "v_oncoming": 8.5266,
+        "headway": 2.3545,
+        "aggressiveness": 0.4003,
+        "light_offset": 5.7745,
+        "lead_gap_s": 2.4445
+      },
+      "trace": "cal_cand_01_00007_575cefcc28c244ed.parquet",
+      "trace_sha256": "4200fa582139874f0ae964a0033186cb23007b2d4ecafe85718b551643764b8e",
+      "status": "ok",
+      "entered": true,
+      "reached_P4_settle": true,
+      "phases_reached": [
+        "P1_approach",
+        "P2_yield_clear",
+        "P3_commit",
+        "P4_settle"
+      ],
+      "rho": 1.0,
+      "violated": false,
+      "argmin_contract": "C5",
+      "argmin_node": "Decelerate:Selector/Sequence/Decelerate",
+      "rho_per_contract": {
+        "C1": 1.390659,
+        "C2": 4.521179,
+        "C3": 5.55,
+        "C4": 11.97958,
+        "C5": 1.0
+      },
+      "vacuous_contracts": []
+    },
+    {
+      "index": 8,
+      "param_hash": "0d8f527e23fd107f",
+      "params": {
+        "n_oncoming": 2,
+        "v_oncoming": 6.2684,
+        "headway": 7.9553,
+        "aggressiveness": 0.1394,
+        "light_offset": 0.1497,
+        "lead_gap_s": 2.3042
+      },
+      "trace": "cal_cand_01_00008_0d8f527e23fd107f.parquet",
+      "trace_sha256": "c895d3e6e24c1f2477bf86c6c5e210916fa619e6be46aa72646770894fb1ccf3",
+      "status": "ok",
+      "entered": true,
+      "reached_P4_settle": true,
+      "phases_reached": [
+        "P1_approach",
+        "P2_yield_clear",
+        "P3_commit",
+        "P4_settle"
+      ],
+      "rho": -0.65,
+      "violated": true,
+      "argmin_contract": "C3",
+      "argmin_node": "CommitTurn:Selector/Sequence/CommitTurn",
+      "rho_per_contract": {
+        "C1": 0.896907,
+        "C2": 27.0,
+        "C3": -0.65,
+        "C4": 14.180748,
+        "C5": 1.0
+      },
+      "vacuous_contracts": []
+    },
+    {
+      "index": 9,
+      "param_hash": "906f33a007376f44",
+      "params": {
+        "n_oncoming": 1,
+        "v_oncoming": 8.5695,
+        "headway": 3.4216,
+        "aggressiveness": 0.1679,
+        "light_offset": 5.7575,
+        "lead_gap_s": 2.5183
+      },
+      "trace": "cal_cand_01_00009_906f33a007376f44.parquet",
+      "trace_sha256": "eb94f03229ba7048dd4a50ce1a187893897efa51a65d1195db5a632ece0003c7",
+      "status": "ok",
+      "entered": true,
+      "reached_P4_settle": true,
+      "phases_reached": [
+        "P1_approach",
+        "P2_yield_clear",
+        "P3_commit",
+        "P4_settle"
+      ],
+      "rho": 1.0,
+      "violated": false,
+      "argmin_contract": "C5",
+      "argmin_node": "Decelerate:Selector/Sequence/Decelerate",
+      "rho_per_contract": {
+        "C1": 1.426582,
+        "C2": 5.606743,
+        "C3": 6.3,
+        "C4": 9.262219,
+        "C5": 1.0
+      },
+      "vacuous_contracts": []
+    },
+    {
+      "index": 10,
+      "param_hash": "ebb91453123ca5cd",
+      "params": {
+        "n_oncoming": 3,
+        "v_oncoming": 8.1692,
+        "headway": 7.6414,
+        "aggressiveness": 0.2428,
+        "light_offset": 4.7422,
+        "lead_gap_s": 4.2905
+      },
+      "trace": "cal_cand_01_00010_ebb91453123ca5cd.parquet",
+      "trace_sha256": "058aed25e0948276dd7d59efed6562087c8008d3e92606095614ae56407e2450",
+      "status": "collision",
+      "entered": true,
+      "reached_P4_settle": false,
+      "phases_reached": [
+        "P1_approach",
+        "P2_yield_clear",
+        "P3_commit"
+      ],
+      "rho": -1.227311,
+      "violated": true,
+      "argmin_contract": "C2",
+      "argmin_node": "CommitTurn:Selector/Sequence/CommitTurn",
+      "rho_per_contract": {
+        "C1": -0.22,
+        "C2": -1.227311,
+        "C3": 30.0,
+        "C4": 21.190929,
+        "C5": 1.0
+      },
+      "vacuous_contracts": []
+    },
+    {
+      "index": 11,
+      "param_hash": "19e153329c751d56",
+      "params": {
+        "n_oncoming": 3,
+        "v_oncoming": 15.8279,
+        "headway": 6.6344,
+        "aggressiveness": 0.3256,
+        "light_offset": 5.2796,
+        "lead_gap_s": 3.9682
+      },
+      "trace": "cal_cand_01_00011_19e153329c751d56.parquet",
+      "trace_sha256": "7d882a7eaebfc925d616f151cd0a25ab435a643025e26e0514a56f7634a42e48",
+      "status": "ok",
+      "entered": true,
+      "reached_P4_settle": true,
+      "phases_reached": [
+        "P1_approach",
+        "P2_yield_clear",
+        "P3_commit",
+        "P4_settle"
+      ],
+      "rho": 1.0,
+      "violated": false,
+      "argmin_contract": "C5",
+      "argmin_node": "Decelerate:Selector/Sequence/Decelerate",
+      "rho_per_contract": {
+        "C1": 1.707756,
+        "C2": 27.0,
+        "C3": 4.45,
+        "C4": 10.442115,
+        "C5": 1.0
+      },
+      "vacuous_contracts": []
+    },
+    {
+      "index": 12,
+      "param_hash": "56b2363b00fe6d17",
+      "params": {
+        "n_oncoming": 3,
+        "v_oncoming": 14.5959,
+        "headway": 5.5386,
+        "aggressiveness": 0.7488,
+        "light_offset": 8.2374,
+        "lead_gap_s": 2.5935
+      },
+      "trace": "cal_cand_01_00012_56b2363b00fe6d17.parquet",
+      "trace_sha256": "ebfe3de150f515db281fa02fc22a321eb4317d94044fe856ea999e6ebadc6f59",
+      "status": "ok",
+      "entered": true,
+      "reached_P4_settle": true,
+      "phases_reached": [
+        "P1_approach",
+        "P2_yield_clear",
+        "P3_commit",
+        "P4_settle"
+      ],
+      "rho": 1.0,
+      "violated": false,
+      "argmin_contract": "C5",
+      "argmin_node": "Decelerate:Selector/Sequence/Decelerate",
+      "rho_per_contract": {
+        "C1": 1.656499,
+        "C2": 27.0,
+        "C3": 30.0,
+        "C4": 14.909669,
+        "C5": 1.0
+      },
+      "vacuous_contracts": []
+    },
+    {
+      "index": 13,
+      "param_hash": "cb048a988237980a",
+      "params": {
+        "n_oncoming": 1,
+        "v_oncoming": 12.916,
+        "headway": 5.1954,
+        "aggressiveness": 0.3762,
+        "light_offset": 0.8164,
+        "lead_gap_s": 4.1974
+      },
+      "trace": "cal_cand_01_00013_cb048a988237980a.parquet",
+      "trace_sha256": "58a34f6c2d17220778ecece6adc6ff025098779a24cd200bb8ebebdc5118ef50",
+      "status": "ok",
+      "entered": true,
+      "reached_P4_settle": true,
+      "phases_reached": [
+        "P1_approach",
+        "P2_yield_clear",
+        "P3_commit",
+        "P4_settle"
+      ],
+      "rho": 0.2,
+      "violated": false,
+      "argmin_contract": "C3",
+      "argmin_node": "CommitTurn:Selector/Sequence/CommitTurn",
+      "rho_per_contract": {
+        "C1": 1.550719,
+        "C2": 3.105035,
+        "C3": 0.2,
+        "C4": 10.706805,
+        "C5": 1.0
+      },
+      "vacuous_contracts": []
+    },
+    {
+      "index": 14,
+      "param_hash": "b2c0e0ef3b7dca88",
+      "params": {
+        "n_oncoming": 2,
+        "v_oncoming": 12.1598,
+        "headway": 5.521,
+        "aggressiveness": 0.7783,
+        "light_offset": 2.4468,
+        "lead_gap_s": 2.8791
+      },
+      "trace": "cal_cand_01_00014_b2c0e0ef3b7dca88.parquet",
+      "trace_sha256": "aa78ff32ef68b5c7a5b4df61b51960bfc7871f466cb068329745bc65d9450f66",
+      "status": "ok",
+      "entered": true,
+      "reached_P4_settle": true,
+      "phases_reached": [
+        "P1_approach",
+        "P2_yield_clear",
+        "P3_commit",
+        "P4_settle"
+      ],
+      "rho": 1.0,
+      "violated": false,
+      "argmin_contract": "C5",
+      "argmin_node": "Decelerate:Selector/Sequence/Decelerate",
+      "rho_per_contract": {
+        "C1": 1.513429,
+        "C2": 2.627424,
+        "C3": 1.6,
+        "C4": 17.43638,
+        "C5": 1.0
+      },
+      "vacuous_contracts": []
+    },
+    {
+      "index": 15,
+      "param_hash": "e7e4eb5d66d695b1",
+      "params": {
+        "n_oncoming": 3,
+        "v_oncoming": 8.4783,
+        "headway": 3.2566,
+        "aggressiveness": 0.389,
+        "light_offset": 2.0293,
+        "lead_gap_s": 4.0475
+      },
+      "trace": "cal_cand_01_00015_e7e4eb5d66d695b1.parquet",
+      "trace_sha256": "1c826b56efeee47175217097b545557a1ebf374a6fd8f84bc2401a3997f8b467",
+      "status": "ok",
+      "entered": true,
+      "reached_P4_settle": true,
+      "phases_reached": [
+        "P1_approach",
+        "P2_yield_clear",
+        "P3_commit",
+        "P4_settle"
+      ],
+      "rho": 1.0,
+      "violated": false,
+      "argmin_contract": "C5",
+      "argmin_node": "Decelerate:Selector/Sequence/Decelerate",
+      "rho_per_contract": {
+        "C1": 1.34885,
+        "C2": 27.0,
+        "C3": 1.25,
+        "C4": 10.692697,
+        "C5": 1.0
+      },
+      "vacuous_contracts": []
+    },
+    {
+      "index": 16,
+      "param_hash": "f2fa3b5b6b0847c0",
+      "params": {
+        "n_oncoming": 3,
+        "v_oncoming": 10.1196,
+        "headway": 1.7333,
+        "aggressiveness": 0.3651,
+        "light_offset": 2.8464,
+        "lead_gap_s": 2.352
+      },
+      "trace": "cal_cand_01_00016_f2fa3b5b6b0847c0.parquet",
+      "trace_sha256": "35a07c84a51fe18f50f1ff67b1cca81e8424de4eea7d656a44c6c4661bae48a3",
+      "status": "ok",
+      "entered": true,
+      "reached_P4_settle": true,
+      "phases_reached": [
+        "P1_approach",
+        "P2_yield_clear",
+        "P3_commit",
+        "P4_settle"
+      ],
+      "rho": 1.0,
+      "violated": false,
+      "argmin_contract": "C5",
+      "argmin_node": "Decelerate:Selector/Sequence/Decelerate",
+      "rho_per_contract": {
+        "C1": 1.489467,
+        "C2": 4.880735,
+        "C3": 2.15,
+        "C4": 13.653604,
+        "C5": 1.0
+      },
+      "vacuous_contracts": []
+    },
+    {
+      "index": 17,
+      "param_hash": "54222c680eaf8dd6",
+      "params": {
+        "n_oncoming": 1,
+        "v_oncoming": 13.3054,
+        "headway": 2.5047,
+        "aggressiveness": 0.0424,
+        "light_offset": 4.5002,
+        "lead_gap_s": 3.1392
+      },
+      "trace": "cal_cand_01_00017_54222c680eaf8dd6.parquet",
+      "trace_sha256": "4fadadd6407103f4079b86edb992bdc60bec0806181a501c48cbe1e75d05e985",
+      "status": "ok",
+      "entered": true,
+      "reached_P4_settle": true,
+      "phases_reached": [
+        "P1_approach",
+        "P2_yield_clear",
+        "P3_commit",
+        "P4_settle"
+      ],
+      "rho": 1.0,
+      "violated": false,
+      "argmin_contract": "C5",
+      "argmin_node": "Decelerate:Selector/Sequence/Decelerate",
+      "rho_per_contract": {
+        "C1": 1.551609,
+        "C2": 27.0,
+        "C3": 4.15,
+        "C4": 5.492938,
+        "C5": 1.0
+      },
+      "vacuous_contracts": []
+    },
+    {
+      "index": 18,
+      "param_hash": "e2894bbb65e1c7f1",
+      "params": {
+        "n_oncoming": 1,
+        "v_oncoming": 13.4848,
+        "headway": 6.7395,
+        "aggressiveness": 0.8756,
+        "light_offset": 3.3499,
+        "lead_gap_s": 3.7727
+      },
+      "trace": "cal_cand_01_00018_e2894bbb65e1c7f1.parquet",
+      "trace_sha256": "b15758b1dee6474a1c93ee8b559f17c1e58e78120edc5a858c5dbe5551f84e79",
+      "status": "ok",
+      "entered": true,
+      "reached_P4_settle": true,
+      "phases_reached": [
+        "P1_approach",
+        "P2_yield_clear",
+        "P3_commit",
+        "P4_settle"
+      ],
+      "rho": 1.0,
+      "violated": false,
+      "argmin_contract": "C5",
+      "argmin_node": "Decelerate:Selector/Sequence/Decelerate",
+      "rho_per_contract": {
+        "C1": 1.569558,
+        "C2": 1.413149,
+        "C3": 2.5,
+        "C4": 9.669186,
+        "C5": 1.0
+      },
+      "vacuous_contracts": []
+    },
+    {
+      "index": 19,
+      "param_hash": "9725e8f9ae054c0a",
+      "params": {
+        "n_oncoming": 1,
+        "v_oncoming": 13.5086,
+        "headway": 5.325,
+        "aggressiveness": 0.857,
+        "light_offset": 5.1166,
+        "lead_gap_s": 2.6474
+      },
+      "trace": "cal_cand_01_00019_9725e8f9ae054c0a.parquet",
+      "trace_sha256": "82cdb92abaea641da74d990f0ef0fa4c4935658f3ab6f5e74c0ff4fc0e6d6284",
+      "status": "ok",
+      "entered": true,
+      "reached_P4_settle": true,
+      "phases_reached": [
+        "P1_approach",
+        "P2_yield_clear",
+        "P3_commit",
+        "P4_settle"
+      ],
+      "rho": 1.0,
+      "violated": false,
+      "argmin_contract": "C5",
+      "argmin_node": "Decelerate:Selector/Sequence/Decelerate",
+      "rho_per_contract": {
+        "C1": 1.600038,
+        "C2": 27.0,
+        "C3": 4.65,
+        "C4": 14.324614,
+        "C5": 1.0
+      },
+      "vacuous_contracts": []
+    },
+    {
+      "index": 20,
+      "param_hash": "d848f0e17797b169",
+      "params": {
+        "n_oncoming": 2,
+        "v_oncoming": 9.5164,
+        "headway": 7.7587,
+        "aggressiveness": 0.9077,
+        "light_offset": 8.4811,
+        "lead_gap_s": 2.3013
+      },
+      "trace": "cal_cand_01_00020_d848f0e17797b169.parquet",
+      "trace_sha256": "a09db6291e12e1a0981cba7a027586050b2e0041cc1818b0c3f97fd3036351cc",
+      "status": "ok",
+      "entered": true,
+      "reached_P4_settle": true,
+      "phases_reached": [
+        "P1_approach",
+        "P2_yield_clear",
+        "P3_commit",
+        "P4_settle"
+      ],
+      "rho": -1.254138,
+      "violated": true,
+      "argmin_contract": "C2",
+      "argmin_node": "CommitTurn:Selector/Sequence/CommitTurn",
+      "rho_per_contract": {
+        "C1": 0.628136,
+        "C2": -1.254138,
+        "C3": 7.45,
+        "C4": 16.344184,
+        "C5": 1.0
+      },
+      "vacuous_contracts": []
+    },
+    {
+      "index": 21,
+      "param_hash": "01bf680f3acf53bc",
+      "params": {
+        "n_oncoming": 2,
+        "v_oncoming": 10.8868,
+        "headway": 5.5437,
+        "aggressiveness": 0.0392,
+        "light_offset": 5.9661,
+        "lead_gap_s": 3.3237
+      },
+      "trace": "cal_cand_01_00021_01bf680f3acf53bc.parquet",
+      "trace_sha256": "720caa59a80cdfd19269f1149a34e98a0b18a4353f482e2719ae084929c3b69f",
+      "status": "ok",
+      "entered": true,
+      "reached_P4_settle": true,
+      "phases_reached": [
+        "P1_approach",
+        "P2_yield_clear",
+        "P3_commit",
+        "P4_settle"
+      ],
+      "rho": 1.0,
+      "violated": false,
+      "argmin_contract": "C5",
+      "argmin_node": "Decelerate:Selector/Sequence/Decelerate",
+      "rho_per_contract": {
+        "C1": 1.546353,
+        "C2": 27.0,
+        "C3": 5.4,
+        "C4": 6.915942,
+        "C5": 1.0
+      },
+      "vacuous_contracts": []
+    },
+    {
+      "index": 22,
+      "param_hash": "7b1f97f315f5b74f",
+      "params": {
+        "n_oncoming": 3,
+        "v_oncoming": 15.3814,
+        "headway": 4.5297,
+        "aggressiveness": 0.0305,
+        "light_offset": 6.34,
+        "lead_gap_s": 2.9006
+      },
+      "trace": "cal_cand_01_00022_7b1f97f315f5b74f.parquet",
+      "trace_sha256": "6ad912cc54bfcc58593359ea22a068078d1c363f6b9208bd09a999d22327f8d3",
+      "status": "ok",
+      "entered": true,
+      "reached_P4_settle": true,
+      "phases_reached": [
+        "P1_approach",
+        "P2_yield_clear",
+        "P3_commit",
+        "P4_settle"
+      ],
+      "rho": 1.0,
+      "violated": false,
+      "argmin_contract": "C5",
+      "argmin_node": "Decelerate:Selector/Sequence/Decelerate",
+      "rho_per_contract": {
+        "C1": 1.712475,
+        "C2": 27.0,
+        "C3": 6.3,
+        "C4": 12.628105,
+        "C5": 1.0
+      },
+      "vacuous_contracts": []
+    },
+    {
+      "index": 23,
+      "param_hash": "8c4780af45a7ae52",
+      "params": {
+        "n_oncoming": 2,
+        "v_oncoming": 8.0166,
+        "headway": 4.5776,
+        "aggressiveness": 0.4643,
+        "light_offset": 0.5613,
+        "lead_gap_s": 4.2081
+      },
+      "trace": "cal_cand_01_00023_8c4780af45a7ae52.parquet",
+      "trace_sha256": "b53096ad4e31d910cc5d16a57e8efb3b2e296ca90f40e0ce00997e2990937830",
+      "status": "ok",
+      "entered": true,
+      "reached_P4_settle": true,
+      "phases_reached": [
+        "P1_approach",
+        "P2_yield_clear",
+        "P3_commit",
+        "P4_settle"
+      ],
+      "rho": -0.25,
+      "violated": true,
+      "argmin_contract": "C3",
+      "argmin_node": "CommitTurn:Selector/Sequence/CommitTurn",
+      "rho_per_contract": {
+        "C1": 1.405859,
+        "C2": 27.0,
+        "C3": -0.25,
+        "C4": 12.1975,
+        "C5": 1.0
+      },
+      "vacuous_contracts": []
+    },
+    {
+      "index": 24,
+      "param_hash": "15e203047e4b2ffe",
+      "params": {
+        "n_oncoming": 1,
+        "v_oncoming": 12.365,
+        "headway": 6.3474,
+        "aggressiveness": 0.2036,
+        "light_offset": 3.2731,
+        "lead_gap_s": 3.6335
+      },
+      "trace": "cal_cand_01_00024_15e203047e4b2ffe.parquet",
+      "trace_sha256": "a413bf88ea87e78987d1842758340cbe607efce5a48911817c742309447d8d0a",
+      "status": "ok",
+      "entered": true,
+      "reached_P4_settle": true,
+      "phases_reached": [
+        "P1_approach",
+        "P2_yield_clear",
+        "P3_commit",
+        "P4_settle"
+      ],
+      "rho": 1.0,
+      "violated": false,
+      "argmin_contract": "C5",
+      "argmin_node": "Decelerate:Selector/Sequence/Decelerate",
+      "rho_per_contract": {
+        "C1": 1.651352,
+        "C2": 27.0,
+        "C3": 2.45,
+        "C4": 8.898947,
+        "C5": 1.0
+      },
+      "vacuous_contracts": []
+    },
+    {
+      "index": 25,
+      "param_hash": "a7b0da63d0897827",
+      "params": {
+        "n_oncoming": 1,
+        "v_oncoming": 8.7246,
+        "headway": 6.0216,
+        "aggressiveness": 0.5926,
+        "light_offset": 6.025,
+        "lead_gap_s": 2.31
+      },
+      "trace": "cal_cand_01_00025_a7b0da63d0897827.parquet",
+      "trace_sha256": "abbd222d1507d063a4a06ec8678f49eb6f32d4ff0956f53a0c178d4d695c349d",
+      "status": "ok",
+      "entered": true,
+      "reached_P4_settle": true,
+      "phases_reached": [
+        "P1_approach",
+        "P2_yield_clear",
+        "P3_commit",
+        "P4_settle"
+      ],
+      "rho": 1.0,
+      "violated": false,
+      "argmin_contract": "C5",
+      "argmin_node": "Decelerate:Selector/Sequence/Decelerate",
+      "rho_per_contract": {
+        "C1": 1.415415,
+        "C2": 5.868184,
+        "C3": 5.8,
+        "C4": 11.672636,
+        "C5": 1.0
+      },
+      "vacuous_contracts": []
+    },
+    {
+      "index": 26,
+      "param_hash": "e4d0d0a97726d744",
+      "params": {
+        "n_oncoming": 1,
+        "v_oncoming": 7.5945,
+        "headway": 3.8819,
+        "aggressiveness": 0.3909,
+        "light_offset": 8.1014,
+        "lead_gap_s": 3.3471
+      },
+      "trace": "cal_cand_01_00026_e4d0d0a97726d744.parquet",
+      "trace_sha256": "9bdaad953154a4aacc34f5556ba9c1d3aac62077247b07f456025ba36c51cbc6",
+      "status": "ok",
+      "entered": true,
+      "reached_P4_settle": true,
+      "phases_reached": [
+        "P1_approach",
+        "P2_yield_clear",
+        "P3_commit",
+        "P4_settle"
+      ],
+      "rho": 1.0,
+      "violated": false,
+      "argmin_contract": "C5",
+      "argmin_node": "Decelerate:Selector/Sequence/Decelerate",
+      "rho_per_contract": {
+        "C1": 1.408531,
+        "C2": 27.0,
+        "C3": 30.0,
+        "C4": 3.52797,
+        "C5": 1.0
+      },
+      "vacuous_contracts": []
+    },
+    {
+      "index": 27,
+      "param_hash": "327e1bb43e5ed361",
+      "params": {
+        "n_oncoming": 2,
+        "v_oncoming": 11.8821,
+        "headway": 4.8995,
+        "aggressiveness": 0.0615,
+        "light_offset": 4.1415,
+        "lead_gap_s": 2.3921
+      },
+      "trace": "cal_cand_01_00027_327e1bb43e5ed361.parquet",
+      "trace_sha256": "25b66cbfb807d5a314f223a70609c1dc9567b503d596dfbd5da96757d52a81d0",
+      "status": "ok",
+      "entered": true,
+      "reached_P4_settle": true,
+      "phases_reached": [
+        "P1_approach",
+        "P2_yield_clear",
+        "P3_commit",
+        "P4_settle"
+      ],
+      "rho": 1.0,
+      "violated": false,
+      "argmin_contract": "C5",
+      "argmin_node": "Decelerate:Selector/Sequence/Decelerate",
+      "rho_per_contract": {
+        "C1": 1.487585,
+        "C2": 27.0,
+        "C3": 3.55,
+        "C4": 13.212322,
+        "C5": 1.0
+      },
+      "vacuous_contracts": []
+    },
+    {
+      "index": 28,
+      "param_hash": "0dbd02baac1c7cf3",
+      "params": {
+        "n_oncoming": 2,
+        "v_oncoming": 15.8039,
+        "headway": 7.2602,
+        "aggressiveness": 0.4933,
+        "light_offset": 1.415,
+        "lead_gap_s": 2.5905
+      },
+      "trace": "cal_cand_01_00028_0dbd02baac1c7cf3.parquet",
+      "trace_sha256": "52e368970953d2b82d97920d50b74a863aa401710a59326e780317b5b2b54f9e",
+      "status": "ok",
+      "entered": true,
+      "reached_P4_settle": true,
+      "phases_reached": [
+        "P1_approach",
+        "P2_yield_clear",
+        "P3_commit",
+        "P4_settle"
+      ],
+      "rho": 1.0,
+      "violated": false,
+      "argmin_contract": "C5",
+      "argmin_node": "Decelerate:Selector/Sequence/Decelerate",
+      "rho_per_contract": {
+        "C1": 1.728187,
+        "C2": 27.0,
+        "C3": 1.5,
+        "C4": 12.310927,
+        "C5": 1.0
+      },
+      "vacuous_contracts": []
+    },
+    {
+      "index": 29,
+      "param_hash": "a8c8b9a35e412f69",
+      "params": {
+        "n_oncoming": 1,
+        "v_oncoming": 9.9036,
+        "headway": 7.6612,
+        "aggressiveness": 0.5399,
+        "light_offset": 4.7094,
+        "lead_gap_s": 3.8674
+      },
+      "trace": "cal_cand_01_00029_a8c8b9a35e412f69.parquet",
+      "trace_sha256": "6547bce06d7724f3b4243b05a439469a67c14eedd3e835f60db4ecb06a6d1955",
+      "status": "ok",
+      "entered": true,
+      "reached_P4_settle": true,
+      "phases_reached": [
+        "P1_approach",
+        "P2_yield_clear",
+        "P3_commit",
+        "P4_settle"
+      ],
+      "rho": 1.0,
+      "violated": false,
+      "argmin_contract": "C5",
+      "argmin_node": "Decelerate:Selector/Sequence/Decelerate",
+      "rho_per_contract": {
+        "C1": 1.273494,
+        "C2": 3.7526,
+        "C3": 3.85,
+        "C4": 10.743952,
+        "C5": 1.0
+      },
+      "vacuous_contracts": []
+    },
+    {
+      "index": 30,
+      "param_hash": "7a517d8c1ab2fc7f",
+      "params": {
+        "n_oncoming": 3,
+        "v_oncoming": 12.693,
+        "headway": 7.4848,
+        "aggressiveness": 0.8665,
+        "light_offset": 9.6632,
+        "lead_gap_s": 3.0245
+      },
+      "trace": "cal_cand_01_00030_7a517d8c1ab2fc7f.parquet",
+      "trace_sha256": "8267329d224c36af81e158d946704e6ff3304213267f64441f5816f29d927ab3",
+      "status": "ok",
+      "entered": true,
+      "reached_P4_settle": true,
+      "phases_reached": [
+        "P1_approach",
+        "P2_yield_clear",
+        "P3_commit",
+        "P4_settle"
+      ],
+      "rho": 1.0,
+      "violated": false,
+      "argmin_contract": "C5",
+      "argmin_node": "Decelerate:Selector/Sequence/Decelerate",
+      "rho_per_contract": {
+        "C1": 1.552504,
+        "C2": 1.797899,
+        "C3": 30.0,
+        "C4": 10.766775,
+        "C5": 1.0
+      },
+      "vacuous_contracts": []
+    },
+    {
+      "index": 31,
+      "param_hash": "7560af8db8a84160",
+      "params": {
+        "n_oncoming": 2,
+        "v_oncoming": 9.2856,
+        "headway": 6.1173,
+        "aggressiveness": 0.0188,
+        "light_offset": 9.9481,
+        "lead_gap_s": 2.9734
+      },
+      "trace": "cal_cand_01_00031_7560af8db8a84160.parquet",
+      "trace_sha256": "5a85953877c5c6295aa9f3256e7959121747acd597469e2a99be9925f0998620",
+      "status": "ok",
+      "entered": true,
+      "reached_P4_settle": true,
+      "phases_reached": [
+        "P1_approach",
+        "P2_yield_clear",
+        "P3_commit",
+        "P4_settle"
+      ],
+      "rho": 1.0,
+      "violated": false,
+      "argmin_contract": "C5",
+      "argmin_node": "Decelerate:Selector/Sequence/Decelerate",
+      "rho_per_contract": {
+        "C1": 1.444384,
+        "C2": 27.0,
+        "C3": 30.0,
+        "C4": 7.450712,
+        "C5": 1.0
+      },
+      "vacuous_contracts": []
+    },
+    {
+      "index": 32,
+      "param_hash": "557bf79b57b03dac",
+      "params": {
+        "n_oncoming": 1,
+        "v_oncoming": 11.3449,
+        "headway": 6.6512,
+        "aggressiveness": 0.3525,
+        "light_offset": 2.2109,
+        "lead_gap_s": 3.5342
+      },
+      "trace": "cal_cand_01_00032_557bf79b57b03dac.parquet",
+      "trace_sha256": "31d7fec4230e356ee01f61b17fea8b290cdac96237f7d5a66bc6b0ac9ed66415",
+      "status": "ok",
+      "entered": true,
+      "reached_P4_settle": true,
+      "phases_reached": [
+        "P1_approach",
+        "P2_yield_clear",
+        "P3_commit",
+        "P4_settle"
+      ],
+      "rho": 1.0,
+      "violated": false,
+      "argmin_contract": "C5",
+      "argmin_node": "Decelerate:Selector/Sequence/Decelerate",
+      "rho_per_contract": {
+        "C1": 1.463635,
+        "C2": 15.131503,
+        "C3": 1.4,
+        "C4": 8.655425,
+        "C5": 1.0
+      },
+      "vacuous_contracts": []
+    },
+    {
+      "index": 33,
+      "param_hash": "e7f5863d1d13682d",
+      "params": {
+        "n_oncoming": 3,
+        "v_oncoming": 8.3224,
+        "headway": 3.595,
+        "aggressiveness": 0.8966,
+        "light_offset": 2.5758,
+        "lead_gap_s": 2.9859
+      },
+      "trace": "cal_cand_01_00033_e7f5863d1d13682d.parquet",
+      "trace_sha256": "653d17195534fac4f5fa975c781a3abdb371049b3bf5572312089c2b04e88f52",
+      "status": "collision",
+      "entered": true,
+      "reached_P4_settle": false,
+      "phases_reached": [
+        "P1_approach",
+        "P2_yield_clear",
+        "P3_commit"
+      ],
+      "rho": -1.810354,
+      "violated": true,
+      "argmin_contract": "C2",
+      "argmin_node": "CommitTurn:Selector/Sequence/CommitTurn",
+      "rho_per_contract": {
+        "C1": -0.284616,
+        "C2": -1.810354,
+        "C3": 30.0,
+        "C4": 19.611485,
+        "C5": 1.0
+      },
+      "vacuous_contracts": []
+    },
+    {
+      "index": 34,
+      "param_hash": "78120ecad591948c",
+      "params": {
+        "n_oncoming": 2,
+        "v_oncoming": 7.0272,
+        "headway": 2.5092,
+        "aggressiveness": 0.3809,
+        "light_offset": 2.2823,
+        "lead_gap_s": 3.7916
+      },
+      "trace": "cal_cand_01_00034_78120ecad591948c.parquet",
+      "trace_sha256": "74c5d9f007a7e34710f68c4dc47d6938320ce8515dbf951d98230c3c3d8f7dd9",
+      "status": "ok",
+      "entered": true,
+      "reached_P4_settle": true,
+      "phases_reached": [
+        "P1_approach",
+        "P2_yield_clear",
+        "P3_commit",
+        "P4_settle"
+      ],
+      "rho": 1.0,
+      "violated": false,
+      "argmin_contract": "C5",
+      "argmin_node": "Decelerate:Selector/Sequence/Decelerate",
+      "rho_per_contract": {
+        "C1": 1.377259,
+        "C2": 27.0,
+        "C3": 2.0,
+        "C4": 7.427155,
+        "C5": 1.0
+      },
+      "vacuous_contracts": []
+    },
+    {
+      "index": 35,
+      "param_hash": "963c099b336c4f3e",
+      "params": {
+        "n_oncoming": 3,
+        "v_oncoming": 13.7702,
+        "headway": 4.0495,
+        "aggressiveness": 0.4118,
+        "light_offset": 6.4691,
+        "lead_gap_s": 2.9657
+      },
+      "trace": "cal_cand_01_00035_963c099b336c4f3e.parquet",
+      "trace_sha256": "987c43717797a0abb0715a7a355a233f691cdf1eecbd85edcf9f50e3b27369d0",
+      "status": "ok",
+      "entered": true,
+      "reached_P4_settle": true,
+      "phases_reached": [
+        "P1_approach",
+        "P2_yield_clear",
+        "P3_commit",
+        "P4_settle"
+      ],
+      "rho": 1.0,
+      "violated": false,
+      "argmin_contract": "C5",
+      "argmin_node": "Decelerate:Selector/Sequence/Decelerate",
+      "rho_per_contract": {
+        "C1": 1.591477,
+        "C2": 3.122362,
+        "C3": 5.7,
+        "C4": 10.239051,
+        "C5": 1.0
+      },
+      "vacuous_contracts": []
+    },
+    {
+      "index": 36,
+      "param_hash": "9c47e9b01b0e3e16",
+      "params": {
+        "n_oncoming": 2,
+        "v_oncoming": 8.7825,
+        "headway": 6.9439,
+        "aggressiveness": 0.9673,
+        "light_offset": 0.2632,
+        "lead_gap_s": 3.7647
+      },
+      "trace": "cal_cand_01_00036_9c47e9b01b0e3e16.parquet",
+      "trace_sha256": "3cdce4a624ec801ce860d99cdbd6fae2bad92cad659ffd80e445cee185ee1638",
+      "status": "ok",
+      "entered": true,
+      "reached_P4_settle": true,
+      "phases_reached": [
+        "P1_approach",
+        "P2_yield_clear",
+        "P3_commit",
+        "P4_settle"
+      ],
+      "rho": -2.363768,
+      "violated": true,
+      "argmin_contract": "C2",
+      "argmin_node": "CommitTurn:Selector/Sequence/CommitTurn",
+      "rho_per_contract": {
+        "C1": 1.412678,
+        "C2": -2.363768,
+        "C3": -0.5,
+        "C4": 10.516474,
+        "C5": 1.0
+      },
+      "vacuous_contracts": []
+    },
+    {
+      "index": 37,
+      "param_hash": "a482aab8f1490b1c",
+      "params": {
+        "n_oncoming": 2,
+        "v_oncoming": 13.0243,
+        "headway": 6.4603,
+        "aggressiveness": 0.7558,
+        "light_offset": 5.7256,
+        "lead_gap_s": 2.6789
+      },
+      "trace": "cal_cand_01_00037_a482aab8f1490b1c.parquet",
+      "trace_sha256": "b610df0494ee14a7909cbe9bd090b96d34916ce7880d72a943ebb418d66e4416",
+      "status": "ok",
+      "entered": true,
+      "reached_P4_settle": true,
+      "phases_reached": [
+        "P1_approach",
+        "P2_yield_clear",
+        "P3_commit",
+        "P4_settle"
+      ],
+      "rho": 1.0,
+      "violated": false,
+      "argmin_contract": "C5",
+      "argmin_node": "Decelerate:Selector/Sequence/Decelerate",
+      "rho_per_contract": {
+        "C1": 1.529139,
+        "C2": 2.740158,
+        "C3": 4.9,
+        "C4": 16.723518,
+        "C5": 1.0
+      },
+      "vacuous_contracts": []
+    },
+    {
+      "index": 38,
+      "param_hash": "7f778982c9b21f1b",
+      "params": {
+        "n_oncoming": 2,
+        "v_oncoming": 15.3625,
+        "headway": 3.5072,
+        "aggressiveness": 0.5004,
+        "light_offset": 2.3413,
+        "lead_gap_s": 2.8166
+      },
+      "trace": "cal_cand_01_00038_7f778982c9b21f1b.parquet",
+      "trace_sha256": "2dac7b0bde86f01c74749dca35d8d89c4f99fe74e88e4138d04a117b84fcf80f",
+      "status": "ok",
+      "entered": true,
+      "reached_P4_settle": true,
+      "phases_reached": [
+        "P1_approach",
+        "P2_yield_clear",
+        "P3_commit",
+        "P4_settle"
+      ],
+      "rho": 1.0,
+      "violated": false,
+      "argmin_contract": "C5",
+      "argmin_node": "Decelerate:Selector/Sequence/Decelerate",
+      "rho_per_contract": {
+        "C1": 1.719838,
+        "C2": 27.0,
+        "C3": 2.3,
+        "C4": 12.975504,
+        "C5": 1.0
+      },
+      "vacuous_contracts": []
+    },
+    {
+      "index": 39,
+      "param_hash": "e6008a53eb34a851",
+      "params": {
+        "n_oncoming": 2,
+        "v_oncoming": 8.5287,
+        "headway": 7.47,
+        "aggressiveness": 0.9367,
+        "light_offset": 3.0317,
+        "lead_gap_s": 3.9878
+      },
+      "trace": "cal_cand_01_00039_e6008a53eb34a851.parquet",
+      "trace_sha256": "facc2826a04b6f82f8673dc2d2dfc62b135c22b47132d86b393ad8892e43f45e",
+      "status": "ok",
+      "entered": true,
+      "reached_P4_settle": true,
+      "phases_reached": [
+        "P1_approach",
+        "P2_yield_clear",
+        "P3_commit",
+        "P4_settle"
+      ],
+      "rho": -1.669446,
+      "violated": true,
+      "argmin_contract": "C2",
+      "argmin_node": "CommitTurn:Selector/Sequence/CommitTurn",
+      "rho_per_contract": {
+        "C1": 1.379274,
+        "C2": -1.669446,
+        "C3": 2.2,
+        "C4": 10.340962,
+        "C5": 1.0
+      },
+      "vacuous_contracts": []
+    },
+    {
+      "index": 40,
+      "param_hash": "548dcdfdee6b42f7",
+      "params": {
+        "n_oncoming": 2,
+        "v_oncoming": 10.9944,
+        "headway": 3.2373,
+        "aggressiveness": 0.7605,
+        "light_offset": 3.8585,
+        "lead_gap_s": 2.4607
+      },
+      "trace": "cal_cand_01_00040_548dcdfdee6b42f7.parquet",
+      "trace_sha256": "647d439067e21557203bbc89425ba3d32f07e391cbfcffbaefb4d0fe46a444f7",
+      "status": "ok",
+      "entered": true,
+      "reached_P4_settle": true,
+      "phases_reached": [
+        "P1_approach",
+        "P2_yield_clear",
+        "P3_commit",
+        "P4_settle"
+      ],
+      "rho": 1.0,
+      "violated": false,
+      "argmin_contract": "C5",
+      "argmin_node": "Decelerate:Selector/Sequence/Decelerate",
+      "rho_per_contract": {
+        "C1": 1.545152,
+        "C2": 3.657354,
+        "C3": 3.05,
+        "C4": 16.008659,
+        "C5": 1.0
+      },
+      "vacuous_contracts": []
+    },
+    {
+      "index": 41,
+      "param_hash": "dc88399637ab9e14",
+      "params": {
+        "n_oncoming": 3,
+        "v_oncoming": 6.1998,
+        "headway": 7.4834,
+        "aggressiveness": 0.4635,
+        "light_offset": 1.797,
+        "lead_gap_s": 4.2012
+      },
+      "trace": "cal_cand_01_00041_dc88399637ab9e14.parquet",
+      "trace_sha256": "76e5d46dcf83849e103e625fc7bfd432f17b2d1b100cc8eac1039d7cd3beedaf",
+      "status": "collision",
+      "entered": true,
+      "reached_P4_settle": false,
+      "phases_reached": [
+        "P1_approach",
+        "P2_yield_clear",
+        "P3_commit"
+      ],
+      "rho": -1.063922,
+      "violated": true,
+      "argmin_contract": "C2",
+      "argmin_node": "CommitTurn:Selector/Sequence/CommitTurn",
+      "rho_per_contract": {
+        "C1": -0.246386,
+        "C2": -1.063922,
+        "C3": -0.35,
+        "C4": 20.431574,
+        "C5": 1.0
+      },
+      "vacuous_contracts": []
+    },
+    {
+      "index": 42,
+      "param_hash": "1c7fec31202826a9",
+      "params": {
+        "n_oncoming": 3,
+        "v_oncoming": 8.9612,
+        "headway": 7.7607,
+        "aggressiveness": 0.9732,
+        "light_offset": 0.7835,
+        "lead_gap_s": 2.8996
+      },
+      "trace": "cal_cand_01_00042_1c7fec31202826a9.parquet",
+      "trace_sha256": "d7d4f933b8cc038f1d2456d8b3c1fda242a27eb2d0d1182abf24676be705b191",
+      "status": "collision",
+      "entered": true,
+      "reached_P4_settle": false,
+      "phases_reached": [
+        "P1_approach",
+        "P2_yield_clear",
+        "P3_commit"
+      ],
+      "rho": -2.332422,
+      "violated": true,
+      "argmin_contract": "C2",
+      "argmin_node": "CommitTurn:Selector/Sequence/CommitTurn",
+      "rho_per_contract": {
+        "C1": -0.45189,
+        "C2": -2.332422,
+        "C3": -0.05,
+        "C4": 19.997981,
+        "C5": 1.0
+      },
+      "vacuous_contracts": []
+    },
+    {
+      "index": 43,
+      "param_hash": "b03e620f340901c1",
+      "params": {
+        "n_oncoming": 2,
+        "v_oncoming": 7.2424,
+        "headway": 1.956,
+        "aggressiveness": 0.0726,
+        "light_offset": 8.9555,
+        "lead_gap_s": 3.7549
+      },
+      "trace": "cal_cand_01_00043_b03e620f340901c1.parquet",
+      "trace_sha256": "1d02eab36aff7bee36bf442818c4442be7feb07024137f62b8bc69460d6f71d1",
+      "status": "ok",
+      "entered": true,
+      "reached_P4_settle": true,
+      "phases_reached": [
+        "P1_approach",
+        "P2_yield_clear",
+        "P3_commit",
+        "P4_settle"
+      ],
+      "rho": 1.0,
+      "violated": false,
+      "argmin_contract": "C5",
+      "argmin_node": "Decelerate:Selector/Sequence/Decelerate",
+      "rho_per_contract": {
+        "C1": 1.399577,
+        "C2": 27.0,
+        "C3": 30.0,
+        "C4": 4.670691,
+        "C5": 1.0
+      },
+      "vacuous_contracts": []
+    },
+    {
+      "index": 44,
+      "param_hash": "74efb83809c0149e",
+      "params": {
+        "n_oncoming": 2,
+        "v_oncoming": 14.5126,
+        "headway": 5.3129,
+        "aggressiveness": 0.3771,
+        "light_offset": 6.8201,
+        "lead_gap_s": 3.3837
+      },
+      "trace": "cal_cand_01_00044_74efb83809c0149e.parquet",
+      "trace_sha256": "4a23a75fca705d3df663c8a377e5f0b8f8a0d47f9fb914ba39eb620a431b1a61",
+      "status": "ok",
+      "entered": true,
+      "reached_P4_settle": true,
+      "phases_reached": [
+        "P1_approach",
+        "P2_yield_clear",
+        "P3_commit",
+        "P4_settle"
+      ],
+      "rho": 1.0,
+      "violated": false,
+      "argmin_contract": "C5",
+      "argmin_node": "Decelerate:Selector/Sequence/Decelerate",
+      "rho_per_contract": {
+        "C1": 1.625431,
+        "C2": 2.281261,
+        "C3": 5.95,
+        "C4": 7.440887,
+        "C5": 1.0
+      },
+      "vacuous_contracts": []
+    },
+    {
+      "index": 45,
+      "param_hash": "c20f0a295b6473b9",
+      "params": {
+        "n_oncoming": 2,
+        "v_oncoming": 11.18,
+        "headway": 5.0736,
+        "aggressiveness": 0.0754,
+        "light_offset": 4.1813,
+        "lead_gap_s": 3.3368
+      },
+      "trace": "cal_cand_01_00045_c20f0a295b6473b9.parquet",
+      "trace_sha256": "0a130e2a9497859547a86b2368444d3ebca80968ea870033664d624f3a1cf72e",
+      "status": "ok",
+      "entered": true,
+      "reached_P4_settle": true,
+      "phases_reached": [
+        "P1_approach",
+        "P2_yield_clear",
+        "P3_commit",
+        "P4_settle"
+      ],
+      "rho": 1.0,
+      "violated": false,
+      "argmin_contract": "C5",
+      "argmin_node": "Decelerate:Selector/Sequence/Decelerate",
+      "rho_per_contract": {
+        "C1": 1.465218,
+        "C2": 27.0,
+        "C3": 3.45,
+        "C4": 7.208951,
+        "C5": 1.0
+      },
+      "vacuous_contracts": []
+    },
+    {
+      "index": 46,
+      "param_hash": "d873ae271a09b2d9",
+      "params": {
+        "n_oncoming": 1,
+        "v_oncoming": 6.5646,
+        "headway": 7.1131,
+        "aggressiveness": 0.1147,
+        "light_offset": 6.3573,
+        "lead_gap_s": 4.2372
+      },
+      "trace": "cal_cand_01_00046_d873ae271a09b2d9.parquet",
+      "trace_sha256": "33d5fd5cf718e8ce3a09ef0aa89751f24fc16a55bd0c74d9867d23346431ae32",
+      "status": "collision",
+      "entered": true,
+      "reached_P4_settle": false,
+      "phases_reached": [
+        "P1_approach",
+        "P2_yield_clear",
+        "P3_commit"
+      ],
+      "rho": -1.277384,
+      "violated": true,
+      "argmin_contract": "C2",
+      "argmin_node": "CommitTurn:Selector/Sequence/CommitTurn",
+      "rho_per_contract": {
+        "C1": -0.248423,
+        "C2": -1.277384,
+        "C3": 30.0,
+        "C4": 20.411515,
+        "C5": 1.0
+      },
+      "vacuous_contracts": []
+    },
+    {
+      "index": 47,
+      "param_hash": "9163ccd7c057b8b2",
+      "params": {
+        "n_oncoming": 2,
+        "v_oncoming": 12.8771,
+        "headway": 4.877,
+        "aggressiveness": 0.2721,
+        "light_offset": 8.3507,
+        "lead_gap_s": 4.1005
+      },
+      "trace": "cal_cand_01_00047_9163ccd7c057b8b2.parquet",
+      "trace_sha256": "311821bc4d3f6b47d575ab0d8839f97e99882a7015d918878514fb4a490dcced",
+      "status": "ok",
+      "entered": true,
+      "reached_P4_settle": true,
+      "phases_reached": [
+        "P1_approach",
+        "P2_yield_clear",
+        "P3_commit",
+        "P4_settle"
+      ],
+      "rho": 1.0,
+      "violated": false,
+      "argmin_contract": "C5",
+      "argmin_node": "Decelerate:Selector/Sequence/Decelerate",
+      "rho_per_contract": {
+        "C1": 1.547398,
+        "C2": 2.743647,
+        "C3": 30.0,
+        "C4": 10.715455,
+        "C5": 1.0
+      },
+      "vacuous_contracts": []
+    },
+    {
+      "index": 48,
+      "param_hash": "0ebc2ab3cbdc0ba9",
+      "params": {
+        "n_oncoming": 1,
+        "v_oncoming": 13.2945,
+        "headway": 1.8677,
+        "aggressiveness": 0.7509,
+        "light_offset": 3.2468,
+        "lead_gap_s": 2.6644
+      },
+      "trace": "cal_cand_01_00048_0ebc2ab3cbdc0ba9.parquet",
+      "trace_sha256": "eae4c4554e931ef4733829463e16451213d847d53ad6c02e4e5e9b2b0abb9cd7",
+      "status": "ok",
+      "entered": true,
+      "reached_P4_settle": true,
+      "phases_reached": [
+        "P1_approach",
+        "P2_yield_clear",
+        "P3_commit",
+        "P4_settle"
+      ],
+      "rho": 1.0,
+      "violated": false,
+      "argmin_contract": "C5",
+      "argmin_node": "Decelerate:Selector/Sequence/Decelerate",
+      "rho_per_contract": {
+        "C1": 1.548369,
+        "C2": 27.0,
+        "C3": 4.25,
+        "C4": 6.486747,
+        "C5": 1.0
+      },
+      "vacuous_contracts": []
+    },
+    {
+      "index": 49,
+      "param_hash": "667b932a2ad0f0c6",
+      "params": {
+        "n_oncoming": 1,
+        "v_oncoming": 11.0434,
+        "headway": 7.3023,
+        "aggressiveness": 0.0085,
+        "light_offset": 1.8046,
+        "lead_gap_s": 2.8734
+      },
+      "trace": "cal_cand_01_00049_667b932a2ad0f0c6.parquet",
+      "trace_sha256": "318998f4cce780228d55d1725132d0d0f88d72edeae3fcd82b1903f3c2ab8791",
+      "status": "ok",
+      "entered": true,
+      "reached_P4_settle": true,
+      "phases_reached": [
+        "P1_approach",
+        "P2_yield_clear",
+        "P3_commit",
+        "P4_settle"
+      ],
+      "rho": 1.0,
+      "violated": false,
+      "argmin_contract": "C5",
+      "argmin_node": "Decelerate:Selector/Sequence/Decelerate",
+      "rho_per_contract": {
+        "C1": 1.566125,
+        "C2": 27.0,
+        "C3": 1.5,
+        "C4": 14.322881,
+        "C5": 1.0
+      },
+      "vacuous_contracts": []
+    },
+    {
+      "index": 50,
+      "param_hash": "06c2dc833c6ee11b",
+      "params": {
+        "n_oncoming": 3,
+        "v_oncoming": 8.2071,
+        "headway": 5.0838,
+        "aggressiveness": 0.794,
+        "light_offset": 1.6334,
+        "lead_gap_s": 2.4375
+      },
+      "trace": "cal_cand_01_00050_06c2dc833c6ee11b.parquet",
+      "trace_sha256": "272ed89c2c394fea5db5d8f14e43c11059a66d72385eb9e95ea4435e74bf9439",
+      "status": "ok",
+      "entered": true,
+      "reached_P4_settle": true,
+      "phases_reached": [
+        "P1_approach",
+        "P2_yield_clear",
+        "P3_commit",
+        "P4_settle"
+      ],
+      "rho": -0.505481,
+      "violated": true,
+      "argmin_contract": "C2",
+      "argmin_node": "CommitTurn:Selector/Sequence/CommitTurn",
+      "rho_per_contract": {
+        "C1": 1.242084,
+        "C2": -0.505481,
+        "C3": 0.7,
+        "C4": 16.493895,
+        "C5": 1.0
+      },
+      "vacuous_contracts": []
+    },
+    {
+      "index": 51,
+      "param_hash": "75865b800c8d50f3",
+      "params": {
+        "n_oncoming": 3,
+        "v_oncoming": 9.7536,
+        "headway": 4.3763,
+        "aggressiveness": 0.4909,
+        "light_offset": 6.931,
+        "lead_gap_s": 3.2617
+      },
+      "trace": "cal_cand_01_00051_75865b800c8d50f3.parquet",
+      "trace_sha256": "2e6650686548aecf4cf931e39bf6e58dc4dceacd2ac82e4e841d03de0e8de265",
+      "status": "collision",
+      "entered": true,
+      "reached_P4_settle": false,
+      "phases_reached": [
+        "P1_approach",
+        "P2_yield_clear",
+        "P3_commit"
+      ],
+      "rho": -1.238386,
+      "violated": true,
+      "argmin_contract": "C2",
+      "argmin_node": "CommitTurn:Selector/Sequence/CommitTurn",
+      "rho_per_contract": {
+        "C1": -0.192938,
+        "C2": -1.238386,
+        "C3": 30.0,
+        "C4": 16.281735,
+        "C5": 1.0
+      },
+      "vacuous_contracts": []
+    },
+    {
+      "index": 52,
+      "param_hash": "a9728256dd17bd62",
+      "params": {
+        "n_oncoming": 1,
+        "v_oncoming": 13.3877,
+        "headway": 5.6257,
+        "aggressiveness": 0.7384,
+        "light_offset": 8.8524,
+        "lead_gap_s": 3.2479
+      },
+      "trace": "cal_cand_01_00052_a9728256dd17bd62.parquet",
+      "trace_sha256": "55939f8fa8cde49520a8af12a386b3b33740842253f4d4cec418e22f8bbae9dd",
+      "status": "ok",
+      "entered": true,
+      "reached_P4_settle": true,
+      "phases_reached": [
+        "P1_approach",
+        "P2_yield_clear",
+        "P3_commit",
+        "P4_settle"
+      ],
+      "rho": 1.0,
+      "violated": false,
+      "argmin_contract": "C5",
+      "argmin_node": "Decelerate:Selector/Sequence/Decelerate",
+      "rho_per_contract": {
+        "C1": 1.603868,
+        "C2": 2.336845,
+        "C3": 30.0,
+        "C4": 6.827946,
+        "C5": 1.0
+      },
+      "vacuous_contracts": []
+    },
+    {
+      "index": 53,
+      "param_hash": "a4ff777079650325",
+      "params": {
+        "n_oncoming": 2,
+        "v_oncoming": 6.3268,
+        "headway": 7.9934,
+        "aggressiveness": 0.0642,
+        "light_offset": 5.295,
+        "lead_gap_s": 3.495
+      },
+      "trace": "cal_cand_01_00053_a4ff777079650325.parquet",
+      "trace_sha256": "4623bd2e18e8de8fafef72819c2c9f5b0d30ff26673fb78250c2131ae7750b4e",
+      "status": "ok",
+      "entered": true,
+      "reached_P4_settle": true,
+      "phases_reached": [
+        "P1_approach",
+        "P2_yield_clear",
+        "P3_commit",
+        "P4_settle"
+      ],
+      "rho": 1.0,
+      "violated": false,
+      "argmin_contract": "C5",
+      "argmin_node": "Decelerate:Selector/Sequence/Decelerate",
+      "rho_per_contract": {
+        "C1": 1.969331,
+        "C2": 27.0,
+        "C3": 5.0,
+        "C4": 5.986562,
+        "C5": 1.0
+      },
+      "vacuous_contracts": []
+    },
+    {
+      "index": 54,
+      "param_hash": "d78370c7dc102671",
+      "params": {
+        "n_oncoming": 1,
+        "v_oncoming": 7.6571,
+        "headway": 2.8934,
+        "aggressiveness": 0.3857,
+        "light_offset": 9.7071,
+        "lead_gap_s": 2.9033
+      },
+      "trace": "cal_cand_01_00054_d78370c7dc102671.parquet",
+      "trace_sha256": "39dde259b16d83fd31943d10a8bf4c4a0e3fc66931e6c77bed202cc18eb4fccb",
+      "status": "ok",
+      "entered": true,
+      "reached_P4_settle": true,
+      "phases_reached": [
+        "P1_approach",
+        "P2_yield_clear",
+        "P3_commit",
+        "P4_settle"
+      ],
+      "rho": 1.0,
+      "violated": false,
+      "argmin_contract": "C5",
+      "argmin_node": "Decelerate:Selector/Sequence/Decelerate",
+      "rho_per_contract": {
+        "C1": 1.404356,
+        "C2": 5.77536,
+        "C3": 30.0,
+        "C4": 9.257962,
+        "C5": 1.0
+      },
+      "vacuous_contracts": []
+    },
+    {
+      "index": 55,
+      "param_hash": "22f7fd349e9277fe",
+      "params": {
+        "n_oncoming": 2,
+        "v_oncoming": 11.5733,
+        "headway": 7.1796,
+        "aggressiveness": 0.2562,
+        "light_offset": 3.8604,
+        "lead_gap_s": 3.0163
+      },
+      "trace": "cal_cand_01_00055_22f7fd349e9277fe.parquet",
+      "trace_sha256": "d57216aa32c64f594ca946776cc542ab20009f495c1c4340dab54c67a5289ca3",
+      "status": "ok",
+      "entered": true,
+      "reached_P4_settle": true,
+      "phases_reached": [
+        "P1_approach",
+        "P2_yield_clear",
+        "P3_commit",
+        "P4_settle"
+      ],
+      "rho": -0.239827,
+      "violated": true,
+      "argmin_contract": "C1",
+      "argmin_node": "CommitTurn:Selector/Sequence/CommitTurn",
+      "rho_per_contract": {
+        "C1": -0.239827,
+        "C2": 27.0,
+        "C3": 2.5,
+        "C4": 13.317494,
+        "C5": 1.0
+      },
+      "vacuous_contracts": []
+    },
+    {
+      "index": 56,
+      "param_hash": "a5fa7d9072b18192",
+      "params": {
+        "n_oncoming": 1,
+        "v_oncoming": 13.2917,
+        "headway": 2.9289,
+        "aggressiveness": 0.7885,
+        "light_offset": 5.6689,
+        "lead_gap_s": 2.6355
+      },
+      "trace": "cal_cand_01_00056_a5fa7d9072b18192.parquet",
+      "trace_sha256": "f00320d3d8650074c1ec0163c28b0634d5906cce4557a5b289e22b4d4c2e308a",
+      "status": "ok",
+      "entered": true,
+      "reached_P4_settle": true,
+      "phases_reached": [
+        "P1_approach",
+        "P2_yield_clear",
+        "P3_commit",
+        "P4_settle"
+      ],
+      "rho": 1.0,
+      "violated": false,
+      "argmin_contract": "C5",
+      "argmin_node": "Decelerate:Selector/Sequence/Decelerate",
+      "rho_per_contract": {
+        "C1": 1.561884,
+        "C2": 27.0,
+        "C3": 6.6,
+        "C4": 7.067264,
+        "C5": 1.0
+      },
+      "vacuous_contracts": []
+    },
+    {
+      "index": 57,
+      "param_hash": "9b10970ccfce8461",
+      "params": {
+        "n_oncoming": 2,
+        "v_oncoming": 6.0719,
+        "headway": 6.964,
+        "aggressiveness": 0.9447,
+        "light_offset": 5.0614,
+        "lead_gap_s": 3.4865
+      },
+      "trace": "cal_cand_01_00057_9b10970ccfce8461.parquet",
+      "trace_sha256": "1f233b424443b89da7d658ddc070bc9257218a8d9153099747386d34c85bf1aa",
+      "status": "ok",
+      "entered": true,
+      "reached_P4_settle": true,
+      "phases_reached": [
+        "P1_approach",
+        "P2_yield_clear",
+        "P3_commit",
+        "P4_settle"
+      ],
+      "rho": -1.033991,
+      "violated": true,
+      "argmin_contract": "C2",
+      "argmin_node": "CommitTurn:Selector/Sequence/CommitTurn",
+      "rho_per_contract": {
+        "C1": 1.249439,
+        "C2": -1.033991,
+        "C3": 4.25,
+        "C4": 8.248178,
+        "C5": 1.0
+      },
+      "vacuous_contracts": []
+    },
+    {
+      "index": 58,
+      "param_hash": "5d44981f920edc86",
+      "params": {
+        "n_oncoming": 3,
+        "v_oncoming": 15.0893,
+        "headway": 4.1516,
+        "aggressiveness": 0.5519,
+        "light_offset": 8.4778,
+        "lead_gap_s": 3.5639
+      },
+      "trace": "cal_cand_01_00058_5d44981f920edc86.parquet",
+      "trace_sha256": "428fc7e890bcdc5c5f3adf94c3e5ec45d9dee823535e404134dc0b7aaafccea4",
+      "status": "ok",
+      "entered": true,
+      "reached_P4_settle": true,
+      "phases_reached": [
+        "P1_approach",
+        "P2_yield_clear",
+        "P3_commit",
+        "P4_settle"
+      ],
+      "rho": 1.0,
+      "violated": false,
+      "argmin_contract": "C5",
+      "argmin_node": "Decelerate:Selector/Sequence/Decelerate",
+      "rho_per_contract": {
+        "C1": 1.716521,
+        "C2": 2.094712,
+        "C3": 30.0,
+        "C4": 8.262654,
+        "C5": 1.0
+      },
+      "vacuous_contracts": []
+    },
+    {
+      "index": 59,
+      "param_hash": "f0ffd7dad8542cd7",
+      "params": {
+        "n_oncoming": 3,
+        "v_oncoming": 10.4164,
+        "headway": 3.6671,
+        "aggressiveness": 0.2866,
+        "light_offset": 9.1336,
+        "lead_gap_s": 2.7913
+      },
+      "trace": "cal_cand_01_00059_f0ffd7dad8542cd7.parquet",
+      "trace_sha256": "811d9bce4d59cd48c3a81bb2984a68bd7636faf582e696a7a7b613907f904857",
+      "status": "collision",
+      "entered": true,
+      "reached_P4_settle": false,
+      "phases_reached": [
+        "P1_approach",
+        "P2_yield_clear",
+        "P3_commit"
+      ],
+      "rho": -0.295477,
+      "violated": true,
+      "argmin_contract": "C1",
+      "argmin_node": "CommitTurn:Selector/Sequence/CommitTurn",
+      "rho_per_contract": {
+        "C1": -0.295477,
+        "C2": 9.139068,
+        "C3": 30.0,
+        "C4": 19.997981,
+        "C5": 1.0
+      },
+      "vacuous_contracts": []
+    },
+    {
+      "index": 60,
+      "param_hash": "c4db7dfa5da9cbeb",
+      "params": {
+        "n_oncoming": 1,
+        "v_oncoming": 11.9933,
+        "headway": 7.4491,
+        "aggressiveness": 0.6075,
+        "light_offset": 9.1506,
+        "lead_gap_s": 3.883
+      },
+      "trace": "cal_cand_01_00060_c4db7dfa5da9cbeb.parquet",
+      "trace_sha256": "d2396f602b3a1959ed6a351eb8264b55bc0bfe01be09bfcd78e42d2810ba600d",
+      "status": "ok",
+      "entered": true,
+      "reached_P4_settle": true,
+      "phases_reached": [
+        "P1_approach",
+        "P2_yield_clear",
+        "P3_commit",
+        "P4_settle"
+      ],
+      "rho": 1.0,
+      "violated": false,
+      "argmin_contract": "C5",
+      "argmin_node": "Decelerate:Selector/Sequence/Decelerate",
+      "rho_per_contract": {
+        "C1": 1.54086,
+        "C2": 1.837267,
+        "C3": 30.0,
+        "C4": 9.660753,
+        "C5": 1.0
+      },
+      "vacuous_contracts": []
+    },
+    {
+      "index": 61,
+      "param_hash": "4421cf462e47c0b4",
+      "params": {
+        "n_oncoming": 2,
+        "v_oncoming": 9.4452,
+        "headway": 7.6531,
+        "aggressiveness": 0.6481,
+        "light_offset": 4.0391,
+        "lead_gap_s": 3.9421
+      },
+      "trace": "cal_cand_01_00061_4421cf462e47c0b4.parquet",
+      "trace_sha256": "437c295bb74b7525b4e667f9b748274ee34f7cf44cc24a95c1d95f877ad160cb",
+      "status": "ok",
+      "entered": true,
+      "reached_P4_settle": true,
+      "phases_reached": [
+        "P1_approach",
+        "P2_yield_clear",
+        "P3_commit",
+        "P4_settle"
+      ],
+      "rho": 1.0,
+      "violated": false,
+      "argmin_contract": "C5",
+      "argmin_node": "Decelerate:Selector/Sequence/Decelerate",
+      "rho_per_contract": {
+        "C1": 1.320314,
+        "C2": 2.088275,
+        "C3": 3.15,
+        "C4": 10.586371,
+        "C5": 1.0
+      },
+      "vacuous_contracts": []
+    },
+    {
+      "index": 62,
+      "param_hash": "285e0a81adfb58ef",
+      "params": {
+        "n_oncoming": 2,
+        "v_oncoming": 9.7125,
+        "headway": 5.9978,
+        "aggressiveness": 0.1539,
+        "light_offset": 1.1908,
+        "lead_gap_s": 2.9191
+      },
+      "trace": "cal_cand_01_00062_285e0a81adfb58ef.parquet",
+      "trace_sha256": "ae72d0b793d155ce5eddd5702b231e79ff03e75ebc102688687381eeff19ab3b",
+      "status": "ok",
+      "entered": true,
+      "reached_P4_settle": true,
+      "phases_reached": [
+        "P1_approach",
+        "P2_yield_clear",
+        "P3_commit",
+        "P4_settle"
+      ],
+      "rho": 0.55,
+      "violated": false,
+      "argmin_contract": "C3",
+      "argmin_node": "CommitTurn:Selector/Sequence/CommitTurn",
+      "rho_per_contract": {
+        "C1": 1.462379,
+        "C2": 27.0,
+        "C3": 0.55,
+        "C4": 9.587251,
+        "C5": 1.0
+      },
+      "vacuous_contracts": []
+    },
+    {
+      "index": 63,
+      "param_hash": "c6865ad2fc4c3256",
+      "params": {
+        "n_oncoming": 2,
+        "v_oncoming": 10.2418,
+        "headway": 4.321,
+        "aggressiveness": 0.282,
+        "light_offset": 8.7035,
+        "lead_gap_s": 3.8481
+      },
+      "trace": "cal_cand_01_00063_c6865ad2fc4c3256.parquet",
+      "trace_sha256": "9e75c9bb6beea1141274565867ca1a7c8cf0acf080521cf999f6a26571f5c119",
+      "status": "ok",
+      "entered": true,
+      "reached_P4_settle": true,
+      "phases_reached": [
+        "P1_approach",
+        "P2_yield_clear",
+        "P3_commit",
+        "P4_settle"
+      ],
+      "rho": 0.559803,
+      "violated": false,
+      "argmin_contract": "C1",
+      "argmin_node": "CommitTurn:Selector/Sequence/CommitTurn",
+      "rho_per_contract": {
+        "C1": 0.559803,
+        "C2": 27.0,
+        "C3": 30.0,
+        "C4": 10.434897,
+        "C5": 1.0
+      },
+      "vacuous_contracts": []
+    },
+    {
+      "index": 64,
+      "param_hash": "08dbc66f58e26886",
+      "params": {
+        "n_oncoming": 3,
+        "v_oncoming": 14.5451,
+        "headway": 3.3468,
+        "aggressiveness": 0.8955,
+        "light_offset": 1.2852,
+        "lead_gap_s": 3.0066
+      },
+      "trace": "cal_cand_01_00064_08dbc66f58e26886.parquet",
+      "trace_sha256": "24d559eff799fa196b9cd57922b9b34ae08c52f777679fa87b6d89231496c0cb",
+      "status": "ok",
+      "entered": true,
+      "reached_P4_settle": true,
+      "phases_reached": [
+        "P1_approach",
+        "P2_yield_clear",
+        "P3_commit",
+        "P4_settle"
+      ],
+      "rho": 0.45,
+      "violated": false,
+      "argmin_contract": "C3",
+      "argmin_node": "CommitTurn:Selector/Sequence/CommitTurn",
+      "rho_per_contract": {
+        "C1": 1.649302,
+        "C2": 27.0,
+        "C3": 0.45,
+        "C4": 10.6113,
+        "C5": 1.0
+      },
+      "vacuous_contracts": []
+    },
+    {
+      "index": 65,
+      "param_hash": "cc4ee29ab40dc5b0",
+      "params": {
+        "n_oncoming": 2,
+        "v_oncoming": 10.1638,
+        "headway": 5.7956,
+        "aggressiveness": 0.5372,
+        "light_offset": 8.0024,
+        "lead_gap_s": 3.6496
+      },
+      "trace": "cal_cand_01_00065_cc4ee29ab40dc5b0.parquet",
+      "trace_sha256": "fa6544f784424c9c6be661bb6250006e9361d963697bda0fc080fc7e27d5ec62",
+      "status": "ok",
+      "entered": true,
+      "reached_P4_settle": true,
+      "phases_reached": [
+        "P1_approach",
+        "P2_yield_clear",
+        "P3_commit",
+        "P4_settle"
+      ],
+      "rho": 1.0,
+      "violated": false,
+      "argmin_contract": "C5",
+      "argmin_node": "Decelerate:Selector/Sequence/Decelerate",
+      "rho_per_contract": {
+        "C1": 1.494025,
+        "C2": 1.869168,
+        "C3": 7.2,
+        "C4": 10.017901,
+        "C5": 1.0
+      },
+      "vacuous_contracts": []
+    },
+    {
+      "index": 66,
+      "param_hash": "cd8846a12a455c3d",
+      "params": {
+        "n_oncoming": 3,
+        "v_oncoming": 13.2353,
+        "headway": 2.3453,
+        "aggressiveness": 0.938,
+        "light_offset": 4.5158,
+        "lead_gap_s": 3.371
+      },
+      "trace": "cal_cand_01_00066_cd8846a12a455c3d.parquet",
+      "trace_sha256": "6f116fff0a8478341312785ea991ab3ff3ca23f0172825fa5acc9c54e826c6df",
+      "status": "ok",
+      "entered": true,
+      "reached_P4_settle": true,
+      "phases_reached": [
+        "P1_approach",
+        "P2_yield_clear",
+        "P3_commit",
+        "P4_settle"
+      ],
+      "rho": 0.900719,
+      "violated": false,
+      "argmin_contract": "C2",
+      "argmin_node": "CommitTurn:Selector/Sequence/CommitTurn",
+      "rho_per_contract": {
+        "C1": 1.536645,
+        "C2": 0.900719,
+        "C3": 3.7,
+        "C4": 7.54322,
+        "C5": 1.0
+      },
+      "vacuous_contracts": []
+    },
+    {
+      "index": 67,
+      "param_hash": "b09b16b416ecceb8",
+      "params": {
+        "n_oncoming": 2,
+        "v_oncoming": 9.9354,
+        "headway": 2.0179,
+        "aggressiveness": 0.3142,
+        "light_offset": 9.3899,
+        "lead_gap_s": 4.2541
+      },
+      "trace": "cal_cand_01_00067_b09b16b416ecceb8.parquet",
+      "trace_sha256": "80faadf8208ed2b39014a7e7d93c46f0b883f98f33e6e46d3f73cc3b07a5a1ee",
+      "status": "ok",
+      "entered": true,
+      "reached_P4_settle": true,
+      "phases_reached": [
+        "P1_approach",
+        "P2_yield_clear",
+        "P3_commit",
+        "P4_settle"
+      ],
+      "rho": 1.0,
+      "violated": false,
+      "argmin_contract": "C5",
+      "argmin_node": "Decelerate:Selector/Sequence/Decelerate",
+      "rho_per_contract": {
+        "C1": 1.483314,
+        "C2": 27.0,
+        "C3": 30.0,
+        "C4": 9.813749,
+        "C5": 1.0
+      },
+      "vacuous_contracts": []
+    },
+    {
+      "index": 68,
+      "param_hash": "29cc2687fb818d08",
+      "params": {
+        "n_oncoming": 1,
+        "v_oncoming": 13.769,
+        "headway": 2.0131,
+        "aggressiveness": 0.594,
+        "light_offset": 4.0716,
+        "lead_gap_s": 3.5731
+      },
+      "trace": "cal_cand_01_00068_29cc2687fb818d08.parquet",
+      "trace_sha256": "dcf942bfb13f11b067b78d2296f3cebc4ac7c2f8df9e1d055e3bc22b52fa5c0a",
+      "status": "ok",
+      "entered": true,
+      "reached_P4_settle": true,
+      "phases_reached": [
+        "P1_approach",
+        "P2_yield_clear",
+        "P3_commit",
+        "P4_settle"
+      ],
+      "rho": 1.0,
+      "violated": false,
+      "argmin_contract": "C5",
+      "argmin_node": "Decelerate:Selector/Sequence/Decelerate",
+      "rho_per_contract": {
+        "C1": 1.562736,
+        "C2": 27.0,
+        "C3": 4.2,
+        "C4": 4.09686,
+        "C5": 1.0
+      },
+      "vacuous_contracts": []
+    },
+    {
+      "index": 69,
+      "param_hash": "fe0cce96b496d371",
+      "params": {
+        "n_oncoming": 1,
+        "v_oncoming": 10.311,
+        "headway": 6.6421,
+        "aggressiveness": 0.821,
+        "light_offset": 5.3586,
+        "lead_gap_s": 4.0284
+      },
+      "trace": "cal_cand_01_00069_fe0cce96b496d371.parquet",
+      "trace_sha256": "5387a15c57b5773c889e9f2b428c460f883a9a1635297faa034bf106a3080cf1",
+      "status": "ok",
+      "entered": true,
+      "reached_P4_settle": true,
+      "phases_reached": [
+        "P1_approach",
+        "P2_yield_clear",
+        "P3_commit",
+        "P4_settle"
+      ],
+      "rho": 1.0,
+      "violated": false,
+      "argmin_contract": "C5",
+      "argmin_node": "Decelerate:Selector/Sequence/Decelerate",
+      "rho_per_contract": {
+        "C1": 1.508905,
+        "C2": 1.96577,
+        "C3": 4.55,
+        "C4": 10.522247,
+        "C5": 1.0
+      },
+      "vacuous_contracts": []
+    },
+    {
+      "index": 70,
+      "param_hash": "fb28fa4ab1e9d11c",
+      "params": {
+        "n_oncoming": 1,
+        "v_oncoming": 15.1134,
+        "headway": 7.2869,
+        "aggressiveness": 0.8966,
+        "light_offset": 6.0785,
+        "lead_gap_s": 3.7668
+      },
+      "trace": "cal_cand_01_00070_fb28fa4ab1e9d11c.parquet",
+      "trace_sha256": "7950adb67ddf4731f39717b3706d8e1e0589da7c66db7c17c2b2348c467f8eac",
+      "status": "ok",
+      "entered": true,
+      "reached_P4_settle": true,
+      "phases_reached": [
+        "P1_approach",
+        "P2_yield_clear",
+        "P3_commit",
+        "P4_settle"
+      ],
+      "rho": 1.0,
+      "violated": false,
+      "argmin_contract": "C5",
+      "argmin_node": "Decelerate:Selector/Sequence/Decelerate",
+      "rho_per_contract": {
+        "C1": 1.719007,
+        "C2": 2.092598,
+        "C3": 5.25,
+        "C4": 9.666967,
+        "C5": 1.0
+      },
+      "vacuous_contracts": []
+    },
+    {
+      "index": 71,
+      "param_hash": "a35dc39caf10f48f",
+      "params": {
+        "n_oncoming": 1,
+        "v_oncoming": 12.7319,
+        "headway": 2.478,
+        "aggressiveness": 0.7349,
+        "light_offset": 7.185,
+        "lead_gap_s": 2.3683
+      },
+      "trace": "cal_cand_01_00071_a35dc39caf10f48f.parquet",
+      "trace_sha256": "ea2e971435763da4ae2e0c032e8dc5f0980ac202dfe5969a98ae74fb00f2ed49",
+      "status": "ok",
+      "entered": true,
+      "reached_P4_settle": true,
+      "phases_reached": [
+        "P1_approach",
+        "P2_yield_clear",
+        "P3_commit",
+        "P4_settle"
+      ],
+      "rho": 1.0,
+      "violated": false,
+      "argmin_contract": "C5",
+      "argmin_node": "Decelerate:Selector/Sequence/Decelerate",
+      "rho_per_contract": {
+        "C1": 1.529978,
+        "C2": 27.0,
+        "C3": 30.0,
+        "C4": 6.581298,
+        "C5": 1.0
+      },
+      "vacuous_contracts": []
+    },
+    {
+      "index": 72,
+      "param_hash": "39ddabcb872c464d",
+      "params": {
+        "n_oncoming": 1,
+        "v_oncoming": 9.0526,
+        "headway": 2.7555,
+        "aggressiveness": 0.6776,
+        "light_offset": 3.675,
+        "lead_gap_s": 2.3767
+      },
+      "trace": "cal_cand_01_00072_39ddabcb872c464d.parquet",
+      "trace_sha256": "eb38089c608ae42f5fc4961831feeca4f459633c5079cb660cc6f5e474e174c0",
+      "status": "ok",
+      "entered": true,
+      "reached_P4_settle": true,
+      "phases_reached": [
+        "P1_approach",
+        "P2_yield_clear",
+        "P3_commit",
+        "P4_settle"
+      ],
+      "rho": 1.0,
+      "violated": false,
+      "argmin_contract": "C5",
+      "argmin_node": "Decelerate:Selector/Sequence/Decelerate",
+      "rho_per_contract": {
+        "C1": 1.461608,
+        "C2": 27.0,
+        "C3": 4.55,
+        "C4": 6.555065,
+        "C5": 1.0
+      },
+      "vacuous_contracts": []
+    },
+    {
+      "index": 73,
+      "param_hash": "2e27b0b9641c0309",
+      "params": {
+        "n_oncoming": 1,
+        "v_oncoming": 9.9885,
+        "headway": 2.4456,
+        "aggressiveness": 0.7622,
+        "light_offset": 8.2132,
+        "lead_gap_s": 3.9526
+      },
+      "trace": "cal_cand_01_00073_2e27b0b9641c0309.parquet",
+      "trace_sha256": "d7420af592d901373f1a8c374b00afe3d9909b8b48c6fcf878891dcc23218502",
+      "status": "ok",
+      "entered": true,
+      "reached_P4_settle": true,
+      "phases_reached": [
+        "P1_approach",
+        "P2_yield_clear",
+        "P3_commit",
+        "P4_settle"
+      ],
+      "rho": 1.0,
+      "violated": false,
+      "argmin_contract": "C5",
+      "argmin_node": "Decelerate:Selector/Sequence/Decelerate",
+      "rho_per_contract": {
+        "C1": 1.489502,
+        "C2": 27.0,
+        "C3": 30.0,
+        "C4": 9.818392,
+        "C5": 1.0
+      },
+      "vacuous_contracts": []
+    },
+    {
+      "index": 74,
+      "param_hash": "abec99afcce7b404",
+      "params": {
+        "n_oncoming": 2,
+        "v_oncoming": 6.9032,
+        "headway": 3.0338,
+        "aggressiveness": 0.3638,
+        "light_offset": 1.4802,
+        "lead_gap_s": 2.3063
+      },
+      "trace": "cal_cand_01_00074_abec99afcce7b404.parquet",
+      "trace_sha256": "31e08d047f6a45173497db5bfc890f0ec990bb33f39abc5dd3c61d7f34dc7648",
+      "status": "ok",
+      "entered": true,
+      "reached_P4_settle": true,
+      "phases_reached": [
+        "P1_approach",
+        "P2_yield_clear",
+        "P3_commit",
+        "P4_settle"
+      ],
+      "rho": 1.0,
+      "violated": false,
+      "argmin_contract": "C5",
+      "argmin_node": "Decelerate:Selector/Sequence/Decelerate",
+      "rho_per_contract": {
+        "C1": 1.348032,
+        "C2": 6.196101,
+        "C3": 1.45,
+        "C4": 10.955488,
+        "C5": 1.0
+      },
+      "vacuous_contracts": []
+    },
+    {
+      "index": 75,
+      "param_hash": "28a962d82867351c",
+      "params": {
+        "n_oncoming": 2,
+        "v_oncoming": 14.035,
+        "headway": 5.86,
+        "aggressiveness": 0.8553,
+        "light_offset": 9.4435,
+        "lead_gap_s": 3.8205
+      },
+      "trace": "cal_cand_01_00075_28a962d82867351c.parquet",
+      "trace_sha256": "740a90a553621f48421f1667d24609dac961a7c9dac78ccab978a005b2269453",
+      "status": "ok",
+      "entered": true,
+      "reached_P4_settle": true,
+      "phases_reached": [
+        "P1_approach",
+        "P2_yield_clear",
+        "P3_commit",
+        "P4_settle"
+      ],
+      "rho": 1.0,
+      "violated": false,
+      "argmin_contract": "C5",
+      "argmin_node": "Decelerate:Selector/Sequence/Decelerate",
+      "rho_per_contract": {
+        "C1": 1.607506,
+        "C2": 1.704155,
+        "C3": 30.0,
+        "C4": 10.600377,
+        "C5": 1.0
+      },
+      "vacuous_contracts": []
+    },
+    {
+      "index": 76,
+      "param_hash": "f2af14f16f80ccc2",
+      "params": {
+        "n_oncoming": 1,
+        "v_oncoming": 7.0897,
+        "headway": 4.799,
+        "aggressiveness": 0.6354,
+        "light_offset": 6.4637,
+        "lead_gap_s": 3.0858
+      },
+      "trace": "cal_cand_01_00076_f2af14f16f80ccc2.parquet",
+      "trace_sha256": "a41f89b88e74402ce16693430c38b1fac5924855c76119de2f95e02e730c01e9",
+      "status": "ok",
+      "entered": true,
+      "reached_P4_settle": true,
+      "phases_reached": [
+        "P1_approach",
+        "P2_yield_clear",
+        "P3_commit",
+        "P4_settle"
+      ],
+      "rho": 1.0,
+      "violated": false,
+      "argmin_contract": "C5",
+      "argmin_node": "Decelerate:Selector/Sequence/Decelerate",
+      "rho_per_contract": {
+        "C1": 1.382456,
+        "C2": 13.175944,
+        "C3": 5.95,
+        "C4": 6.039455,
+        "C5": 1.0
+      },
+      "vacuous_contracts": []
+    },
+    {
+      "index": 77,
+      "param_hash": "fe0be9509894a9eb",
+      "params": {
+        "n_oncoming": 1,
+        "v_oncoming": 15.1877,
+        "headway": 2.1522,
+        "aggressiveness": 0.7169,
+        "light_offset": 7.2103,
+        "lead_gap_s": 2.4953
+      },
+      "trace": "cal_cand_01_00077_fe0be9509894a9eb.parquet",
+      "trace_sha256": "54b62a7cfc682f76a9b9b6d8f88cf745b0d9b2f8f925de54463572c1968997cf",
+      "status": "ok",
+      "entered": true,
+      "reached_P4_settle": true,
+      "phases_reached": [
+        "P1_approach",
+        "P2_yield_clear",
+        "P3_commit",
+        "P4_settle"
+      ],
+      "rho": 1.0,
+      "violated": false,
+      "argmin_contract": "C5",
+      "argmin_node": "Decelerate:Selector/Sequence/Decelerate",
+      "rho_per_contract": {
+        "C1": 1.667227,
+        "C2": 27.0,
+        "C3": 30.0,
+        "C4": 5.066658,
+        "C5": 1.0
+      },
+      "vacuous_contracts": []
+    },
+    {
+      "index": 78,
+      "param_hash": "3fc8033ad719604b",
+      "params": {
+        "n_oncoming": 1,
+        "v_oncoming": 6.6894,
+        "headway": 7.4957,
+        "aggressiveness": 0.9738,
+        "light_offset": 6.8126,
+        "lead_gap_s": 3.3838
+      },
+      "trace": "cal_cand_01_00078_3fc8033ad719604b.parquet",
+      "trace_sha256": "be435f5b28938dac87ba00e3b189ad786b2e29bbdfbdb892acd5c46bd2d19e61",
+      "status": "ok",
+      "entered": true,
+      "reached_P4_settle": true,
+      "phases_reached": [
+        "P1_approach",
+        "P2_yield_clear",
+        "P3_commit",
+        "P4_settle"
+      ],
+      "rho": 0.555552,
+      "violated": false,
+      "argmin_contract": "C2",
+      "argmin_node": "CommitTurn:Selector/Sequence/CommitTurn",
+      "rho_per_contract": {
+        "C1": 1.231663,
+        "C2": 0.555552,
+        "C3": 5.95,
+        "C4": 8.702844,
+        "C5": 1.0
+      },
+      "vacuous_contracts": []
+    },
+    {
+      "index": 79,
+      "param_hash": "1dcc859bcf9cda15",
+      "params": {
+        "n_oncoming": 2,
+        "v_oncoming": 12.5811,
+        "headway": 4.7897,
+        "aggressiveness": 0.6927,
+        "light_offset": 8.8502,
+        "lead_gap_s": 3.6302
+      },
+      "trace": "cal_cand_01_00079_1dcc859bcf9cda15.parquet",
+      "trace_sha256": "5c97c8859faad7957410c0d41b1e23dd653bbfed44f428b735c3c0a05d18d55a",
+      "status": "ok",
+      "entered": true,
+      "reached_P4_settle": true,
+      "phases_reached": [
+        "P1_approach",
+        "P2_yield_clear",
+        "P3_commit",
+        "P4_settle"
+      ],
+      "rho": 0.6754,
+      "violated": false,
+      "argmin_contract": "C2",
+      "argmin_node": "CommitTurn:Selector/Sequence/CommitTurn",
+      "rho_per_contract": {
+        "C1": 1.534852,
+        "C2": 0.6754,
+        "C3": 30.0,
+        "C4": 10.061809,
+        "C5": 1.0
+      },
+      "vacuous_contracts": []
+    },
+    {
+      "index": 80,
+      "param_hash": "e4773fab68601f12",
+      "params": {
+        "n_oncoming": 3,
+        "v_oncoming": 10.6818,
+        "headway": 3.3021,
+        "aggressiveness": 0.8325,
+        "light_offset": 1.8687,
+        "lead_gap_s": 3.4924
+      },
+      "trace": "cal_cand_01_00080_e4773fab68601f12.parquet",
+      "trace_sha256": "039bd01354bc68a2df19163d501cf1ba7d06215ff4f2e020f022773a9fb6e9a5",
+      "status": "collision",
+      "entered": true,
+      "reached_P4_settle": false,
+      "phases_reached": [
+        "P1_approach",
+        "P2_yield_clear",
+        "P3_commit"
+      ],
+      "rho": -2.207924,
+      "violated": true,
+      "argmin_contract": "C2",
+      "argmin_node": "CommitTurn:Selector/Sequence/CommitTurn",
+      "rho_per_contract": {
+        "C1": -0.356227,
+        "C2": -2.207924,
+        "C3": 30.0,
+        "C4": 17.180504,
+        "C5": 1.0
+      },
+      "vacuous_contracts": []
+    },
+    {
+      "index": 81,
+      "param_hash": "0cf7f9203c44a6ca",
+      "params": {
+        "n_oncoming": 3,
+        "v_oncoming": 6.9719,
+        "headway": 6.5305,
+        "aggressiveness": 0.8409,
+        "light_offset": 7.3784,
+        "lead_gap_s": 3.891
+      },
+      "trace": "cal_cand_01_00081_0cf7f9203c44a6ca.parquet",
+      "trace_sha256": "162d4bcdab1f5f64d3afeaa738fe5d3189190dda0cc411932beeff9c568e75a0",
+      "status": "ok",
+      "entered": true,
+      "reached_P4_settle": true,
+      "phases_reached": [
+        "P1_approach",
+        "P2_yield_clear",
+        "P3_commit",
+        "P4_settle"
+      ],
+      "rho": 1.0,
+      "violated": false,
+      "argmin_contract": "C5",
+      "argmin_node": "Decelerate:Selector/Sequence/Decelerate",
+      "rho_per_contract": {
+        "C1": 1.356715,
+        "C2": 1.074927,
+        "C3": 6.55,
+        "C4": 9.660284,
+        "C5": 1.0
+      },
+      "vacuous_contracts": []
+    },
+    {
+      "index": 82,
+      "param_hash": "b9d79deed2c65f16",
+      "params": {
+        "n_oncoming": 2,
+        "v_oncoming": 14.354,
+        "headway": 6.1179,
+        "aggressiveness": 0.0778,
+        "light_offset": 3.9176,
+        "lead_gap_s": 3.177
+      },
+      "trace": "cal_cand_01_00082_b9d79deed2c65f16.parquet",
+      "trace_sha256": "ccf2ffaa6ed3879c5060ec480f419b81afbf7a42d6506ab68972f6523a5e1195",
+      "status": "ok",
+      "entered": true,
+      "reached_P4_settle": true,
+      "phases_reached": [
+        "P1_approach",
+        "P2_yield_clear",
+        "P3_commit",
+        "P4_settle"
+      ],
+      "rho": 1.0,
+      "violated": false,
+      "argmin_contract": "C5",
+      "argmin_node": "Decelerate:Selector/Sequence/Decelerate",
+      "rho_per_contract": {
+        "C1": 1.605051,
+        "C2": 27.0,
+        "C3": 3.2,
+        "C4": 6.561788,
+        "C5": 1.0
+      },
+      "vacuous_contracts": []
+    },
+    {
+      "index": 83,
+      "param_hash": "8cb98f4634ed2359",
+      "params": {
+        "n_oncoming": 2,
+        "v_oncoming": 6.8625,
+        "headway": 6.7688,
+        "aggressiveness": 0.1102,
+        "light_offset": 7.7786,
+        "lead_gap_s": 2.6429
+      },
+      "trace": "cal_cand_01_00083_8cb98f4634ed2359.parquet",
+      "trace_sha256": "883967fd3bd92f34932a30b0effb7fb0ca96346b9074581d7e52164206292800",
+      "status": "ok",
+      "entered": true,
+      "reached_P4_settle": true,
+      "phases_reached": [
+        "P1_approach",
+        "P2_yield_clear",
+        "P3_commit",
+        "P4_settle"
+      ],
+      "rho": 1.0,
+      "violated": false,
+      "argmin_contract": "C5",
+      "argmin_node": "Decelerate:Selector/Sequence/Decelerate",
+      "rho_per_contract": {
+        "C1": 1.331021,
+        "C2": 27.0,
+        "C3": 30.0,
+        "C4": 11.283067,
+        "C5": 1.0
+      },
+      "vacuous_contracts": []
+    },
+    {
+      "index": 84,
+      "param_hash": "fd784b88c85459ff",
+      "params": {
+        "n_oncoming": 1,
+        "v_oncoming": 15.6337,
+        "headway": 6.4034,
+        "aggressiveness": 0.9851,
+        "light_offset": 9.6202,
+        "lead_gap_s": 2.9043
+      },
+      "trace": "cal_cand_01_00084_fd784b88c85459ff.parquet",
+      "trace_sha256": "f9975e4a525416f1713da17f614a0d3da5ae76401261752fd7436e4728e93a31",
+      "status": "ok",
+      "entered": true,
+      "reached_P4_settle": true,
+      "phases_reached": [
+        "P1_approach",
+        "P2_yield_clear",
+        "P3_commit",
+        "P4_settle"
+      ],
+      "rho": 1.0,
+      "violated": false,
+      "argmin_contract": "C5",
+      "argmin_node": "Decelerate:Selector/Sequence/Decelerate",
+      "rho_per_contract": {
+        "C1": 1.720423,
+        "C2": 27.0,
+        "C3": 30.0,
+        "C4": 12.663716,
+        "C5": 1.0
+      },
+      "vacuous_contracts": []
+    },
+    {
+      "index": 85,
+      "param_hash": "dd32397349ce7c9f",
+      "params": {
+        "n_oncoming": 1,
+        "v_oncoming": 10.9397,
+        "headway": 3.25,
+        "aggressiveness": 0.1329,
+        "light_offset": 7.371,
+        "lead_gap_s": 3.969
+      },
+      "trace": "cal_cand_01_00085_dd32397349ce7c9f.parquet",
+      "trace_sha256": "6738fa1c6f4c60b158d647372e8824e6fb43c1966626cdc2323c031184fe007c",
+      "status": "ok",
+      "entered": true,
+      "reached_P4_settle": true,
+      "phases_reached": [
+        "P1_approach",
+        "P2_yield_clear",
+        "P3_commit",
+        "P4_settle"
+      ],
+      "rho": 1.0,
+      "violated": false,
+      "argmin_contract": "C5",
+      "argmin_node": "Decelerate:Selector/Sequence/Decelerate",
+      "rho_per_contract": {
+        "C1": 1.538088,
+        "C2": 3.521909,
+        "C3": 7.15,
+        "C4": 8.442385,
+        "C5": 1.0
+      },
+      "vacuous_contracts": []
+    },
+    {
+      "index": 86,
+      "param_hash": "3f8c87340992f8ca",
+      "params": {
+        "n_oncoming": 3,
+        "v_oncoming": 9.6558,
+        "headway": 6.6032,
+        "aggressiveness": 0.3634,
+        "light_offset": 0.8535,
+        "lead_gap_s": 2.4877
+      },
+      "trace": "cal_cand_01_00086_3f8c87340992f8ca.parquet",
+      "trace_sha256": "caaabc7445e4e80c9169fcb35be93aeac19642e6387e8904b0c116e39152fde4",
+      "status": "ok",
+      "entered": true,
+      "reached_P4_settle": true,
+      "phases_reached": [
+        "P1_approach",
+        "P2_yield_clear",
+        "P3_commit",
+        "P4_settle"
+      ],
+      "rho": 0.05,
+      "violated": false,
+      "argmin_contract": "C3",
+      "argmin_node": "CommitTurn:Selector/Sequence/CommitTurn",
+      "rho_per_contract": {
+        "C1": 1.458911,
+        "C2": 27.0,
+        "C3": 0.05,
+        "C4": 14.941059,
+        "C5": 1.0
+      },
+      "vacuous_contracts": []
+    },
+    {
+      "index": 87,
+      "param_hash": "c8e4e4c992488709",
+      "params": {
+        "n_oncoming": 3,
+        "v_oncoming": 12.057,
+        "headway": 7.5389,
+        "aggressiveness": 0.5558,
+        "light_offset": 1.3279,
+        "lead_gap_s": 3.6583
+      },
+      "trace": "cal_cand_01_00087_c8e4e4c992488709.parquet",
+      "trace_sha256": "2e000fcc45cd6887ef6506a0631c5f41daee505457e49b2aaae3f610ceec5089",
+      "status": "ok",
+      "entered": true,
+      "reached_P4_settle": true,
+      "phases_reached": [
+        "P1_approach",
+        "P2_yield_clear",
+        "P3_commit",
+        "P4_settle"
+      ],
+      "rho": -0.1,
+      "violated": true,
+      "argmin_contract": "C3",
+      "argmin_node": "CommitTurn:Selector/Sequence/CommitTurn",
+      "rho_per_contract": {
+        "C1": 1.326547,
+        "C2": 1.669887,
+        "C3": -0.1,
+        "C4": 12.775357,
+        "C5": 1.0
+      },
+      "vacuous_contracts": []
+    },
+    {
+      "index": 88,
+      "param_hash": "7afa3445b4b0897e",
+      "params": {
+        "n_oncoming": 1,
+        "v_oncoming": 14.6155,
+        "headway": 2.2867,
+        "aggressiveness": 0.6115,
+        "light_offset": 1.2694,
+        "lead_gap_s": 2.6491
+      },
+      "trace": "cal_cand_01_00088_7afa3445b4b0897e.parquet",
+      "trace_sha256": "bad43fa6c4591913999aa5b6d128628f0eb4438ccdfcdbaab2b710b3f704277c",
+      "status": "ok",
+      "entered": true,
+      "reached_P4_settle": true,
+      "phases_reached": [
+        "P1_approach",
+        "P2_yield_clear",
+        "P3_commit",
+        "P4_settle"
+      ],
+      "rho": 1.0,
+      "violated": false,
+      "argmin_contract": "C5",
+      "argmin_node": "Decelerate:Selector/Sequence/Decelerate",
+      "rho_per_contract": {
+        "C1": 1.639412,
+        "C2": 27.0,
+        "C3": 2.3,
+        "C4": 6.247671,
+        "C5": 1.0
+      },
+      "vacuous_contracts": []
+    },
+    {
+      "index": 89,
+      "param_hash": "f3eb25d710fa1aa9",
+      "params": {
+        "n_oncoming": 3,
+        "v_oncoming": 9.9626,
+        "headway": 5.4325,
+        "aggressiveness": 0.8646,
+        "light_offset": 5.7992,
+        "lead_gap_s": 3.1626
+      },
+      "trace": "cal_cand_01_00089_f3eb25d710fa1aa9.parquet",
+      "trace_sha256": "75a15067d93c26f353b2d08278683d8da8ffd2c3de6e75bf28eaab1de3d2ae47",
+      "status": "collision",
+      "entered": true,
+      "reached_P4_settle": false,
+      "phases_reached": [
+        "P1_approach",
+        "P2_yield_clear",
+        "P3_commit"
+      ],
+      "rho": -2.38207,
+      "violated": true,
+      "argmin_contract": "C2",
+      "argmin_node": "CommitTurn:Selector/Sequence/CommitTurn",
+      "rho_per_contract": {
+        "C1": -0.32402,
+        "C2": -2.38207,
+        "C3": 30.0,
+        "C4": 15.373332,
+        "C5": 1.0
+      },
+      "vacuous_contracts": []
+    },
+    {
+      "index": 90,
+      "param_hash": "95c80ef228204009",
+      "params": {
+        "n_oncoming": 3,
+        "v_oncoming": 15.6247,
+        "headway": 3.0875,
+        "aggressiveness": 0.3627,
+        "light_offset": 3.8266,
+        "lead_gap_s": 3.467
+      },
+      "trace": "cal_cand_01_00090_95c80ef228204009.parquet",
+      "trace_sha256": "9fb44db9352cb94bfd51a4e443488dbfc6cada902b086fb199094823c6b8b984",
+      "status": "ok",
+      "entered": true,
+      "reached_P4_settle": true,
+      "phases_reached": [
+        "P1_approach",
+        "P2_yield_clear",
+        "P3_commit",
+        "P4_settle"
+      ],
+      "rho": 1.0,
+      "violated": false,
+      "argmin_contract": "C5",
+      "argmin_node": "Decelerate:Selector/Sequence/Decelerate",
+      "rho_per_contract": {
+        "C1": 1.706452,
+        "C2": 1.923929,
+        "C3": 3.0,
+        "C4": 8.030231,
+        "C5": 1.0
+      },
+      "vacuous_contracts": []
+    },
+    {
+      "index": 91,
+      "param_hash": "41cedf2825fddf3f",
+      "params": {
+        "n_oncoming": 1,
+        "v_oncoming": 10.8163,
+        "headway": 2.7248,
+        "aggressiveness": 0.1747,
+        "light_offset": 7.7914,
+        "lead_gap_s": 2.9724
+      },
+      "trace": "cal_cand_01_00091_41cedf2825fddf3f.parquet",
+      "trace_sha256": "1e08a9ab0b7b4110d100e979127ed3d9c793ab3caf429f0f90520244283e8b7a",
+      "status": "ok",
+      "entered": true,
+      "reached_P4_settle": true,
+      "phases_reached": [
+        "P1_approach",
+        "P2_yield_clear",
+        "P3_commit",
+        "P4_settle"
+      ],
+      "rho": 1.0,
+      "violated": false,
+      "argmin_contract": "C5",
+      "argmin_node": "Decelerate:Selector/Sequence/Decelerate",
+      "rho_per_contract": {
+        "C1": 1.524002,
+        "C2": 27.0,
+        "C3": 30.0,
+        "C4": 6.981207,
+        "C5": 1.0
+      },
+      "vacuous_contracts": []
+    },
+    {
+      "index": 92,
+      "param_hash": "a364b3fa8f7798db",
+      "params": {
+        "n_oncoming": 2,
+        "v_oncoming": 9.1025,
+        "headway": 7.6084,
+        "aggressiveness": 0.6571,
+        "light_offset": 8.0153,
+        "lead_gap_s": 3.3672
+      },
+      "trace": "cal_cand_01_00092_a364b3fa8f7798db.parquet",
+      "trace_sha256": "3123da9cf2f1ee2c30f5f05765cf827dacabfcb375ed6426227a1576f782b307",
+      "status": "ok",
+      "entered": true,
+      "reached_P4_settle": true,
+      "phases_reached": [
+        "P1_approach",
+        "P2_yield_clear",
+        "P3_commit",
+        "P4_settle"
+      ],
+      "rho": 1.0,
+      "violated": false,
+      "argmin_contract": "C5",
+      "argmin_node": "Decelerate:Selector/Sequence/Decelerate",
+      "rho_per_contract": {
+        "C1": 1.289293,
+        "C2": 2.137122,
+        "C3": 7.15,
+        "C4": 8.326944,
+        "C5": 1.0
+      },
+      "vacuous_contracts": []
+    },
+    {
+      "index": 93,
+      "param_hash": "24347584ad0bc533",
+      "params": {
+        "n_oncoming": 2,
+        "v_oncoming": 9.6183,
+        "headway": 2.7302,
+        "aggressiveness": 0.8247,
+        "light_offset": 5.6155,
+        "lead_gap_s": 3.4333
+      },
+      "trace": "cal_cand_01_00093_24347584ad0bc533.parquet",
+      "trace_sha256": "4aa94c257cbc274a242b9bbac4507747ef4e3be21d2457a7558f2b8dee1189f4",
+      "status": "ok",
+      "entered": true,
+      "reached_P4_settle": true,
+      "phases_reached": [
+        "P1_approach",
+        "P2_yield_clear",
+        "P3_commit",
+        "P4_settle"
+      ],
+      "rho": 1.0,
+      "violated": false,
+      "argmin_contract": "C5",
+      "argmin_node": "Decelerate:Selector/Sequence/Decelerate",
+      "rho_per_contract": {
+        "C1": 1.463491,
+        "C2": 3.506329,
+        "C3": 4.8,
+        "C4": 8.31413,
+        "C5": 1.0
+      },
+      "vacuous_contracts": []
+    },
+    {
+      "index": 94,
+      "param_hash": "37171cba98ebbf99",
+      "params": {
+        "n_oncoming": 2,
+        "v_oncoming": 9.2334,
+        "headway": 6.7075,
+        "aggressiveness": 0.4955,
+        "light_offset": 1.6031,
+        "lead_gap_s": 2.9555
+      },
+      "trace": "cal_cand_01_00094_37171cba98ebbf99.parquet",
+      "trace_sha256": "70b23ba32f8655092dc5cd5a73532526fb434ae19ecec92044ec55f6f16da1fd",
+      "status": "ok",
+      "entered": true,
+      "reached_P4_settle": true,
+      "phases_reached": [
+        "P1_approach",
+        "P2_yield_clear",
+        "P3_commit",
+        "P4_settle"
+      ],
+      "rho": 0.85,
+      "violated": false,
+      "argmin_contract": "C3",
+      "argmin_node": "CommitTurn:Selector/Sequence/CommitTurn",
+      "rho_per_contract": {
+        "C1": 1.436827,
+        "C2": 11.474366,
+        "C3": 0.85,
+        "C4": 10.349642,
+        "C5": 1.0
+      },
+      "vacuous_contracts": []
+    },
+    {
+      "index": 95,
+      "param_hash": "eab4561c84158d8a",
+      "params": {
+        "n_oncoming": 3,
+        "v_oncoming": 14.0054,
+        "headway": 3.5755,
+        "aggressiveness": 0.2387,
+        "light_offset": 5.8591,
+        "lead_gap_s": 3.2373
+      },
+      "trace": "cal_cand_01_00095_eab4561c84158d8a.parquet",
+      "trace_sha256": "2d2cd83e4818214b30c1831b674781ef1a75f95e351c9f2e70bfe504b0caa1bc",
+      "status": "ok",
+      "entered": true,
+      "reached_P4_settle": true,
+      "phases_reached": [
+        "P1_approach",
+        "P2_yield_clear",
+        "P3_commit",
+        "P4_settle"
+      ],
+      "rho": 1.0,
+      "violated": false,
+      "argmin_contract": "C5",
+      "argmin_node": "Decelerate:Selector/Sequence/Decelerate",
+      "rho_per_contract": {
+        "C1": 1.596537,
+        "C2": 17.547182,
+        "C3": 4.95,
+        "C4": 7.227422,
+        "C5": 1.0
+      },
+      "vacuous_contracts": []
+    },
+    {
+      "index": 96,
+      "param_hash": "f2d7290709c02b4f",
+      "params": {
+        "n_oncoming": 2,
+        "v_oncoming": 11.0551,
+        "headway": 5.935,
+        "aggressiveness": 0.6855,
+        "light_offset": 5.7967,
+        "lead_gap_s": 3.5214
+      },
+      "trace": "cal_cand_01_00096_f2d7290709c02b4f.parquet",
+      "trace_sha256": "babc12b1e66993325fd775357342f9f2762f6d71a059e0a881f91943395615d4",
+      "status": "collision",
+      "entered": true,
+      "reached_P4_settle": false,
+      "phases_reached": [
+        "P1_approach",
+        "P2_yield_clear",
+        "P3_commit"
+      ],
+      "rho": -1.87031,
+      "violated": true,
+      "argmin_contract": "C2",
+      "argmin_node": "CommitTurn:Selector/Sequence/CommitTurn",
+      "rho_per_contract": {
+        "C1": -0.35311,
+        "C2": -1.87031,
+        "C3": 30.0,
+        "C4": 17.223912,
+        "C5": 1.0
+      },
+      "vacuous_contracts": []
+    },
+    {
+      "index": 97,
+      "param_hash": "e834075c022c3e1e",
+      "params": {
+        "n_oncoming": 2,
+        "v_oncoming": 8.0874,
+        "headway": 5.0367,
+        "aggressiveness": 0.1138,
+        "light_offset": 1.4814,
+        "lead_gap_s": 3.9538
+      },
+      "trace": "cal_cand_01_00097_e834075c022c3e1e.parquet",
+      "trace_sha256": "1f8a78cbe3d34c2fe00d2e221628b2c29a68bb08fcd61dd56120743c073268e5",
+      "status": "ok",
+      "entered": true,
+      "reached_P4_settle": true,
+      "phases_reached": [
+        "P1_approach",
+        "P2_yield_clear",
+        "P3_commit",
+        "P4_settle"
+      ],
+      "rho": 0.8,
+      "violated": false,
+      "argmin_contract": "C3",
+      "argmin_node": "CommitTurn:Selector/Sequence/CommitTurn",
+      "rho_per_contract": {
+        "C1": 1.404879,
+        "C2": 27.0,
+        "C3": 0.8,
+        "C4": 9.880836,
+        "C5": 1.0
+      },
+      "vacuous_contracts": []
+    },
+    {
+      "index": 98,
+      "param_hash": "31177a7ead403480",
+      "params": {
+        "n_oncoming": 1,
+        "v_oncoming": 15.2511,
+        "headway": 6.4794,
+        "aggressiveness": 0.8406,
+        "light_offset": 0.5248,
+        "lead_gap_s": 2.9226
+      },
+      "trace": "cal_cand_01_00098_31177a7ead403480.parquet",
+      "trace_sha256": "5940b566a992b1cc7817f8d3c6939ae7eeea7a4eebb43eff5a4fb124a1ddab08",
+      "status": "ok",
+      "entered": true,
+      "reached_P4_settle": true,
+      "phases_reached": [
+        "P1_approach",
+        "P2_yield_clear",
+        "P3_commit",
+        "P4_settle"
+      ],
+      "rho": -0.3,
+      "violated": true,
+      "argmin_contract": "C3",
+      "argmin_node": "CommitTurn:Selector/Sequence/CommitTurn",
+      "rho_per_contract": {
+        "C1": 1.713686,
+        "C2": 27.0,
+        "C3": -0.3,
+        "C4": 11.143435,
+        "C5": 1.0
+      },
+      "vacuous_contracts": []
+    },
+    {
+      "index": 99,
+      "param_hash": "f508ce3e5bc6ff4f",
+      "params": {
+        "n_oncoming": 1,
+        "v_oncoming": 13.6332,
+        "headway": 3.6242,
+        "aggressiveness": 0.4186,
+        "light_offset": 2.7542,
+        "lead_gap_s": 2.4438
+      },
+      "trace": "cal_cand_01_00099_f508ce3e5bc6ff4f.parquet",
+      "trace_sha256": "e4b0179e80d84d295ac5256c79374c8573e5d6465db972814906a3187a4d35bf",
+      "status": "ok",
+      "entered": true,
+      "reached_P4_settle": true,
+      "phases_reached": [
+        "P1_approach",
+        "P2_yield_clear",
+        "P3_commit",
+        "P4_settle"
+      ],
+      "rho": 1.0,
+      "violated": false,
+      "argmin_contract": "C5",
+      "argmin_node": "Decelerate:Selector/Sequence/Decelerate",
+      "rho_per_contract": {
+        "C1": 1.589378,
+        "C2": 27.0,
+        "C3": 3.55,
+        "C4": 8.231882,
+        "C5": 1.0
+      },
+      "vacuous_contracts": []
+    }
+  ]
+}

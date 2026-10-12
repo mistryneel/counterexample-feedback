@@ -1,8 +1,22 @@
+# Exact versions of the environment used for the paper (CPython 3.12.3, Linux x86_64).
+# carla is needed only by the simulator scripts; anthropic and the packages it
+# depends on (anyio, httpx2, pydantic, ...) only by the scripts that call the model.
+# No offline analysis script imports either. pytest is not used: each test file
+# runs as a script (python tests/test_<name>.py). Resolved graph: requirements.lock.txt.
+annotated-types==0.8.0
+anthropic==1.2.0
 antlr4-python3-runtime==4.7
+anyio==4.14.2
 carla==0.9.16
 contourpy==1.3.3
 cycler==0.12.1
+docstring-parser==0.18.0
 fonttools==4.63.0
+h11==0.16.0
+httpcore2==2.12.0
+httpx2==2.12.0
+idna==3.19
+jiter==0.16.0
 kiwisolver==1.5.0
 matplotlib==3.11.1
 networkx==3.6.1
@@ -11,6 +25,8 @@ packaging==26.3
 pandas==3.0.5
 pillow==12.3.0
 pyarrow==25.0.1
+pydantic==2.13.5
+pydantic-core==2.46.5
 pydot==4.0.1
 pyparsing==3.3.2
 python-dateutil==2.9.0.post0
@@ -19,3 +35,7 @@ pyyaml==6.0.3
 rtamt==0.3.5
 scipy==1.18.1
 six==1.17.0
+sniffio==1.3.1
+truststore==0.10.4
+typing-extensions==4.16.0
+typing-inspection==0.4.4

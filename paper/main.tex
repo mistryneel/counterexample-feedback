@@ -2,15 +2,17 @@
 %  What Does Formal Structure in Counterexample Feedback Buy?
 %  NeurIPS 2026 Workshop on AI for Verifiable Coding
 %
-%  BUILD:  pdflatex main && bibtex main && pdflatex main && pdflatex main
+%  BUILD:  tectonic -X compile main.tex      (tectonic 0.17.0, as used
+%          for the submitted version; other engines not checked, and the
+%          main text fills page 9 exactly, so check pagination if you switch)
 %
-%  Submission form: no options on the style package. That is the
-%  ANONYMOUS version with line numbers, which is what the call requires.
-%  Add [preprint] for arXiv, [final] only if accepted.
+%  CAMERA-READY. Accepted as a poster (Submission 96). The [final] option
+%  de-anonymises, removes line numbers and prints the workshop footer.
+%  The submitted (anonymous) version is git tag v1.0-submission.
 % =====================================================================
 
 \documentclass{article}
-\usepackage{neurips_2026_vericode}
+\usepackage[final]{neurips_2026_vericode}
 
 \usepackage[T1]{fontenc}
 \usepackage[utf8]{inputenc}
@@ -21,6 +23,8 @@
 \usepackage{xcolor}
 \usepackage{listings}
 \usepackage[hidelinks]{hyperref}
+\hypersetup{pdftitle={What Does Formal Structure in Counterexample Feedback Buy?},
+  pdfauthor={Neel Mistry and Sreedath Panat}}
 \usepackage{url}
 
 \definecolor{codegray}{gray}{0.45}
@@ -44,7 +48,13 @@
 
 \title{What Does Formal Structure in Counterexample Feedback Buy?}
 
-\author{Anonymous Author(s)\\Affiliation\\Address\\\texttt{email}}
+\author{%
+  Neel Mistry\\
+  \texttt{neel@mistryneel.com}
+  \And
+  Sreedath Panat\\
+  \texttt{sreedath@vizuara.com}
+}
 
 \begin{document}
 \maketitle
@@ -56,32 +66,34 @@ the description can range from a raw execution trace to a formal certificate
 carrying a violated predicate, a signed robustness value, a minimized falsifying
 input, and the program location responsible. We hold the falsifier, the program,
 the counterexample corpus, the token budget and the evaluation suite fixed, vary
-only the rendering of the failure across five conditions, and run 300 repair
-attempts against an interpretable behaviour-tree policy for an unprotected left
-turn in CARLA.
-
-Feedback format strongly determines what kind of repair is attempted: structural
-edits account for $59/60$ attempts under a raw trace against $13/60$ under a
-natural-language summary, a difference of $76.7$ points whose $95\%$ interval is
-$[+61.7,+90.0]$. After excluding refusals we did not detect a reliable
-improvement in repair success from any feedback format.
-
-Separately, the natural success criterion is trivially satisfiable by refusing to
-act. $72\%$ of apparent repairs were the vehicle declining to enter the junction,
-and exactly one of 300 attempts repaired the failure, completed the manoeuvre and
-broke nothing. That one repair generalises: re-evaluated across all twenty
-counterexamples, including the nineteen it was never shown, it resolves and
-completes every one. A safe and task-completing program is therefore expressible
-in this language and was found once in three hundred attempts, while the
-degenerate answer was found far more often. The binding constraint is the search
-rather than the vocabulary, and the hazard we identify is that a specification
-rewarding only safety makes the degenerate answer the easier one to find.
+only the rendering of the failure across five conditions, and run 300 one-step
+repair attempts against an interpretable behaviour-tree policy for an unprotected
+left turn in CARLA. The conditions differ sharply in what kind of repair is
+attempted: structural edits account for $59/60$ attempts under a raw trace
+against $13/60$ under a natural-language summary, a difference of $76.7$ points
+with $95\%$ interval $[+61.7,+90.0]$. Because the raw trace also differs from
+the other conditions in length and in information content, we report this as a
+difference between feedback conditions, not as an effect of formal structure.
+The central finding concerns the success criterion itself. Satisfying the safety
+contracts on the failing scenario is trivially achievable by refusing to act: of
+the 18 attempts that satisfied the contracts, 13 never entered the junction's
+conflict zone; of
+the other 5, 3 completed the manoeuvre, and 1 of those also left the regression
+suite intact. That one program satisfies the contracts and completes the turn on
+all twenty counterexamples, so the language can express a repair that passes
+this corpus. Why it was found only once, whether because of search difficulty,
+the baseline's structure, or a criterion that rewards inaction, remains open.
+Excluding refusals, we did not detect a reliable improvement in repair success
+from any condition, and under stated assumptions only large improvements would
+reliably have been detected. Evaluations of verifier-in-the-loop repair should score
+contract satisfaction, task completion and regression separately, with
+completion scored on the same inputs as satisfaction.
 \end{abstract}
 
 \section{Introduction}
 \label{sec:intro}
 
-Counterexample-guided inductive synthesis is a long-established pattern in
+Counterexample-guided inductive synthesis (CEGIS) is a long-established pattern in
 program synthesis~\citep{solarlezama2006}. A synthesizer proposes a candidate, a
 verifier tries to refute it, and each refutation constrains the next proposal.
 Recent work substitutes a large language model for the synthesizer, and tests or
@@ -97,39 +109,43 @@ violated, by what signed margin, at which timestep, under which minimal
 parameter assignment, at which boundary of the failing region, and which part of
 the program was responsible. None of it is free: delta debugging and boundary
 search cost simulations, and every field costs tokens. The intuition is that more
-structure repairs better. We set out to test it.
+structure repairs better. We set out to test it (Figure~\ref{fig:pipeline}).
 
-The answer is that structure changes what repair is attempted, that we could not
-detect it changing whether repair succeeds, and that pursuing the second question
-turned up a more useful one. Our largest and most robust effect is on the \emph{kind} of edit
-the model makes. Our most transferable one concerns what repair converges on when
-the specification asks only for safety.
+What we found is that the feedback conditions differ sharply in what repair is
+attempted, that, excluding refusals, we could not detect any of them improving
+repair success, and that pursuing the second question turned up a more useful one. Our
+most transferable finding concerns how repairs come to satisfy a specification
+that asks only for safety.
 
 \paragraph{Contributions.}
 \begin{enumerate}
-\itemsep1pt
-\item Feedback format determines the kind of repair attempted, with a
-  $76.7$-point difference in structural-edit rate between the least and most
-  processed conditions (\S\ref{sec:patchtype}).
 \item Contract satisfaction on a failing scenario is trivially achievable by
-  refusing to act, and the usual defence of also measuring task completion fails
-  when completion is scored on a different input distribution
-  (\S\ref{sec:refusal}).
-\item A constructive account of why, and of what the language does and does not
-  permit. Hand-written repairs isolate three mechanisms that make the degenerate
-  answer easy to reach, while the single clean repair found by the model shows a
-  safe and completing program is expressible and generalises to the whole corpus
-  (\S\ref{sec:dsl}).
-\item An absence of any detected improvement in repair success, with intervals
-  that respect the shared counterexample corpus and repeated attempts
-  (\S\ref{sec:null}), and a
-  structural precondition, $\Hnc > 0$, for when blame localization can carry
-  information at all (\S\ref{sec:blame}).
+  refusing to act, and measuring task completion does not guard against this
+  when completion is scored on a different input distribution. We separate three
+  criteria (contracts satisfied, manoeuvre completed, regression suite intact)
+  and show how far apart they are (\S\ref{sec:refusal}).
+\item The feedback conditions differ sharply in the kind of repair attempted, a
+  $76.7$-point difference in structural-edit rate between the raw-trace and
+  natural-language conditions. The raw trace also differs in length and
+  information content, so we do not attribute this to formal structure
+  (\S\ref{sec:patchtype}).
+\item A constructive test of what the language permits. Hand-written repairs
+  isolate three mechanisms, two in the baseline and one in a language
+  predicate, that defeat natural small edits, and the single clean repair found
+  by the model shows that the
+  language can express a program that resolves and completes all twenty
+  counterexamples (\S\ref{sec:dsl}).
+\item No detected improvement in repair success once refusals are excluded,
+  with intervals that treat
+  counterexamples as the independent units and a detectable-effect estimate under
+  stated assumptions (\S\ref{sec:null}), and a structural precondition,
+  $\Hnc > 0$, for when blame localization can carry information at all
+  (\S\ref{sec:blame}).
 \end{enumerate}
 
 \begin{figure}[t]
 \centering
-\includegraphics[width=0.92\linewidth]{figures/fig1_pipeline.png}
+\includegraphics[width=0.62\linewidth,trim=62 58 75 39,clip]{figures/fig1_pipeline.png}
 \caption{The ablation. Falsifier, frozen program, counterexample corpus, token
 budget and evaluation suite are identical across all five conditions (grey
 band). Only the rendering of the failure into text differs (highlighted). The
@@ -139,7 +155,7 @@ conditions.}
 \label{fig:pipeline}
 \end{figure}
 
-\section{Related Work}
+\section{Related work}
 \label{sec:related}
 
 \paragraph{LLMs that write control programs.}
@@ -159,30 +175,23 @@ Closest to this work, \citet{orvalho2025cegis} run a CEGIS loop with an LLM
 synthesizer over introductory programming assignments, using a test suite as the
 oracle and MaxSAT-based fault localization to produce a bug-free program sketch.
 They find that counterexample guidance substantially improves repair across six
-models and yields smaller fixes. Their question and ours are complementary rather
-than competing: they ask whether counterexample feedback helps at all and find
-that it does, whereas we hold the counterexample fixed and ask whether adding
-formal structure to its rendering helps further. Our null is therefore not in
-tension with their positive result. Two differences in setting are worth noting.
-Their oracle is a test suite over discrete inputs; ours is a robustness falsifier
-over a continuous scenario space, so a counterexample carries a signed margin and
-a failing region rather than a single failing input. And their programs are
-scored only on correctness, whereas ours must satisfy a safety specification
-\emph{and} complete a task, which is precisely the tension \S\ref{sec:dsl}
-turns on.
+models and yields smaller fixes. They ask whether counterexample feedback helps at
+all; we hold the counterexample fixed and vary its rendering, so our failure to
+detect an improvement is not in tension with their result. Their oracle is a test
+suite over discrete inputs, where ours is a robustness falsifier over a
+continuous scenario space, and their programs are scored only on correctness,
+whereas ours must satisfy a safety specification \emph{and} complete a task,
+which is the tension \S\ref{sec:refusal} turns on.
 
 \paragraph{LLM self-repair.}
 Self-Refine~\citep{madaan2023selfrefine}, Reflexion~\citep{shinn2023reflexion}
 and Self-Debugging~\citep{chen2024selfdebug} iterate on free-form or test-derived
-feedback, and two results from that work shaped this design directly.
-Reflexion's ablation removes the natural-language self-reflection step and finds
-that performance returns exactly to baseline, $0.60$ pass@1 against $0.60$ for
-the base model, where full Reflexion reaches $0.68$. Every structured condition
-here therefore carries a verbalized narrative alongside its structured fields.
-Self-Debugging reports that adding an execution trace to unit-test feedback
-\emph{lowers} accuracy on TransCoder, $87.9\%$ against $91.6\%$ for unit-test
-feedback alone. More structure is evidently not monotonically better, and we
-recorded in advance that we did not assume it would be.
+feedback. Two of their results shaped this design. Removing Reflexion's
+natural-language self-reflection returns pass@1 exactly to the base model's
+$0.60$, against $0.68$ for full Reflexion, so every structured condition here also
+carries a verbalized narrative. Self-Debugging reports that adding an execution
+trace to unit-test feedback \emph{lowers} accuracy on TransCoder ($87.9\%$ against
+$91.6\%$), so we did not assume more structure would help.
 
 \section{Method}
 \label{sec:method}
@@ -190,25 +199,29 @@ recorded in advance that we did not assume it would be.
 \subsection{Task, simulator, and contracts}
 
 The task is an unprotected left turn, a permissive circular green rather than a
-green arrow, at a fixed signalised four-way junction in
+green arrow, at a fixed signalized four-way junction in
 CARLA~\citep{dosovitskiy2017carla} Town05, recorded by exact junction
 identifier. The simulator runs synchronously at \mbox{20\,Hz} with fixed physics
 substepping. Sensing is ground-truth state and weather is fixed.
 
 \paragraph{Reproducibility, stated precisely.}
 The ego trajectory reproduces bit-identically under identical scenario
-parameters, both within a process and across process restarts, and four of the
-five contracts reproduce exactly. The exception is $\rhoc{4}$, which varies by up
-to \mbox{0.69\,m} because the lead vehicle's braking trigger tests a position read
-back from the simulator rather than integrating its own state; sub-centimetre
-noise there shifts the tick on which deceleration begins. We report this rather
-than claiming blanket determinism. $\rhoc{4}$ was the binding contract in $0$ of
-$300$ attempts, so no result below depends on it, but it would corrupt any future
-result in which it binds.
+parameters, within a process and across restarts, and four of the five contracts
+reproduce exactly in controlled repeats. The exception is $\rhoc{4}$, which varies by up to
+\mbox{0.69\,m} because the lead vehicle's braking trigger reads its position back
+from the simulator. $\rhoc{4}$ was the binding contract on the counterexample in
+$0$ of $300$ attempts.
 
 \begin{table}[t]
 \centering
 \small
+\caption{The five contracts, in signal temporal logic with space
+robustness~\citep{donze2010robust}. $\rho = \min_i \rhoc{i}$, so the argmin gives
+both the weakest contract and when it is weakest. $\rhoc{4}$ uses the safe
+longitudinal distance of Responsibility-Sensitive Safety
+(RSS)~\citep{shalevshwartz2017rss}; $\rhoc{2}$ is that work's
+rule~3 and the avoidability filter its rule~5.}
+\label{tab:contracts}
 \begin{tabular}{@{}llll@{}}
 \toprule
 & \textbf{Contract} & \textbf{Robustness} & \textbf{Threshold} \\
@@ -220,115 +233,96 @@ $\rhoc{4}$ & RSS distance to lead & metres above the safe distance & RSS Lemma 2
 $\rhoc{5}$ & kinematic comfort & m/s$^2$ of headroom & 3.0\,m/s$^2$ \\
 \bottomrule
 \end{tabular}
-\caption{The five contracts, in signal temporal logic over logged trajectories
-using space robustness~\citep{donze2010robust}. Overall robustness is
-$\rho = \min_i \rhoc{i}$, so the argmin identifies both the weakest contract and
-the timestep at which it is weakest. $\rhoc{4}$ uses the same-direction safe
-longitudinal distance of \citet{shalevshwartz2017rss}; $\rhoc{2}$ is that work's
-rule~3 and the avoidability filter is its rule~5.}
-\label{tab:contracts}
 \end{table}
 
-Conjunction as minimum gives blame localization for free, and masks every
+Conjunction as minimum (Table~\ref{tab:contracts}) gives blame localization for free, and masks every
 contract except the weakest. We therefore report per-contract robustness rather
 than $\rho$ alone; \S\ref{sec:regression} gives a result invisible under the
 minimum.
 
 \subsection{Program representation and baseline}
 
-The policy is a behaviour tree in a small domain-specific language, parsed to an
+The policy is a behaviour tree in a small domain-specific language (DSL), parsed to an
 AST we own and compiled to \texttt{py\_trees}. Owning the AST is what enables
 tree edit distance, node-level blame, and validation before execution.
-Composites compile without memory, so every condition is re-evaluated from the
+Composites compile without memory, so every predicate is re-evaluated from the
 root on each tick.
 
-The baseline is LLM-synthesized from one fixed prompt, sampled 20 times, of which
-14 were syntactically valid, then \emph{selected} against two gates measured on a
+The baseline is LLM-synthesized from one fixed prompt, sampled 18 times; two
+responses were truncated at the $16{,}000$-token output cap then in use, and 14 of
+the other 16 were valid programs. One was \emph{selected} from these against two gates measured on a
 shared 100-scenario calibration set: a violation rate in $[0.20,0.40]$, and task
 completion above $60\%$, the latter because a program can reach a low violation
 rate simply by never entering the junction. The frozen baseline violates on
-$20.0\%$ of calibration scenarios, enters the junction in $100\%$, and completes
-the turn in $88.3\%$. We report the full distribution of all 14 candidates rather
-than the selected one alone.
+$20$ of the $100$ calibration scenarios, enters the junction in all of them, and
+completes the turn in $90$. Violation rates for all 14 candidates are in the
+released data.
 
 \subsection{Falsification, certificates, and the five conditions}
 \label{sec:conditions}
 
 The falsifier samples a six-parameter scenario space uniformly, then refines
 locally around low-robustness points, ranking on per-contract robustness rather
-than $\rho$ because one parameter moves $\rhoc{1}$ and $\rhoc{2}$ in opposite
-directions and the minimum cancels it. Plausibility constraints are enforced at
+than $\rho$, because the minimum can cancel a parameter that moves $\rhoc{1}$ and
+$\rhoc{2}$ in opposite directions. Plausibility constraints are enforced at
 sample time following Scenic~\citep{fremont2019scenic}. Each admitted
 counterexample is minimal (delta-debugged~\citep{zeller2002delta}), generalized
-(each surviving parameter binary-searched to where $\rho$ crosses zero),
+(each surviving parameter binary-searched to where $\rho$ crosses zero; seven of
+these boundaries are withheld, \S\ref{sec:limitations}),
 actionable (a violation-free response existed), and verbalized. We banked
 $K{=}20$ counterexamples at a mean cost of $26.6$ simulations each.
 
 \begin{table}[t]
 \centering
 \small
+\caption{The manipulated variable. All five share one template with a single
+feedback placeholder; the 10{,}874 bytes of prefix and 102 bytes of suffix are
+verified byte-identical across all conditions and certificates.}
+\label{tab:conditions}
 \begin{tabular}{@{}lll@{}}
 \toprule
 \textbf{Condition} & \textbf{Feedback block} & \textbf{Prompt tokens (med.)} \\
 \midrule
-F1 & raw trajectory excerpt around the violation & 16{,}381 \\
+F1 & raw trajectory excerpt around the violation & 16{,}382 \\
 F2 & natural-language narrative only & 4{,}584 \\
 F3 & contract, $\rho$, per-contract $\rhoc{i}$, minimal params, boundary, narrative & 4{,}780 \\
 F4a & F3 plus \texttt{active\_node} & 4{,}871 \\
 F4b & F3 plus \texttt{authorising\_node} & 4{,}867 \\
 \bottomrule
 \end{tabular}
-\caption{The manipulated variable. All five share one template with a single
-feedback placeholder; we verify mechanically that the 10{,}874 bytes of prefix
-and 102 bytes of suffix are byte-identical across all five conditions and all
-twenty certificates, splitting by index rather than by string replacement so a
-feedback block containing scaffolding text could not disguise a difference.}
-\label{tab:conditions}
 \end{table}
 
-F1 is not a subset of the other conditions in either direction. The raw trace
+F1 is not a subset of the other conditions (Table~\ref{tab:conditions}) in
+either direction. The raw trace
 carries the behaviour-tree node columns, so it contains the blame signal F2 and
-F3 lack, unlabelled and unaggregated but present. At the same time an unwindowed
-F1 prompt measures 202{,}812 tokens at the median, $10.1\times$ the per-attempt
-budget of 20{,}000, so it must be windowed, and the largest window fitting every
-certificate ($\pm 10$ rows) cannot reach the transition F4b names, which lies 28
-to 47 rows back in all twenty cases. The ordering is one of structure, not of
-information content.
+F3 lack, unlabelled and unaggregated but present. It does not name the violated
+contract, and carries no robustness value, scenario parameter or boundary. An
+unwindowed F1 prompt measures 202{,}812 tokens at the median, $10.1\times$ the
+per-attempt budget of 20{,}000, so it must be windowed. The largest window we
+tested that fits every certificate ($\pm 10$ rows) cannot reach the transition
+F4b names, which lies 28 to 47 rows back in all twenty cases. The labels F1 to
+F4b order the conditions by how much the failure is processed, not by how much
+information they carry (Table~\ref{tab:info} in Appendix~\ref{app:info}).
 
 \paragraph{Scope, as planned and as run.}
-The pre-registered plan specified three contracts and four scenario parameters.
-We ran five and six. The change was made before the baseline was frozen and for a
-measured reason: on the reference program under three contracts, the violated
-contract determined the blamed leaf exactly, so blame localization carried no
-information beyond the contract label and the F3/F4 contrast would have been
-vacuous by construction. We re-enabled the red-light and lead-distance contracts
-to widen the range of failure modes, and the parameter space grew to six because
-two of those parameters are what make the new contracts bind. We report this
-because it is a deviation from the plan, and because it did not have the intended
-effect: adding contracts does not by itself break the collapse, since each
-contract may still map to a single leaf. What addressed it was the alternative
-blame definition below, which is exploratory and labelled as such throughout.
-The pre-registered field is \texttt{active\_node}; \texttt{authorising\_node} was
-defined after observing that the first was constant, and no claim in this paper
-rests on F4b outperforming F3.
+Our internal study plan pre-specified three contracts and four scenario parameters;
+we ran five and six, a change made before the baseline was frozen and explained
+in Appendix~\ref{app:deviations}. The pre-specified blame field is
+\texttt{active\_node}. The field \texttt{authorising\_node} was defined after
+observing that the first was constant; it is exploratory, and no claim in this paper rests on
+F4b outperforming F3.
 
 \paragraph{Generation settings.}
-All calls use \texttt{claude-opus-5} at effort \texttt{high}, streaming, with
+All 300 repair calls use \texttt{claude-opus-5} at effort \texttt{high}, streaming, with
 \texttt{max\_tokens} $=48{,}000$ and prompt caching on the invariant system
 block. The model exposes no temperature, \texttt{top\_p} or \texttt{top\_k}
 parameter; \texttt{effort} is the only sampling control and is held constant.
-The served model identifier is logged per call rather than the requested one.
-Consequently the replicate index is not a sampling seed: replicates are
+The served model identifier is logged per call alongside the requested one, and
+both were \texttt{claude-opus-5} on all 300 calls. The replicate index is not a sampling seed: replicates are
 independent samples, not reproducible ones. We measured $3.00$ distinct programs
-per (condition, certificate) cell out of $3$.
-
-Two token limits appear in this paper and they constrain different things.
-$B = 20{,}000$ is a \emph{prompt} budget, a per-attempt cap on the input we are
-willing to spend on rendering a counterexample, and it is what forces F1 to be
-windowed. \texttt{max\_tokens} $=48{,}000$ is a \emph{generation} cap on the
-model's output for a single call, set high enough that no response was truncated;
-across all 300 attempts none hit it. Neither constrains the other, and no attempt
-was limited by either.
+per (condition, certificate) cell out of $3$. The prompt budget $B = 20{,}000$
+caps the input and is what forces F1 to be windowed; \texttt{max\_tokens} caps the
+output, and no response reached it.
 
 \section{Results}
 \label{sec:results}
@@ -342,69 +336,73 @@ output cap, a harness failure), \emph{malformed} (validator rejection), and
 \emph{ok}. Across all 300 attempts we observed no malformed and no truncated
 outputs, so every failure is a valid program that did not fix the problem.
 
-\subsection{Feedback format determines the kind of repair}
+\paragraph{Uncertainty.} All five conditions are run on the same twenty
+counterexamples, three times each, so attempts are not independent and we treat
+the counterexample as the unit of analysis. Every interval in the main text is a $95\%$
+percentile interval from a paired cluster bootstrap: each of $10{,}000$ resamples
+draws twenty counterexamples with replacement, keeps all fifteen attempts on
+each, and takes differences between conditions within that resample, so two
+conditions are always compared on the same cases. We apply no correction for
+multiple comparisons; under a Bonferroni correction over every difference we
+compute, only the structural-edit differences of F1 from each other condition
+still exclude zero (Appendix~\ref{app:bootstrap}).
+
+\subsection{The feedback conditions differ in the kind of repair attempted}
 \label{sec:patchtype}
 
-Every patch is a hole fill, changing a threshold, or a skeleton edit, inserting,
-removing or reordering a node. This is the largest and most robust
-condition-dependent effect we measure.
+Every patch is classified automatically, with no manual labelling, by comparing
+the \emph{skeleton} of the patched program, the ordered tree of node names with
+all parameters removed, against the baseline's. A patch that changes the
+skeleton is a \emph{skeleton edit}; one that keeps it and changes only numeric
+parameters, thresholds or set-points, is a \emph{hole fill}. The categories and
+the classifier were fixed before the campaign (Appendix~\ref{app:taxonomy}), but
+comparing their rates across conditions was not a recorded prediction, so we
+report this contrast as an observed effect rather than a confirmed one. It is the
+largest and most robust condition-dependent effect we measure.
 
-\begin{table}[t]
-\centering
-\small
-\begin{tabular}{@{}lrrrrr@{}}
-\toprule
-& F1 & F2 & F3 & F4a & F4b \\
-\midrule
-skeleton edits (of 60) & \textbf{59} & 13 & 15 & 15 & 28 \\
-\bottomrule
-\end{tabular}
-\caption{Structural-edit counts by condition. F1 versus F2 is a $76.7$-point
-difference, $95\%$ interval $[+61.7,+90.0]$, from a bootstrap clustered on
-certificate.}
-\label{tab:patchtype}
-\end{table}
+Skeleton edits numbered 59, 13, 15, 15 and 28 of 60 under F1 to F4b
+(Figure~\ref{fig:patchtype}, Appendix~\ref{app:taxonomy}): the model restructured the program in $98.3\%$ of
+attempts under the raw trace and in $21.7\%$ under the natural-language summary,
+a difference of $76.7$ points with $95\%$ interval $[+61.7,+90.0]$. F4b sits
+between the others at $46.7\%$; its interval against F3, $[-3.3,+45.0]$,
+includes zero.
 
-\begin{figure}[t]
-\centering
-\includegraphics[width=0.80\linewidth]{figures/fig3_patch_type.pdf}
-\caption{Structural edits by condition, out of 60 attempts each. Raw trajectory
-data drives the model to restructure the program almost every time; a
-natural-language summary drives it to adjust a threshold instead.}
-\label{fig:patchtype}
-\end{figure}
-
-Raw trajectory data drives restructuring in $98.3\%$ of attempts; a
-natural-language summary does so in $21.7\%$. F4b sits between the others at
-$46.7\%$, and the direction is mechanistically sensible, since naming the
-decision that authorised the failing action points at a branch whereas naming a
-violated threshold points at a number. We report that as consistent with a
-mechanism rather than as a resolved difference: its interval against F3 is
-$[-3.3,+45.0]$ and includes zero.
-
-The robust claim is narrower than "more structure gives more control", and we
-state it as such. The ordering is not monotone in structure: the least processed
-condition produces the most structural edits, and the most processed conditions
-produce among the fewest. What is resolvable at this sample size is that the
-raw-trace condition is qualitatively different from every processed condition.
-For a system designer that is still directly actionable, because the rendering is
-a lever on the edit distribution even where it is not a lever on success.
+The robust claim is narrower than ``more structure gives more control'', and
+narrower than ``formal structure changes the edit''. Edit rates are not monotone
+in structure: the least processed condition produces by far the most structural
+edits, while F2, F3 and F4a, which add structure step by step, differ by at most
+two. More importantly, F1
+differs from every other condition in three ways at once. It is unprocessed, it
+is roughly 3.5 times as long ($16{,}382$ against $4{,}584$ to $4{,}871$ median
+prompt tokens, Table~\ref{tab:conditions}), and it carries different information
+(\S\ref{sec:conditions}). What this design can establish is that the raw-trace
+condition differs from every processed condition, by $51.7$ to $76.7$ points
+with every interval excluding zero (Appendix~\ref{app:bootstrap}). It cannot
+say which of the three differences is responsible. A token-matched control would not settle this
+either: equalizing length leaves the information difference in place, and
+truncating the trace to match would change what it contains.
 
 \subsection{Contract satisfaction is trivially achievable by refusing to act}
 \label{sec:refusal}
 
-The pre-registered success criterion is $\rho \geq 0$ on the failing scenario
-after the patch. A program that never enters the junction satisfies it for free:
+The success criterion pre-specified in our internal study plan is $\rho \geq 0$ on the failing scenario
+after the patch. We report it as one of three criteria, each scored independently
+on every attempt (Table~\ref{tab:criteria}): whether the contracts are satisfied on
+the counterexample (S; we then say the patch \emph{resolves} it), whether the
+manoeuvre is completed on it (C), and whether
+the regression suite is left intact (R). A program that never enters the
+conflict zone satisfies S for free:
 $\rhoc{2}$ and $\rhoc{3}$ become vacuous, since one cannot fail to yield without
 entering, and are excluded from the argmin; $\rhoc{1}$ is satisfied because no
-actor is ever nearby; and $\rho$ falls through to $\rhoc{5}$, which a stationary
-vehicle passes comfortably.
+actor is ever nearby; and $\rho$ falls through to $\rhoc{5}$, which every such
+program passed.
 
 \begin{figure}[t]
 \centering
-\includegraphics[width=0.80\linewidth]{figures/fig4_funnel.pdf}
-\caption{From 300 attempts to one clean repair. The unpatched baseline entered
-the junction in 20 of 20 counterexample scenarios, so the paralysis is introduced
+\includegraphics[width=0.64\linewidth]{figures/fig4_funnel.pdf}
+\caption{From 300 attempts to one clean repair: 13 of the 18 that satisfied the
+contracts never entered the conflict zone. The unpatched baseline entered it on
+all 20 counterexamples, so the refusals are introduced
 by the patches rather than inherited.}
 \label{fig:funnel}
 \end{figure}
@@ -415,40 +413,91 @@ was written to constrain, and where detecting such passes is a standard
 obligation rather than an
 afterthought~\citep{beer1997vacuity,kupferman2003vacuity}. Vacuity detection asks
 whether a formula held trivially; the analogous question for repair is whether a
-patch satisfied the contracts by making them inapplicable, and on this corpus it
-usually did.
-
-Thirteen of the eighteen apparent repairs, $72\%$, are of this kind. Three
-attempts both satisfied the contract and completed the manoeuvre, and of those
-three, only one also left the regression suite intact. Across 300 attempts there
-is exactly one clean repair.
-
-The obvious defence is to measure task completion as well, and it does not work
-as usually implemented. Our completion metrics were computed over the
-60-scenario evaluation suite while success was computed on the single
-counterexample scenario. In a pilot run, suite completion read $0.93$ while the
-counterexample itself timed out with the vehicle stationary. Nothing was
-measuring task completion on the scenario the success metric reads from. Any
-evaluation of repaired safety policies that scores specification satisfaction on
-one input distribution and task completion on another inherits this defect.
-
-\subsection{Why repair converges on refusal, and what the language permits}
-\label{sec:dsl}
-
-With no malformed outputs, every failure is a valid program that did not fix the
-problem, which leaves open whether the language could express a correct repair at
-all. We tested this constructively, writing candidate repairs by hand in the same
-vocabulary and running them on all twenty counterexamples.
+patch satisfied the contracts by making them inapplicable, and on this corpus 13
+of the 18 that satisfied them did.
 
 \begin{table}[t]
 \centering
 \small
+\caption{Three success criteria, scored independently on every attempt, as
+counts out of 60 per condition. \textbf{S}: every contract satisfied on the
+counterexample, the pre-specified criterion, split by whether the vehicle
+entered the junction's conflict zone, a 12\,m disc around its centre.
+\textbf{C}: the turn completed on the counterexample, reaching the junction exit
+before the episode ends. \textbf{R}: none of the 30 regression scenarios, all
+passed by the unpatched baseline, now violates a contract.}
+\label{tab:criteria}
+\begin{tabular}{@{}lrrrrrrr@{}}
+\toprule
+& \multicolumn{3}{c}{\textbf{S: contracts satisfied}} & \textbf{C} & \textbf{R} & \multicolumn{2}{c}{\textbf{Jointly}} \\
+\cmidrule(lr){2-4}\cmidrule(lr){7-8}
+\textbf{Cond.} & all & refused & entered & completed & regr.\ intact & S, C & S, C, R \\
+\midrule
+F1  & 13 & 10 & 3 & 7 & 18 & 1 & 1 \\
+F2  &  1 &  1 & 0 & 6 & 23 & 0 & 0 \\
+F3  &  3 &  1 & 2 & 7 & 16 & 2 & 0 \\
+F4a &  0 &  0 & 0 & 7 &  6 & 0 & 0 \\
+F4b &  1 &  1 & 0 & 6 & 13 & 0 & 0 \\
+\midrule
+All & 18 & 13 & 5 & 33 & 76 & 3 & 1 \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+Applied in turn, the three criteria select 18, then 3, then 1 of 300 attempts
+(Figure~\ref{fig:funnel}).
+Thirteen of the 18 that satisfied the contracts, $72\%$, never entered the
+conflict zone; two more entered but had not completed the turn when the episode
+ended; three completed it, and of those three only one also left the regression
+suite intact. Across 300 attempts there is exactly one clean repair.
+
+No single criterion identifies a repair, which is why we report all three. R
+is itself a contract check on other scenarios, so a program that does not drive
+passes it too: one patched program completed none of the 60 suite scenarios and
+caused no regression failure. C alone is no better a measure of repair, since
+30 of its 33 successes are on the two counterexamples the unpatched baseline
+already completed. Only the conjunction identifies a repair.
+
+The obvious defence is to measure task completion as well, and in the form we
+pre-specified it does not work. Our pre-specified completion metrics were
+computed over the 60-scenario evaluation suite, while success was computed on the
+single counterexample. Suite completion does catch a program that refuses
+everywhere, like the one above, but the other twelve refusals completed $93$ to
+$95\%$ of suite scenarios, against $95\%$ for the unpatched baseline. No
+pre-specified metric measured completion on the scenario the success metric
+reads from; C in Table~\ref{tab:criteria} does. Any evaluation that scores
+specification satisfaction on one input distribution and task completion on
+another inherits this defect.
+
+\paragraph{A proposed remedy, untested.} One candidate fix is in the specification
+rather than the feedback: require completion on the failing scenario, or run a
+vacuity check in the model-checking sense and return its verdict to the model.
+We have not tested either. Whether they reduce resolution by refusal, or move it
+to a different degenerate answer, is future work.
+
+\subsection{What the language permits, and why repairs may resolve by refusal}
+\label{sec:dsl}
+
+Because every attempt produced a valid program, the failures leave open whether
+the language could express a correct repair at all. We tested this
+constructively, writing candidate repairs by hand in the same vocabulary and
+running them on all twenty counterexamples (Table~\ref{tab:dsl}).
+
+\begin{table}[t]
+\centering
+\small
+\caption{Constructive test of expressiveness. Each row is a valid program, or a
+family of them, in the same DSL run on all twenty counterexamples. The final row is the single attempt
+of 300 that resolved its counterexample, completed the manoeuvre and caused no
+regression, re-evaluated here across the whole corpus; six repeats on its own
+counterexample reproduced $\rho$ and $\rhoc{4}$ with zero spread.}
+\label{tab:dsl}
 \begin{tabular}{@{}lrrl@{}}
 \toprule
-\textbf{Repair} & \textbf{Fixed} & \textbf{Completed} & \textbf{Why} \\
+\textbf{Repair} & \textbf{Resolved} & \textbf{Completed} & \textbf{Why} \\
 \midrule
 frozen baseline & 0/20 & 2/20 & \\
-raise gap requirement $5.5 \rightarrow 9.0$ & 0/20 & 3/20 & branch never reached \\
+raise gap thresholds (e.g.\ $5.5 \rightarrow 9.0$) & 0/20 & 3/20 & branch never reached \\
 gap guard on committing branch, up to 15.0 & 0/20 & 2/20 & guard passes at every value \\
 geometric guard on committing branch & 0/20 & 2/20 & blocks, ego creeps in anyway \\
 geometric guard $+$ true stop & 20/20 & 0/20 & never enters the junction \\
@@ -456,15 +505,10 @@ geometric guard $+$ true stop & 20/20 & 0/20 & never enters the junction \\
 \textbf{the model's clean repair, from F1} & \textbf{20/20} & \textbf{20/20} & \\
 \bottomrule
 \end{tabular}
-\caption{Constructive test of expressiveness. Each row is a valid program in the
-same DSL run on all twenty counterexamples. The final row is the single attempt
-of 300 that resolved its counterexample, completed the manoeuvre and caused no
-regression, re-evaluated here across the whole corpus.}
-\label{tab:dsl}
 \end{table}
 
-Three mechanisms make the degenerate answer easy to reach, each measured rather
-than inferred. First, the baseline's committing branch is guarded only by a
+Three mechanisms defeat the natural small edits, two in the baseline and one in
+the language's yield predicate, each measured rather than inferred. First, the baseline's committing branch is guarded only by a
 stop-line distance test satisfied once the ego is \emph{past} the line, and it
 outranks the gap-guarded branch, so the gap thresholds are unreachable and
 raising them changes nothing. Second, the yield predicate is structurally blind
@@ -477,184 +521,453 @@ does block the turn, but the fallback decelerates to \mbox{1.0\,m/s} rather than
 to rest, so the ego creeps across the boundary two seconds later and an unguarded
 branch commits.
 
-Making the fallback a true stop resolves all twenty counterexamples and completes
-none of them. That is the degenerate repair, and it is easy to reach.
+Adding a true stop to the geometric guard resolves all twenty counterexamples and
+completes none of them. That is the degenerate repair.
 
-\paragraph{A safe and completing repair is nonetheless expressible.}
+\paragraph{A safe and completing repair is nonetheless expressible here.}
 One attempt in 300, under the raw-trace condition F1, produced a program that
 resolved its counterexample, completed the manoeuvre and caused no regression
 failure. Re-evaluated across all twenty
 counterexamples, including the nineteen it was never shown, \textbf{it resolves
-and completes every one}. Its patch adds a geometric guard to the committing
-branch and leaves the fallback able to creep, which is sufficient where our
-hand-written true stop was over-conservative. Its own comment diagnoses the
-mechanism correctly, noting that a stalled vehicle reports an effectively
-infinite time-to-conflict-zone so the gap test cannot see it and the path check
-must reach far enough to.
+and completes every one}. Its patch adds a 12\,m path check to the committing
+branch, lengthens the two path checks at the stop line to 18\,m and brakes the
+fallback harder (2.5 against 2.0\,m/s$^2$) while leaving it able to creep. Our
+hand-written path checks on the same branch (16 to 32\,m, fallback unchanged)
+fixed none of the twenty, so which of these differences matters is not
+established. Its own comment identifies the second mechanism: a stalled vehicle
+reports an effectively infinite time to arrival, so the gap test cannot see it.
 
-So the vocabulary is not the binding constraint. The search is. A safe,
-completing, generalising repair exists in this language and was found once in
-three hundred attempts, while $72\%$ of apparent repairs converged on the
-degenerate answer instead. What the specification rewards determines which of the
-two is easier to find, and rewarding only safety makes the degenerate one easier.
+What this establishes is narrow. The failures we observe are not explained by
+the vocabulary being unable to state such a repair, although its yield predicate
+defeats the most natural one. It
+does not establish that search is the bottleneck, let alone
+the only one, and a single success in 300 attempts says little about how hard
+that search is. Two explanations for why most resolutions were refusals remain
+open, and our data cannot separate them. The first is the starting point: the
+mechanisms above defeat the natural small edits to this program in this
+language, leaving a guard with a true stop as the only hand-written edit that
+resolved anything; with a different branch ordering this might not hold. The second is
+the criterion: a specification that rewards only safety gives refusal full
+credit, so nothing in the feedback penalizes it. A second baseline would test the
+program-specific part of the first, and a specification that rejects vacuous satisfaction would test the
+second (\S\ref{sec:refusal}). We ran neither.
 
-We state the limit plainly. Our hand-written repairs were a family of natural
-single- and double-edit candidates, not an exhaustive search, so \emph{none of
-the hand-written repairs tested achieved both across all twenty counterexamples};
-we do not claim no such repair exists, and indeed the model found one.
-
-\paragraph{Validation.} Because one contract is known to vary by up to
-\mbox{0.69\,m} over identical parameters (\S\ref{sec:method}), we repeated the
-clean repair's evaluation on its own counterexample six times. Robustness
-reproduced exactly, with zero spread in $\rho$ and zero spread in $\rhoc{4}$, and
-$\rhoc{4}$ was never the binding contract. The verdict does not depend on that
-variability.
 
 \subsection{Repair success: no detected improvement}
 \label{sec:null}
 
 \begin{figure}[t]
 \centering
-\includegraphics[width=\linewidth]{figures/fig2_uncertainty.pdf}
+\includegraphics[width=0.86\linewidth]{figures/fig2_uncertainty.pdf}
 \caption{Paired differences against F3 with $95\%$ intervals from a bootstrap
 clustered on certificate, which respects both the shared counterexample corpus
 and the three repeated attempts per cell. Only the raw-trace condition separates
-from zero, and on repair success that separation is an artifact of
-resolution-by-refusal: excluding refusals it falls inside the interval with
-everything else.}
+from zero (an interval ending exactly at zero, where a condition has no
+successes, does not), and on repair success that separation is an artefact of
+refusal: excluding refusals, its interval includes zero like every other.}
 \label{fig:uncertainty}
 \end{figure}
 
-\begin{table}[t]
-\centering
-\small
-\begin{tabular}{@{}lrrrrr@{}}
-\toprule
-\textbf{Cond.} & \textbf{Fix rate} & \textbf{Ex-refusal} & \textbf{Fixed \& drove} & \textbf{Broke $\geq 1$} & \textbf{Mean TED} \\
-\midrule
-F1  & 21.7\% & 5.0\% & 1/60 & 42/60 & 5.93 \\
-F2  &  1.7\% & 0.0\% & 0/60 & 37/60 & 5.77 \\
-F3  &  5.0\% & 3.3\% & 2/60 & 44/60 & 6.95 \\
-F4a &  0.0\% & 0.0\% & 0/60 & 54/60 & 7.38 \\
-F4b &  1.7\% & 0.0\% & 0/60 & 47/60 & 4.27 \\
-\bottomrule
-\end{tabular}
-\caption{Repair success over 300 attempts. Every paired difference against F3
-has a $95\%$ interval containing zero once refusals are excluded.}
-\label{tab:main}
-\end{table}
-
-After excluding refusals we did not detect a reliable improvement in repair
-success from any feedback format. Every paired comparison against F3 has an
-interval containing zero. We note that an interval containing zero is not
-evidence that the effect is absent, only that this design did not resolve one. The raw-trace condition clears zero on the
-pre-registered rate, but ten of its thirteen resolutions are refusals, and
+After excluding refusals (the `entered' column of Table~\ref{tab:criteria}) we
+did not detect a reliable improvement in repair success from any feedback
+condition (Figure~\ref{fig:uncertainty}). Every paired comparison against F3 has an
+interval containing zero; for F2, F4a and F4b, which have no such successes,
+zero is the upper endpoint. An interval containing zero is not evidence that the
+effect is absent, only that this design did not detect one. The raw-trace
+condition clears zero on the pre-specified rate, but 10 of its 13 resolved
+attempts are refusals, and
 excluding those the difference is $+1.7$ with an interval of $[-5.0,+8.3]$.
 
-We make no significance claim, and we do not claim a null. With $K{=}20$
+We make no significance claim about improvement in repair success, and we do
+not claim a null. With $K{=}20$
 counterexamples, three replicates and between zero and thirteen successes per
-condition, the design supports neither.
+condition, the design supports neither. Appendix~\ref{app:mde} estimates by
+simulation how large a true improvement this design could detect. Under the
+assumptions stated there, an improvement over F3's $3.3\%$ is detected with
+probability $0.8$ only once it reaches $13$ to $20$ percentage points, and one of
+$5$ points at most a quarter of the time. These figures describe the design under
+those assumptions; they are not a measured detection limit.
 
-\subsection{Repair is net destructive, and the minimum hides part of it}
+\subsection{Repairs were net destructive, and the minimum hides part of it}
 \label{sec:regression}
 
-Across all 300 attempts, 224 ($74.7\%$) caused at least one previously-passing
-regression scenario to fail, against 18 apparent fixes. The modal outcome of a
-repair attempt is that it did not fix the counterexample and broke one thing that
-worked. This holds in every condition.
+Across all 300 attempts, 224 ($74.7\%$) caused at least one previously passing
+regression scenario to fail, against 18 that satisfied the contracts. The modal
+outcome of a repair attempt is that it did not fix the counterexample and broke
+one thing that worked. This holds in every condition. Besides the F1 contrasts,
+one other interval excludes zero without adjustment: F4a broke at least one
+regression scenario more often than F3, by $+16.7$ points $[+3.3,+30.0]$. Among
+22 unadjusted intervals about one would exclude zero by chance, and this one does
+not survive the Bonferroni correction; since F4a carries no information beyond
+F3, a real effect would be one of redundant text, not of blame. No condition returned regression results to
+the model, so an iterated loop that does might behave differently, but as
+measured here these patches should not be applied without regression checking.
 
 Per-contract reporting reveals a second effect invisible under the minimum:
-$\rhoc{5}$ degrades in every condition without exception, from $1.000$ to between
-$0.59$ and $0.93$. Every feedback format pushes the model toward harder braking
-and faster commits, and whenever $\rhoc{1}$ is the argmin this is masked
-completely. Generalization changes span $+0.021$ to $+0.039$, a $1.8$-point
-spread well inside the intervals of \S\ref{sec:null}.
+mean $\rhoc{5}$ on the counterexample falls in every condition, from $1.000$ to
+between $0.59$ and $0.93$, so patches on average command harsher acceleration or
+braking, and whenever $\rhoc{1}$ is the argmin this is masked completely.
 
 \subsection{When blame localization can carry information}
 \label{sec:blame}
 
-Resolving blame to the leaf executing at the argmin is vacuous for any program
-whose commit branch is guarded by a region test, whenever the violated contracts
-are evaluated over that same region, because the guard leaves exactly one leaf
-reachable there. On our baseline $H(\texttt{active\_node} \mid \text{contract}) =
-0.000$ bits against $H(\text{contract}) = 1.234$ bits. This is a property of
-program structure and not of contract count: we verified by construction that
-five contracts each blaming one node still yields $\Hnc = 0$.
-
-We therefore propose a precondition, cheap to check before running any such
-experiment:
-\[
-  \Hnc > 0 .
-\]
-Where it fails, the blame field is a deterministic re-encoding of the contract
-label and carries no information beyond it. We stop short of calling such a
-condition a placebo: redundant text can still influence a language model's
-output, which is precisely why we do not treat F4a as a measure of the
-experiment's resolution. Defining blame instead as the
-last distinct leaf active before the failing leaf began running, which is the
-decision that authorised the action rather than the action executing when the
-consequence landed, raises this to $0.500$ bits on the same corpus. We report
-both, note that the second was defined after observing the first was vacuous, and
-make no claim that F4b outperforms F3.
+Assigning blame to the leaf executing at the argmin is vacuous for a program like
+ours, whose highest-priority branch is a region test followed by a single action,
+whenever the violated contracts are evaluated over that same region, because only
+that action can run there. On our baseline $H(\texttt{active\_node} \mid \text{contract}) =
+0.000$ bits against $H(\text{contract}) = 1.234$ bits, and we verified by
+construction that five contracts each blaming one node still give zero, so this
+is a property of program structure, not of contract count. We therefore propose a
+precondition, cheap to check before running such an experiment: $\Hnc > 0$.
+Where it fails, the blame field re-encodes the contract label. It may still
+influence the model, as redundant text can, but it carries no information beyond
+the label. Defining blame instead as the last distinct leaf active before the
+failing leaf began running, the decision that authorized the action rather than
+the action executing when the consequence landed, raises this to $0.500$ bits;
+that definition is exploratory (\S\ref{sec:conditions}).
 
 \section{Limitations}
 \label{sec:limitations}
 
 Two limitations deserve more than a clause. First, \textbf{every result is
-conditioned on a single frozen baseline program}. The structural argument of
-\S\ref{sec:blame} generalises, since it depends only on a commit branch guarded by
-a region test, but no effect size here is claimed to transfer to another program.
-A second baseline would test that directly and is the most valuable single
-extension we can identify; it would also tell us whether the refusal attractor of
-\S\ref{sec:dsl} is a property of this program's branch ordering or of the task.
-Second, \textbf{the expressiveness audit is not exhaustive}. We wrote a family of
-natural single- and double-edit repairs and ran them; we did not search the
-program space. That family failed to find a safe and completing repair, and the
-model found one, which is direct evidence that the family was incomplete rather
-than that the language was. Any statement here about what the DSL permits should
-be read as a statement about what these candidates reached.
+conditioned on a single frozen baseline program}, one model
+(\texttt{claude-opus-5}) and one repair step. The structural argument of
+\S\ref{sec:blame} should carry to other programs of that shape, but no effect size
+here is claimed to transfer to another program. A second baseline would test that
+directly and is the most valuable single extension we can identify; it would also
+tell us whether the refusal result of \S\ref{sec:refusal} is a property of this
+program's structure or of the task and its success criterion.
+Second, \textbf{the expressiveness audit is not exhaustive}. Our hand-written
+repairs were a family of natural single- and double-edit candidates, not a search
+of the program space, and the model found a repair that family missed, so
+Table~\ref{tab:dsl} shows which natural edits fail, not which edits the DSL rules
+out.
 
 The remaining limitations are ordinary. $K{=}20$ with three replicates supports no
-significance claim, and an interval containing zero is not evidence of absence. We
-measure one repair step per counterexample rather than compounding effects over
-rounds. F1 is not a subset of the other conditions in either direction
-(\S\ref{sec:conditions}), so the ordering is one of structure rather than
-information content. F1 also differs in \emph{length} as well as in kind, at
-roughly 16{,}400 prompt tokens against about 4{,}700 for every other
-condition, so the edit-type contrast of \S\ref{sec:patchtype} cannot separate
-the effect of raw signal from the effect of prompt volume. Seven of twenty certificates report no boundary, because
+significance claim about improvement in repair success, and under the assumptions of Appendix~\ref{app:mde} only
+large improvements in repair success were reliably detectable. We measure one repair step
+per counterexample, with no regression feedback, so that every condition patches
+the same frozen program; how effects compound over rounds is untested. F1 differs from the other conditions in length and information
+content as well as in structure, so the edit-type contrast cannot be attributed
+to any one of the three, and we ran no length-matched control
+(\S\ref{sec:patchtype}). The specification change proposed in
+\S\ref{sec:refusal} is untested. Seven of twenty certificates report no boundary, because
 their sole boundary parameter was measured to be anti-correlated with the quantity
 it names and was suppressed; those degrade to point counterexamples. Corpus
 construction is amortized across all five conditions, so the cost asymmetry a
-deployed closed loop would face is absent here. The simulator reproduces
-bit-identically but the model does not, since it exposes no seed or temperature.
-Oncoming vehicles travel at constant velocity, making the scenario harsher than
-naturalistic traffic.
+deployed closed loop would face is absent here. The simulator side reproduces,
+apart from $\rhoc{4}$, but the model does not: it exposes no seed or temperature,
+and its identifier names no snapshot.
+Oncoming vehicles follow a scripted policy, holding their speed and, depending on
+an aggressiveness parameter, braking when the ego nears the conflict zone, which
+is simpler than naturalistic traffic; sensing is ground truth.
+
+\paragraph{Broader impact.} This is a simulation study, and nothing in it is
+evidence of real-world driving safety: contract satisfaction in CARLA, under
+ground-truth sensing and simplified traffic, says little about a deployed
+vehicle. The refusal result is itself a safety concern. A repair objective that
+rewards only the absence of violations can yield systems that pass every
+contract-based check while failing their task, and in real traffic a vehicle that
+never proceeds creates hazards these contracts do not measure. The model's
+patches also broke previously passing scenarios in three quarters of attempts,
+so LLM-proposed repairs to safety-critical code need independent verification
+before use.
 
 \section{Conclusion}
 
-Formal structure in counterexample feedback changes what repair is attempted,
-substantially and robustly, with raw execution traces driving structural rewrites
-where processed feedback drives threshold adjustments. After excluding refusals we
-did not detect a reliable improvement in repair success from any feedback format,
-which at this sample size is a statement about our resolution rather than about
-the effect.
+The feedback conditions we compared differ sharply in what repair is attempted,
+but because the raw trace differs in length and information content as well as
+in structure, this is a difference between conditions, not a measured effect of
+formal structure. Excluding refusals, we detected no condition improving repair
+success, which at this sample size is not evidence that no such effect exists.
 
-The more useful finding came from asking why so many apparent repairs stopped
-driving. Contract satisfaction on a failing scenario is trivially achievable by
-inaction, and the usual defence of also measuring completion fails when
-completion is scored on a different input distribution. A safe and completing
-program does exist in this language, and one attempt in three hundred found it
-and generalised to the whole corpus. Repair converged on refusal not because the
-vocabulary forbade the alternative but because the specification made the
-degenerate answer easier to find.
+The more useful finding came from asking why so many resolved attempts never
+entered the conflict zone. Contract satisfaction on a failing scenario is trivially achievable by
+inaction, and neither completion scored on other scenarios nor a contract-based
+regression suite reliably catches it. Applied in turn, contracts satisfied, manoeuvre
+completed and regression suite intact select 18, then 3, then 1 of 300 attempts,
+and a program meeting all three exists in this language for this corpus.
 
-We suggest this generalises. Where a repair task scores only specification
-satisfaction, and the program representation admits inaction, counterexample-guided
-repair should be expected to converge on inaction, and the fix belongs in the
-task specification rather than in the feedback.
+We conjecture that where a repair task scores only specification satisfaction
+and the program representation admits inaction, the repairs that satisfy it will
+tend to be refusals, though our data cannot separate this from the structure of
+the one baseline we repaired. A second baseline, and a specification that rejects
+vacuous satisfaction, would test it.
+
+\begin{ack}
+This work received no external funding. N.M.\ designed the study, built the
+system, ran all experiments and analyses, and wrote the paper; S.P.\ advised.
+Figure~\ref{fig:pipeline} was drawn with an AI image-generation tool from a
+schematic the authors specified; it carries no data. Code, the frozen program,
+the twenty counterexample certificates, all prompts and raw model responses, and
+the scripts and saved outputs behind every table and figure are released at
+\url{https://github.com/mistryneel/counterexample-feedback} (release
+\texttt{v1.1-camera-ready}); the version that was reviewed is release
+\texttt{v1.0-submission}.
+\end{ack}
 
 \bibliographystyle{plainnat}
 \bibliography{references}
+
+\appendix
+
+\section{What each condition carries}
+\label{app:info}
+
+\begin{table}[h]
+\centering
+\small
+\caption{Information content of each feedback block. F3 is F2's narrative plus
+structured fields, and F4a and F4b each add one blame field to F3, so F2 is
+contained in F3 and F3 in each of F4a and F4b. F1 is not nested with any of them. It carries the per-row
+behaviour-tree columns, from which the leaf executing at the violation can be
+read, but it does not name the violated contract, does not mark the failing
+row, and carries no robustness value, parameter or boundary. The transition
+that F4b names lies 28 to 47 rows before the violation, outside F1's 21-row
+window, so F1 cannot show it. $^{*}$Median prompt length minus the $4{,}513$
+tokens of scaffolding shared by every prompt, so approximate.}
+\label{tab:info}
+\begin{tabular}{@{}lccccc@{}}
+\toprule
+\textbf{Information} & \textbf{F1} & \textbf{F2} & \textbf{F3} & \textbf{F4a} & \textbf{F4b} \\
+\midrule
+feedback block, median tokens$^{*}$ & $11{,}869$ & $71$ & $267$ & $358$ & $354$ \\
+\midrule
+raw trajectory, 21 rows $\times$ 45 columns around the violation & \checkmark & & & & \\
+behaviour-tree leaf ticking at each row (unlabelled columns) & \checkmark & & & & \\
+every actor's role, position and velocity, per row & \checkmark & & & & \\
+what was violated, by how much, and when & & prose & \checkmark & \checkmark & \checkmark \\
+gap the ego actually faced & & prose & prose & prose & prose \\
+named contract, $\rho$ and every $\rhoc{i}$ & & & \checkmark & \checkmark & \checkmark \\
+minimal parameters and irrelevant parameters & & & \checkmark & \checkmark & \checkmark \\
+boundary of the failing region (13 of 20 certificates) & & & \checkmark & \checkmark & \checkmark \\
+natural-language narrative & & \checkmark & \checkmark & \checkmark & \checkmark \\
+leaf executing at the violation, named & & & & \checkmark & \\
+leaf that authorized the failing action, named & & & & & \checkmark \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\section{Deviations from the internal study plan}
+\label{app:deviations}
+
+Our internal study plan, released with the code at
+\url{https://github.com/mistryneel/counterexample-feedback/tree/v1.1-camera-ready/docs/study_plan},
+pre-specified three contracts and four scenario parameters.
+We ran five and six. The change was made before the baseline was frozen and for a
+measured reason: on the reference program under three contracts, the violated
+contract determined the blamed leaf exactly, so blame localization carried no
+information beyond the contract label and the F3/F4 contrast would have been
+vacuous by construction. We re-enabled the red-light and lead-distance contracts
+to widen the range of failure modes. Of the four planned parameters, the
+pedestrian-phase offset was dropped because no pedestrian was ever spawned, so it
+had no effect; the signal offset and lead-vehicle gap were added because they make
+the new contracts bind; and an aggressiveness parameter for oncoming vehicles was
+added because without it only one parameter carried signal and every boundary
+collapsed onto a single axis. We report this
+because it is a deviation from the plan, and because it did not have the intended
+effect: adding contracts does not by itself break the collapse, since each
+contract may still map to a single leaf. What addressed it was the alternative
+blame definition of \S\ref{sec:blame}, which is exploratory and labelled as such
+throughout. The pre-specified field is \texttt{active\_node};
+\texttt{authorising\_node} was defined after observing that the first was
+constant, and no claim in this paper rests on F4b outperforming F3.
+
+The pre-specified success criterion was $\rho \geq 0$ on the counterexample
+scenario. We still report it, but after measuring that most of its successes
+were refusals (\S\ref{sec:refusal}) we lead with the three criteria separately
+rather than replacing it, so that the change is visible rather than silent.
+
+\section{Edit taxonomy}
+\label{app:taxonomy}
+
+Patch type is a deterministic function of the baseline and patched sources
+(\texttt{classify\_patch} in \texttt{src/ted.py}); no attempt was labelled by
+hand. The skeleton of a parsed program, comments discarded, is the tree of node
+names with every parameter removed and child order kept. If the skeletons
+differ, the patch is a skeleton edit, which covers inserting, deleting or
+reordering a node and replacing one node type with another. If they agree, it is
+a hole fill when any parameter value differs after rounding to six decimals, and
+no change otherwise; a program that fails to parse is unparseable. Only outputs
+that pass the validator are classified.
+
+The two categories, and the hypothesis that skeleton edits carry more regression
+risk, were in the design specification before any repair attempt. The classifier
+was unit tested and committed before the campaign, which ran from that commit;
+apart from comments, it has not changed since. Because the label is computed, inter-rater
+reliability does not arise; re-running the classifier on the logged programs
+reproduces all 300 labels. Comparing edit-type rates across conditions was not
+among the expectations we recorded in advance, which is why
+\S\ref{sec:patchtype} reports it as an observed effect.
+
+There were 170 hole fills, 130 skeleton edits, and no no-change or unparseable
+outputs; Figure~\ref{fig:patchtype} shows the split by condition. Every skeleton edit increased the number of nodes, so no label rests on
+a rename or a reordering alone. Of the hole fills, 140 changed at least one
+action parameter, such as a target speed, and 30 changed only predicate
+thresholds. Hole fills are not smaller edits: their median tree edit distance is
+8 against 5 for skeleton edits, so the taxonomy measures the kind of edit, not
+its size. Mean tree edit distance per patch was 5.93, 5.77, 6.95, 7.38 and 4.27
+for F1 to F4b. Skeleton edits averaged 0.94 regression failures against 0.81 for
+hole fills; patch type is an outcome confounded with condition, so we report this
+descriptively and not as a test of the regression-risk hypothesis.
+
+\begin{figure}[h]
+\centering
+\includegraphics[width=0.95\linewidth]{figures/fig3_patch_type.pdf}
+\caption{Structural edits by condition, out of 60 attempts each. Under the raw
+trace the model restructured the program in almost every attempt; under a
+natural-language summary it mostly changed parameter values. F1 also differs from
+the other conditions in length and information content
+(\S\ref{sec:patchtype}).}
+\label{fig:patchtype}
+\end{figure}
+
+\section{Paired cluster bootstrap}
+\label{app:bootstrap}
+
+\paragraph{Unit.} The resampling unit is the counterexample certificate. There
+are $K=20$, each attempted three times under each of the five conditions, so
+every certificate carries 15 attempts and the design is balanced. Attempts on the
+same certificate share its difficulty, and every condition is run on the same
+certificates, so neither attempts nor conditions are independent; certificates
+are.
+
+\paragraph{Procedure.} Each of $10{,}000$ resamples draws 20 certificates
+uniformly with replacement and keeps every attempt on each drawn certificate. For
+each condition we compute the percentage of its attempts in the resample that
+meet the outcome; the denominator is always 60. A difference between two
+conditions is taken within the same resample, so both are always evaluated on the
+same certificates. The $95\%$ interval runs from the $2.5$th to the $97.5$th
+percentile of the $10{,}000$ differences (NumPy PCG64, seed 0, linear interpolation).
+Because the design is balanced, this equals a percentile bootstrap of the mean of
+the 20 certificate-level differences $100\,(s_{i,a}-s_{i,b})/3$, where $s_{i,a}$
+counts attempts on certificate $i$ under condition $a$ that meet the outcome.
+Figure~\ref{fig:uncertainty} plots intervals from the same resamples.
+
+\paragraph{Outcomes.} A \emph{structural edit} is a skeleton edit
+(Appendix~\ref{app:taxonomy}). \emph{Success excluding refusals} requires
+$\rho \ge 0$ on the counterexample and entry into the conflict zone; a refusal
+stays in the denominator as a failure.
+
+\paragraph{Comparisons.} We tabulate 17 paired differences: each condition against
+F3 on four outcomes, and F1 against F2 on structural edits
+(Table~\ref{tab:allci}). The intervals in the paper are unadjusted. Under a
+Bonferroni adjustment over these 17, the structural-edit differences of F1 from F2
+and from F3 still exclude zero; the two others that exclude zero unadjusted, F1
+against F3 on pre-specified success and F4a against F3 on regressions, do not.
+F1 also differs from F4a and F4b on structural edits, by $+73.3$
+$[+53.3,+90.0]$ and $+51.7$ $[+36.7,+66.7]$ in the same resamples. Counting the
+five further structural-edit pairs, we computed 22 distinct differences; under a
+Bonferroni correction over all 22, exactly the four F1 structural-edit contrasts
+exclude zero. F1 against F2, the contrast quoted in the
+abstract, is the largest of the ten pairwise structural-edit differences, and
+was singled out after seeing the data.
+
+\paragraph{Limits.} With 20 clusters, percentile intervals can be somewhat too
+narrow. Where a condition has no successes, its difference from F3 cannot be
+positive, so an upper endpoint of exactly zero reflects absent events rather than
+a precise estimate. For the joint criteria of Table~\ref{tab:criteria}, with zero
+to two successes per condition, we report counts and no intervals.
+
+\begin{table}[h]
+\centering
+\small
+\caption{The 17 tabulated paired differences, in percentage points, from one set
+of $10{,}000$ certificate resamples (seed 0). Bonferroni intervals use
+$\alpha = 0.05/17$. Computed by \texttt{scripts/\allowbreak uncertainty.py} and
+saved in \texttt{data/\allowbreak results/\allowbreak uncertainty.json}.}
+\label{tab:allci}
+\begin{tabular}{@{}llrcc@{}}
+\toprule
+\textbf{Outcome} & \textbf{Contrast} & \textbf{Diff.} & \textbf{$95\%$ interval} & \textbf{Bonferroni ($\times 17$)} \\
+\midrule
+Success (pre-specified) & F1$-$F3  & $+16.7$ & $[+3.3,+30.0]$   & $[-3.3,+36.7]$ \\
+                         & F2$-$F3  & $-3.3$  & $[-10.0,+3.3]$   & $[-13.3,+5.0]$ \\
+                         & F4a$-$F3 & $-5.0$  & $[-10.0,0.0]$    & $[-15.0,0.0]$ \\
+                         & F4b$-$F3 & $-3.3$  & $[-10.0,+3.3]$   & $[-13.3,+6.7]$ \\
+\addlinespace
+Success, refusals excl.  & F1$-$F3  & $+1.7$  & $[-5.0,+8.3]$    & $[-8.3,+13.3]$ \\
+                         & F2$-$F3  & $-3.3$  & $[-8.3,0.0]$     & $[-11.7,0.0]$ \\
+                         & F4a$-$F3 & $-3.3$  & $[-8.3,0.0]$     & $[-11.7,0.0]$ \\
+                         & F4b$-$F3 & $-3.3$  & $[-8.3,0.0]$     & $[-11.7,0.0]$ \\
+\addlinespace
+Structural edit          & F1$-$F3  & $+73.3$ & $[+58.3,+86.7]$  & $[+48.3,+93.3]$ \\
+                         & F2$-$F3  & $-3.3$  & $[-18.3,+11.7]$  & $[-26.7,+20.0]$ \\
+                         & F4a$-$F3 & $0.0$   & $[-13.3,+13.3]$  & $[-18.3,+20.0]$ \\
+                         & F4b$-$F3 & $+21.7$ & $[-3.3,+45.0]$   & $[-15.5,+58.3]$ \\
+                         & F1$-$F2  & $+76.7$ & $[+61.7,+90.0]$  & $[+53.3,+95.0]$ \\
+\addlinespace
+Broke $\geq 1$ regression & F1$-$F3  & $-3.3$  & $[-20.0,+13.3]$ & $[-26.7,+23.3]$ \\
+                          & F2$-$F3  & $-11.7$ & $[-28.3,+5.0]$  & $[-36.7,+15.0]$ \\
+                          & F4a$-$F3 & $+16.7$ & $[+3.3,+30.0]$  & $[-1.7,+36.7]$ \\
+                          & F4b$-$F3 & $+5.0$  & $[-13.3,+20.0]$ & $[-25.0,+26.7]$ \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\section{Detectable effect under stated assumptions}
+\label{app:mde}
+
+We estimated how often the decision rule of \S\ref{sec:null} would detect a true
+difference $d$ in repair success between a condition and F3. Refusals count as
+failures, so each rate is out of $60$ attempts. The rule is the paired cluster
+bootstrap of Appendix~\ref{app:bootstrap}, with a detection declared when the
+$95\%$ interval excludes zero. Because the design is balanced, the bootstrap
+distribution depends only on the twenty per-certificate differences, so we
+computed it exactly rather than from $10{,}000$ resamples; the two agreed on
+$5{,}988$ of $6{,}000$ simulated datasets. A certificate's success probability is
+Beta distributed with mean $p_0$ under F3 and $p_0+d$ under the other condition,
+with intra-certificate correlation (ICC) of replicate outcomes in
+$\{0, 0.1, 0.3\}$. Its difficulty is either shared across the two conditions,
+taking the same quantile of each distribution, or independent, and replicates
+are independent given the certificate. Table~\ref{tab:mde} gives the smallest
+$d$ detected with probability $0.8$. Ignoring clustering, a two-proportion
+calculation for $60$ attempts per arm gives $14.8$ points (arcsine
+approximation) to $17.5$ points (Fisher's exact test) at $p_0=3.3\%$. At
+$p_0=3.3\%$, a true improvement of $5$ points is detected with probability
+$0.17$ to $0.23$ across these settings.
+
+One property holds whatever the model. The interval cannot exclude zero unless
+at least four of the twenty certificates favour the condition declared better,
+so with F3 successful on at most three certificates under each repair-success
+outcome (S, S excluding refusals, and S with C), no condition could have been
+shown to do worse than F3 on repair success. Under the
+model, a Bonferroni correction over the four comparisons against F3 raises each
+entry by about $3$ to $5.5$ points, and over all 17 comparisons by about $6$ to
+$10.5$. The entries move with the assumptions, most of all with how strongly
+difficulty is shared, and are properties of the design rather than a measured
+detection limit. The data cannot estimate either assumption, but the five successes
+excluding refusals fell one per cell and on five different certificates, a
+pattern less likely under strongly shared difficulty than under weak clustering,
+so the lowest entries are the optimistic ones.
+
+\begin{table}[h]
+\centering
+\small
+\caption{Smallest true improvement over F3, in percentage points, detected with
+probability $0.8$ by the paired cluster bootstrap over twenty certificates and
+three replicates, under the model of Appendix~\ref{app:mde}. $p_0=3.3\%$ is F3's
+observed rate both excluding refusals and for S and C jointly; $5.0\%$ is its rate
+on the pre-specified criterion S. Each setting used $20{,}000$ simulated experiments
+(\texttt{scripts/detectable\_effect.py}); repeating every setting with a second
+seed moved no entry by more than $0.5$ points, and entries are rounded to whole
+points.}
+\label{tab:mde}
+\begin{tabular}{@{}lrrrr@{}}
+\toprule
+& \multicolumn{2}{c}{$p_0 = 3.3\%$} & \multicolumn{2}{c}{$p_0 = 5.0\%$} \\
+\cmidrule(lr){2-3}\cmidrule(lr){4-5}
+\textbf{ICC} & shared & independent & shared & independent \\
+\midrule
+$0$   & \multicolumn{2}{c}{$15$} & \multicolumn{2}{c}{$17$} \\
+$0.1$ & $14$ & $17$ & $16$ & $19$ \\
+$0.3$ & $13$ & $20$ & $14$ & $22$ \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+% NeurIPS Paper Checklist: required by the template; follows the appendices
+% and does not count toward the page limit.
+\input{checklist}
 
 \end{document}

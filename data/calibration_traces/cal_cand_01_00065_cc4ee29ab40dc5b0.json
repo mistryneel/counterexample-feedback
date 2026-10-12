@@ -1,0 +1,65 @@
+{
+  "episode_id": "cal_cand_01_00065_cc4ee29ab40dc5b0",
+  "schema_version": "1.2.0",
+  "status": "ok",
+  "scenario_params": "{\"aggressiveness\": 0.5372, \"headway\": 5.7956, \"lead_gap_s\": 3.6496, \"light_offset\": 8.0024, \"n_oncoming\": 2, \"v_oncoming\": 10.1638}",
+  "param_hash": "cc4ee29ab40dc5b0",
+  "seeds": "{\"numpy\": 20260823, \"python\": 20260823, \"traffic_manager\": 20260823}",
+  "carla_server_version": "0.9.16",
+  "carla_client_version": "0.9.16",
+  "map": "Town05",
+  "junction_id": "1126",
+  "fixed_delta_seconds": "0.05",
+  "max_substep_delta_time": "0.01",
+  "max_substeps": "10",
+  "n_ticks": "452",
+  "achieved_gap_s": "0.8319571898712232",
+  "spawn_clamped": "True",
+  "wall_clock_s": "30135.009255",
+  "git_commit": "147e92e80ada89211df49fe9efdd306721e958b4",
+  "program_source": "# Unprotected left turn at a signalised four-way junction.\n# Priority order: finish what you started > decide from a stop >\n# finish a rolling entry > enter on green with a real gap > stop at the line >\n# back off behind the lead > cruise the approach.\n\nSelector\n\n  # --- A. Already inside the conflict zone: never abandon the turn. ---\n  Sequence\n    InConflictZone\n    CommitTurn(v_mps=7.0, accel_mps2=2.0)\n\n  # --- B. Stopped at (or just over) the stop line: this is the decision point. ---\n  Sequence\n    EgoSpeedBelow(v_mps=1.0)\n    DistanceToStopLineBelow(dist_m=4.0)\n    Selector\n      # Normal go: green, a gap well beyond the 3.0 s contract, path physically clear.\n      Sequence\n        TrafficLightIsGreen\n        OncomingGapExceeds(gap_s=5.5)\n        PathIsClear(dist_m=16.0)\n        CommitTurn(v_mps=6.5, accel_mps2=2.0)\n      # Deadlock escape: nobody ever gives a big gap, so take a smaller but still legal one.\n      Sequence\n        TrafficLightIsGreen\n        WaitedLongerThan(t_s=12.0)\n        OncomingGapExceeds(gap_s=3.8)\n        PathIsClear(dist_m=14.0)\n        CommitTurn(v_mps=6.0, accel_mps2=2.0)\n      # Otherwise sit still, gently.\n      HoldAtStopLine(decel_mps2=2.0)\n\n  # --- C. Past the stop line and still rolling: committed, drive through. ---\n  # (The stopped-past-the-line case is caught by B above, so this only fires while moving.)\n  Sequence\n    DistanceToStopLineBelow(dist_m=0.0)\n    CommitTurn(v_mps=7.0, accel_mps2=2.0)\n\n  # --- D. Rolling entry: green, generous gap, clear path, close to the line. ---\n  Sequence\n    TrafficLightIsGreen\n    DistanceToStopLineBelow(dist_m=14.0)\n    OncomingGapExceeds(gap_s=6.5)\n    PathIsClear(dist_m=20.0)\n    CommitTurn(v_mps=6.5, accel_mps2=2.0)\n\n  # --- E. Near the junction, road ahead clear: settle onto the stop line and wait. ---\n  Sequence\n    DistanceToStopLineBelow(dist_m=18.0)\n    PathIsClear(dist_m=20.0)\n    HoldAtStopLine(decel_mps2=2.0)\n\n  # --- F. Near the junction but something (lead or crossing traffic) is in the way. ---\n  Sequence\n    DistanceToStopLineBelow(dist_m=30.0)\n    Decelerate(v_mps=1.0, decel_mps2=2.0)\n\n  # --- G. Open approach: cruise, but keep an RSS-safe buffer behind the lead. ---\n  Selector\n    Sequence\n      PathIsClear(dist_m=28.0)\n      Cruise(v_mps=7.0, accel_mps2=1.5)\n    Decelerate(v_mps=4.0, decel_mps2=1.5)\n",
+  "program_sha": "3ca9767d8383945e",
+  "result": {
+    "episode_id": "cal_cand_01_00065_cc4ee29ab40dc5b0",
+    "status": "ok",
+    "param_hash": "cc4ee29ab40dc5b0",
+    "scenario_params": {
+      "n_oncoming": 2,
+      "v_oncoming": 10.1638,
+      "headway": 5.7956,
+      "aggressiveness": 0.5372,
+      "light_offset": 8.0024,
+      "lead_gap_s": 3.6496
+    },
+    "n_ticks": 452,
+    "wall_clock_s": 0.0,
+    "real_time_factor": 0.0,
+    "trace_path": null,
+    "error": null,
+    "meta": {
+      "seeds": {
+        "python": 20260823,
+        "numpy": 20260823,
+        "traffic_manager": 20260823
+      },
+      "junction_id": 1126,
+      "traffic_lights": {
+        "ego_tl_id": 94,
+        "oncoming_tl_id": 92
+      },
+      "phase_final": "P4_settle",
+      "phases_reached": [
+        "P1_approach",
+        "P2_yield_clear",
+        "P3_commit",
+        "P4_settle"
+      ],
+      "route_len": 95,
+      "entry_idx": 40,
+      "achieved_gap_s": 0.8319571898712232,
+      "spawn_clamped": true,
+      "n_oncoming_spawned": 2,
+      "n_oncoming_surviving": 2
+    }
+  }
+}

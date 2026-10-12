@@ -17,17 +17,20 @@
   % STATUS: VERIFIED -- abstract page and full text checked, 31 Aug 2026.
   % Lemma 2 (safe longitudinal distance, same direction) is the form used
   % for contract C4 and was read directly from the paper, not recalled.
+% RULE NUMBERING VERIFIED 10 Oct 2026 against the text of arXiv:1708.06374v6
+% (27 Oct 2018): the five "common sense" rules list rule 3 as "Right-of-way is
+% given, not taken" and rule 5 as "If you can avoid an accident without causing
+% another one, you must do it"; Lemma 2 is the same-direction safe longitudinal
+% distance. Earlier arXiv versions were not checked.
 @article{shalevshwartz2017rss,
   title   = {On a Formal Model of Safe and Scalable Self-Driving Cars},
   author  = {Shalev-Shwartz, Shai and Shammah, Shaked and Shashua, Amnon},
   journal = {arXiv preprint arXiv:1708.06374},
-  year    = {2017},
-  url     = {https://arxiv.org/abs/1708.06374}
+  year    = {2017}
 }
   % STATUS: VERIFIED 6 Sep 2026 -- ASPLOS 2006, San Jose, 21-25 Oct, pp. 404-415.
 @inproceedings{solarlezama2006,
   pages     = {404--415},
-  address   = {San Jose, CA, USA},
   title     = {Combinatorial Sketching for Finite Programs},
   author    = {Solar-Lezama, Armando and Tancau, Liviu and Bod{\'i}k, Rastislav
                and Seshia, Sanjit and Saraswat, Vijay},
@@ -40,7 +43,6 @@
   volume  = {28},
   number  = {2},
   pages   = {183--200},
-  doi     = {10.1109/32.988498},
   title   = {Simplifying and Isolating Failure-Inducing Input},
   author  = {Zeller, Andreas and Hildebrandt, Ralf},
   journal = {IEEE Transactions on Software Engineering},
@@ -60,7 +62,6 @@
   % STATUS: VERIFIED 6 Sep 2026 -- PLDI 2019, pp. 63-78, doi 10.1145/3314221.3314633.
 @inproceedings{fremont2019scenic,
   pages     = {63--78},
-  doi       = {10.1145/3314221.3314633},
   title     = {Scenic: A Language for Scenario Specification and Scene Generation},
   author    = {Fremont, Daniel J. and Dreossi, Tommaso and Ghosh, Shromona and
                Yue, Xiangyu and Sangiovanni-Vincentelli, Alberto L. and Seshia, Sanjit A.},
@@ -103,7 +104,7 @@
 @inproceedings{madaan2023selfrefine,
   pages     = {46534--46594},
   volume    = {36},
-  title     = {Self-Refine: Iterative Refinement with Self-Feedback},
+  title     = {{Self-Refine}: Iterative Refinement with Self-Feedback},
   author    = {Madaan, Aman and Tandon, Niket and Gupta, Prakhar and
                Hallinan, Skyler and Gao, Luyu and Wiegreffe, Sarah and
                Alon, Uri and Dziri, Nouha and Prabhumoye, Shrimai and
@@ -114,7 +115,7 @@
 
   % STATUS: VERIFIED (venue, year, authors, arXiv id) -- 4 Sep 2026.
   % ABLATION CLAIM ALSO VERIFIED 6 Sep 2026, Table 3, HumanEval Rust
-  % (50 hardest): base 0.60 pass@1, self-reflection removed 0.60,
+  % (50 hardest): base 0.60 pass-at-1, self-reflection removed 0.60,
   % full Reflexion 0.68. "Returns performance to baseline" is exact.
 @inproceedings{shinn2023reflexion,
   title     = {Reflexion: Language Agents with Verbal Reinforcement Learning},
@@ -206,6 +207,5 @@
   volume  = {4},
   number  = {2},
   pages   = {224--233},
-  doi     = {10.1007/s100090100062},
   year    = {2003}
 }

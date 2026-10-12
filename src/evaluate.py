@@ -119,7 +119,7 @@ class Evaluator:
 
             # ---- RESOLUTION BY REFUSAL --------------------------------
             # FOUND IN THE DRY RUN, and it would have corrupted the headline
-            # number. `resolved` is pre-registered as rho >= 0 on the
+            # number. `resolved` is pre-specified as rho >= 0 on the
             # counterexample scenario, and a program that simply never enters
             # the junction satisfies that trivially: C2 and C3 both go VACUOUS
             # (999.0, the sentinel, excluded from the argmin), C1 is satisfied
@@ -133,7 +133,7 @@ class Evaluator:
             # is the one `resolved` is computed from, so the suite ICR stayed
             # at 0.93 while the counterexample timed out.
             #
-            # `resolved` is NOT redefined here: it is pre-registered and it
+            # `resolved` is NOT redefined here: it is pre-specified and it
             # stays exactly as specified. These are additional fields, and the
             # analysis reports the refusal count alongside the headline rather
             # than quietly subtracting it.

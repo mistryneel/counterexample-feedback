@@ -47,6 +47,14 @@ def main() -> int:
     junction = stl.load_junction()
 
     paths = sorted(glob.glob(str(pathlib.Path(a.dir) / a.pattern)))
+    if not paths:
+        # The input trajectories (data/traces/) are not part of the public
+        # release. Fail loudly instead of writing an empty result over the
+        # committed output.
+        print(f"no trajectories match {pathlib.Path(a.dir) / a.pattern}; this script needs "
+              "the unreleased data/traces/ files and cannot be re-run from the public "
+              "release (see data/results/NOTES.md)", file=sys.stderr)
+        return 2
     print(f"scoring {len(paths)} traces with contracts {want} ...")
     rows = []
     for p in paths:

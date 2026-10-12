@@ -2,10 +2,32 @@
 """Recompute blame over the banked corpus under both definitions, and suppress
 the `headway` boundaries that would mislead the repair.
 
+==========================================================================
+WARNING: `--write` REWRITES THE COMMITTED CERTIFICATE JSON IN PLACE.
+
+With `--write`, every file in data/certificates/CE*.json is overwritten with
+re-serialised JSON. The certificates are committed results: every prompt in
+the campaign was rendered from their current bytes, and the 300 prompt hashes
+in data/results/attempts.jsonl depend on them. On the released corpus the
+rewrite is currently a no-op (checked on a scratch copy: 0 of 20 files change
+byte-wise), but any change to src/blame.py, to SUPPRESS below, or to the
+traces would silently alter those results. Do NOT pass `--write` to reproduce
+the paper; it is not needed. If you pass it by mistake, restore the originals
+with `git checkout -- data/certificates/`.
+
+Even WITHOUT `--write` the script overwrites
+data/results/blame_recompute.json (also committed; on the released corpus the
+regenerated file is byte-identical). Run `git diff` afterwards.
+
+Traces are located by `certificate.resolve_trace_path`:
+data/certificates/traces/<basename> first, then the absolute path stored in
+the certificate.
+==========================================================================
+
 Two jobs, both operating on banked traces only -- no re-simulation, so the
 frozen baseline and the 20 certificates stay exactly as they are.
 
-1. BLAME. Adds `authorising_node` alongside the pre-registered `active_node`
+1. BLAME. Adds `authorising_node` alongside the pre-specified `active_node`
    and reports H(node | contract) under each. See src/blame.py for why there
    are two definitions and why both must be reported.
 
@@ -14,8 +36,8 @@ frozen baseline and the 20 certificates stay exactly as they are.
    6-8 s delivers a mean gap of 1.57 s while requesting 1.5-3 s delivers
    4.46 s. A certificate reading "fails for headway <= 7.529" therefore invites
    the model to demand a ~7.5 s gap when the gap it will observe is ~1.4 s --
-   the over-patch that collapses task completion, which the project notes name as the
-   most likely quiet failure. Root cause is `t_ego_to_decision_s = 4.95`,
+   the over-patch that collapses task completion while the safety metrics
+   look good. Root cause is `t_ego_to_decision_s = 4.95`,
    measured under the hardcoded controller; sim.yaml's own comment says to
    re-measure it once the behaviour tree drives the approach and that never
    happened. Fixing it changes every scenario and would invalidate both the
@@ -23,9 +45,10 @@ frozen baseline and the 20 certificates stay exactly as they are.
    RENDERING instead, flagged, and recorded as a limitation. Nothing is
    deleted: `boundary` keeps every parameter it found.
 
-    scripts/recompute_blame.py [--write]
+    scripts/recompute_blame.py            # report; rewrites blame_recompute.json only
+    scripts/recompute_blame.py --write    # ALSO rewrites data/certificates/*.json
 
-Without --write it reports and changes nothing.
+Without --write it leaves the certificates untouched.
 """
 from __future__ import annotations
 
@@ -40,6 +63,7 @@ sys.path.insert(0, str(REPO / "src"))
 
 import blame  # noqa: E402
 import stl  # noqa: E402
+from certificate import resolve_trace_path  # noqa: E402
 
 SUPPRESS = {"headway"}
 SUPPRESS_REASON = (
@@ -53,17 +77,31 @@ SUPPRESS_REASON = (
 
 
 def main() -> int:
-    ap = argparse.ArgumentParser()
-    ap.add_argument("--write", action="store_true")
+    ap = argparse.ArgumentParser(
+        description="Recompute blame (active_node, authorising_node) and the "
+                    "headway boundary suppression over the banked certificates.",
+        epilog="WARNING: --write rewrites data/certificates/CE*.json IN PLACE. "
+               "Those files are committed results; do not pass --write to "
+               "reproduce the paper. data/results/blame_recompute.json is "
+               "rewritten on every run.")
+    ap.add_argument("--write", action="store_true",
+                    help="DANGEROUS: overwrite every certificate JSON in place "
+                         "(restore with: git checkout -- data/certificates/)")
     a = ap.parse_args()
 
     paths = sorted(glob.glob(str(REPO / "data/certificates/*.json")))
+    if a.write:
+        print("!" * 74)
+        print("!! --write: REWRITING data/certificates/*.json IN PLACE.")
+        print("!! These are committed results. Restore with:")
+        print("!!   git checkout -- data/certificates/")
+        print("!" * 74 + "\n")
     print(f"certificates: {len(paths)}\n")
 
     rows, missing, suppressed = [], 0, 0
     for p in paths:
         c = json.loads(pathlib.Path(p).read_text())
-        df, _ = stl.load_trace(c["trace_path"])
+        df, _ = stl.load_trace(resolve_trace_path(c["trace_path"]))
         i = int(c["argmin_index"])
 
         act = blame.active_node(df, i)
@@ -109,7 +147,7 @@ def main() -> int:
     print(f"{'definition':<22} {'H(node|contract)':>18} {'distinct nodes':>16}")
     print("-" * 74)
     print(f"{'active_node':<22} {h_act:>13.4f} bits {len({r['active'] for r in rows}):>16}"
-          "   <- pre-registered")
+          "   <- pre-specified")
     print(f"{'authorising_node':<22} {h_auth:>13.4f} bits "
           f"{len({r['authorising'] for r in auth_rows}):>16}")
     print("-" * 74)
@@ -152,7 +190,7 @@ def main() -> int:
         "rows": rows,
     }, indent=2))
     print(f"\nwritten: {out.relative_to(REPO)}"
-          + ("" if a.write else "   (certificates NOT modified; pass --write)"))
+          + ("" if a.write else "   (certificates NOT modified)"))
     return 0
 
 

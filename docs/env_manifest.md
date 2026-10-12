@@ -1,8 +1,8 @@
 # Environment Manifest
 
-**Recorded:** 2026-08-23
-**Purpose:** this file is what makes the experiment reproducible and **will be cited in the
-paper**. Every value was read from the running system, not from memory or documentation.
+**Recorded:** 2026-08-23; the compute section was added for the camera-ready (Oct 2026).
+**Purpose:** this file is what makes the experiment reproducible and **is cited in the
+paper's checklist**. Every value was read from the running system, not from memory or documentation.
 
 Determinism validation against this exact environment: [`determinism_report.md`](determinism_report.md).
 
@@ -118,6 +118,7 @@ provenance in [`requirements.lock.txt`](../requirements.lock.txt).
 | `networkx` | 3.6.1 | tree edit distance |
 | `matplotlib` | 3.11.1 | figures |
 | `rtamt` | 0.3.5 | STL robustness (independent cross-check) |
+| `anthropic` | 1.2.0 | model API client (API scripts only; its dependencies are pinned in `requirements.lock.txt`) |
 | `antlr4-python3-runtime` | 4.7 | (rtamt dependency) |
 | `contourpy` | 1.3.3 | (matplotlib) |
 | `cycler` | 0.12.1 | (matplotlib) |
@@ -187,7 +188,7 @@ as inconclusive rather than claimed.
 | File | Contents |
 |---|---|
 | `data/scenarios/junction.yaml` | Town05 junction **id 1126**, ego/oncoming approaches by OpenDRIVE identity, left-turn direction empirically verified |
-| `docs/log_schema.md` | Trajectory schema v1.0.0, 43 columns |
+| `docs/log_schema.md` | Trajectory schema v1.2.0, 45 columns (see `log_schema.md`) |
 | `src/trace_schema.py` | The schema in code — single source of truth |
 
 ---
@@ -195,7 +196,7 @@ as inconclusive rather than claimed.
 ## Reproducing this environment
 
 ```bash
-git clone <repo> && cd cv_research
+git clone https://github.com/mistryneel/counterexample-feedback.git && cd counterexample-feedback
 uv venv --python python3.12 .venv
 VIRTUAL_ENV=.venv uv pip install -r requirements.txt
 sudo usermod -aG docker "$USER"     # then log out and back in
@@ -210,7 +211,24 @@ The gate must print `GATE VERDICT: PASS` before any experimental run.
 
 ---
 
+## Compute used for the paper
+
+These are the figures the paper's checklist (question 8) cites. Each is recomputed or read from
+a released file by `scripts/reproduce_paper_numbers.py` (rows CHK-12 to CHK-15).
+
+| Stage | Figure | Source |
+|---|---|---|
+| Building the counterexample corpus | 422 s for 531 simulations | `data/results/falsification_summary.json` |
+| The 300 repair calls (run concurrently) | 36.3 minutes; 2,153,499 input tokens, of which 1,339,221 were read from the prompt cache, and 1,369,282 output tokens | `logs/e1_phase_a.log`, `data/results/attempts.jsonl` |
+| Evaluation (one serial simulator) | 256.2 minutes over 18,380 rollouts | `logs/e1_phase_b.log`, `data/results/attempts.jsonl` |
+
+The campaign's API cost was not logged per call, and the further compute used during
+development (baseline synthesis and calibration, determinism checks, sensitivity sweeps, a dry
+run, the expressiveness probes) was not tallied.
+
 ## Not recorded, and why
+
+As of 23 Aug (see `docs/trace_provenance.md` for what changed afterwards):
 
 - **`git_commit` is empty in every trace written on 23 Aug** — this directory is not yet a git
   repository, so `config.git_commit()` returns `None`. Traces banked today carry an empty

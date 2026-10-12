@@ -76,6 +76,9 @@ from config import load_config  # noqa: E402
 from falsifier import CONTRACT_PHRASE  # noqa: E402
 
 CERT_DIR = REPO_ROOT / "data" / "certificates"
+# Repository copies of the 20 counterexample traces, one per certificate, named
+# by the basename of the certificate's stored `trace_path`. See resolve_trace_path.
+CERT_TRACE_DIR = CERT_DIR / "traces"
 TEMPLATE_PATH = REPO_ROOT / "data" / "prompts" / "patch_task.md"
 PROGRAM_PATH = REPO_ROOT / "data" / "scenarios" / "baseline_program.bt"
 
@@ -149,6 +152,39 @@ def _num(x) -> str:
     if x is None:
         return "not recorded"
     return f"{float(x):.4g}"
+
+
+def resolve_trace_path(stored: str | pathlib.Path,
+                       trace_dir: pathlib.Path | None = None) -> pathlib.Path:
+    """Locate the trace a certificate points at.
+
+    The banked certificates store the ABSOLUTE path the falsifier wrote the
+    trace to on the original machine (`/home/.../data/traces/<name>.parquet`).
+    The certificate JSON is a committed result and is left byte-identical, so
+    the path is resolved here instead, in this order:
+
+      1. `data/certificates/traces/<basename of the stored path>`, inside this
+         repository. This is where the released copies live.
+      2. The stored path itself, as written at banking time.
+
+    The first candidate that exists is returned. If neither exists this raises
+    FileNotFoundError naming both, rather than returning a path that fails
+    later inside pandas with a less useful message.
+    """
+    stored_s = str(stored)
+    # The stored paths are POSIX; PurePosixPath takes the basename correctly on
+    # any platform.
+    name = pathlib.PurePosixPath(stored_s).name
+    local = (CERT_TRACE_DIR if trace_dir is None else trace_dir) / name
+    if local.is_file():
+        return local
+    original = pathlib.Path(stored_s)
+    if original.is_file():
+        return original
+    raise FileNotFoundError(
+        f"trace {name!r} not found. Looked in, in order:\n"
+        f"  1. {local}\n"
+        f"  2. {original}  (path stored in the certificate)")
 
 
 # --------------------------------------------------------------------------
@@ -309,8 +345,14 @@ class Certificate:
         return self.raw.get("achieved_gap_s")
 
     @property
+    def trace_path_stored(self) -> str:
+        """`trace_path` AS STORED: an absolute path on the original machine."""
+        return self.raw["trace_path"]
+
+    @property
     def trace_path(self) -> pathlib.Path:
-        return pathlib.Path(self.raw["trace_path"])
+        """The trace on THIS machine; see `resolve_trace_path` for the order."""
+        return resolve_trace_path(self.trace_path_stored)
 
     # -- the re-composed narrative ---------------------------------------
     @property

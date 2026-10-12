@@ -1,0 +1,35 @@
+conditions ['F1', 'F2', 'F3', 'F4a', 'F4b']  certificates 20  seeds [1, 2, 3]  = 300 attempts
+PHASE A: 300 calls to make (0 already on disk)
+  [warm-up] F1__CE001_C2_44b9f97d05fda474__s1            ok         cache_write=4479
+  [ 10/300] F1__CE001_C2_44b9f97d05fda474__s3            ok         ted=7 skeleton_edit
+  [ 20/300] F3__CE002_C2_86714546fca524ca__s2            ok         ted=8 hole_fill
+  [ 30/300] F4b__CE002_C2_86714546fca524ca__s2           ok         ted=3 hole_fill
+  [ 40/300] F4a__CE003_C1_969f15c8657c8fa6__s3           ok         ted=10 hole_fill
+  [ 50/300] F1__CE004_C1_445649d2b99e873a__s3            ok         ted=7 skeleton_edit
+  [ 60/300] F4b__CE004_C1_445649d2b99e873a__s3           ok         ted=10 hole_fill
+  [ 70/300] F4a__CE005_C1_5b773c94ec4bb251__s1           ok         ted=4 hole_fill
+  [ 80/300] F4b__CE005_C1_5b773c94ec4bb251__s3           ok         ted=2 hole_fill
+  [ 90/300] F1__CE007_C1_ec6211901ed6b190__s1            ok         ted=6 skeleton_edit
+  [100/300] F4a__CE007_C1_ec6211901ed6b190__s3           ok         ted=12 hole_fill
+  [110/300] F3__CE008_C2_62ca4fa36005920e__s2            ok         ted=4 hole_fill
+  [120/300] F4b__CE008_C2_62ca4fa36005920e__s3           ok         ted=1 skeleton_edit
+  [130/300] F4a__CE009_C1_bb1a8d764f269c24__s3           ok         ted=1 skeleton_edit
+  [140/300] F3__CE010_C2_56c436b720d319ef__s1            ok         ted=5 hole_fill
+  [150/300] F4b__CE010_C2_56c436b720d319ef__s1           ok         ted=6 skeleton_edit
+  [160/300] F3__CE011_C2_1673111e21cbfa9e__s2            ok         ted=4 hole_fill
+  [170/300] F3__CE012_C1_1ec6b8b64324dbd4__s3            ok         ted=10 hole_fill
+  [180/300] F4b__CE012_C1_1ec6b8b64324dbd4__s3           ok         ted=4 skeleton_edit
+  [190/300] F1__CE013_C2_ade4dfeb1e7cffee__s2            ok         ted=7 skeleton_edit
+  [200/300] F3__CE014_C1_8efa0eee117bb95e__s2            ok         ted=9 hole_fill
+  [210/300] F4b__CE014_C1_8efa0eee117bb95e__s3           ok         ted=4 hole_fill
+  [220/300] F4b__CE015_C1_40924ca98fb43db1__s1           ok         ted=3 hole_fill
+  [230/300] F2__CE016_C2_9d3ea4ae1a67ec58__s2            ok         ted=5 hole_fill
+  [240/300] F2__CE017_C3_8280bf9852dc7834__s1            ok         ted=2 hole_fill
+  [250/300] F3__CE017_C3_8280bf9852dc7834__s3            ok         ted=6 skeleton_edit
+  [260/300] F3__CE018_C2_80d8dfdf2253ea72__s2            ok         ted=8 hole_fill
+  [270/300] F4b__CE018_C2_80d8dfdf2253ea72__s2           ok         ted=4 skeleton_edit
+  [280/300] F3__CE019_C1_0b3097eb9e85eede__s1            ok         ted=1 hole_fill
+  [290/300] F3__CE020_C1_d3346d835dab0fd8__s2            ok         ted=5 skeleton_edit
+  [300/300] F4a__CE020_C1_d3346d835dab0fd8__s2           ok         ted=5 skeleton_edit
+
+PHASE A done in 36.3 min: ok=300  malformed=0  truncated=0  api_error=0

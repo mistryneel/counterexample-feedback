@@ -206,7 +206,6 @@
       "mean_rho5_after": 0.925
     }
   },
-  "noise_floor_f4a_minus_f3": 0.05,
   "outcome_grid": {
     "CE001_C2_44b9f97d05fda474": {
       "F1": 0.3333333333333333,

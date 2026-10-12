@@ -1,24 +1,6 @@
-# Machine-specific config — never commit
-config/local.yaml
+# Machine-specific settings and credentials: never commit
 .env
-
-# Large regenerable data
-data/traces/
-data/results/raw/
-*.parquet
-!data/certificates/*.parquet
-
-# CARLA install, if placed inside the repo
-CARLA_*/
-carla/
-*.tar.gz
-
-# LLM call logs — can contain large payloads; keep locally, summarize into results
-logs/llm_raw/
-
-# count_tokens memo. Pure cache: every entry is reproducible from the model
-# and the exact bytes counted, and it is keyed by a hash of both.
-data/results/.token_count_cache.json
+config/local.yaml
 
 # Python
 __pycache__/
@@ -29,32 +11,50 @@ venv/
 .pytest_cache/
 .ipynb_checkpoints/
 
-# OS / editor
+# Simulator output. New simulator runs write trajectories to data/traces/,
+# which is not part of the release.
+data/traces/
+data/results/raw/
+*.parquet
+
+# Cache written by scripts/check_prompt_budget.py
+data/results/.token_count_cache.json
+
+# Raw API records written by new model calls. Only the 21 baseline-synthesis
+# records are released (re-included below). Written as `dir/*`, not `dir/`,
+# because git cannot re-include a file whose parent directory is excluded.
+logs/llm_raw/*
+
+# Logs and process files
+*.log
+*.pid
+
+# CARLA install, if placed inside the repository
+CARLA_*/
+carla/
+*.tar.gz
+
+# LaTeX intermediates
+*.aux
+*.bbl
+*.blg
+*.out
+*.toc
+*.synctex.gz
+*.fdb_latexmk
+*.fls
+
+# OS and editors
 .DS_Store
 .idea/
 .vscode/
 *.swp
 
-# Build artifacts
-*.log
-*.pid
-
-# LaTeX
-*.aux
-*.bbl
-*.blg
-*.out
-*.synctex.gz
-*.fdb_latexmk
-*.fls
-
-# --- Deliberately NOT ignored ---
-# data/certificates/     the counterexample certificates are results, commit them
-# data/scenarios/        space.yaml, baseline_program.bt, junction.yaml are all
-#                        experimental inputs and must be version-controlled
-# docs/env_manifest.md   reproducibility record
-# requirements.txt       pinned versions
-
-# Campaign artifacts: prompts and raw responses are large and regenerable from
-# patches.jsonl, which carries the full program text of every attempt.
-logs/campaign/
+# Released files that the rules above would otherwise ignore. These negations
+# override `*.parquet`, `*.log` and `logs/llm_raw/*`, so they must stay last.
+!data/certificates/traces/*.parquet
+!data/dsl_probe_traces/**
+!data/calibration_traces/**
+!logs/llm_raw/synth_*.json
+!logs/e1_phase_a.log
+!logs/e1_phase_b.log

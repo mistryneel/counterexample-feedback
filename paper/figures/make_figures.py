@@ -3,19 +3,21 @@
 
 WHY THIS IS A SCRIPT AND NOT AN IMAGE-GENERATION PROMPT.
 
-Figures 2, 3 and 4 encode measured results. An image model asked to "draw a
-bar chart showing 59 out of 60" produces a picture that *resembles* that
-chart; it does not plot the data. In a paper reporting a null result whose
-entire credibility rests on a 5.0-point noise floor, a figure whose bar
-heights were invented is a fabrication, however innocent the intent.
+These figures encode measured results, so they are plotted from the campaign
+log (data/results/attempts.jsonl) and the saved bootstrap output
+(data/results/uncertainty.json), never drawn by hand or by an image model.
+The conceptual pipeline figure (fig1_pipeline.png) carries no data.
 
-So these three read the campaign log and plot what is actually in it. The two
-CONCEPTUAL figures (the pipeline and the junction) carry no data and are the
-ones for which generated art or TikZ is appropriate -- see FIGURES.md.
+File names predate the camera-ready numbering. In the camera-ready paper:
+    fig4_funnel        -> Figure 2 (from 300 attempts to one clean repair)
+    fig2_uncertainty   -> Figure 3 (paired differences vs F3)
+    fig3_patch_type    -> Figure 4, Appendix C (structural edits by condition)
 
     python paper/figures/make_figures.py
 
 Outputs PDF (vector, for LaTeX) and PNG (for slides) into this directory.
+Fonts are embedded as TrueType (pdf.fonttype 42); the camera-ready rules
+reject Type 3 fonts, which is matplotlib's default.
 """
 from __future__ import annotations
 
@@ -35,7 +37,7 @@ ATTEMPTS = REPO / "data" / "results" / "attempts.jsonl"
 
 CONDS = ["F1", "F2", "F3", "F4a", "F4b"]
 LABELS = {"F1": "F1\nraw trace", "F2": "F2\nsummary", "F3": "F3\ncertificate",
-          "F4a": "F4a\n+node (control)", "F4b": "F4b\n+decision"}
+          "F4a": "F4a\n+node", "F4b": "F4b\n+decision"}
 
 INK = "#151A16"
 MUTE = "#5A625B"
@@ -45,6 +47,16 @@ POS = "#0E6F5C"
 
 plt.rcParams.update({
     "font.family": "serif",
+    # Liberation Serif is a TrueType font metric-compatible with Times, which
+    # the paper body is set in (Nimbus Roman, the closer clone, is CFF-based and
+    # matplotlib embeds it with a font-type mismatch). Without one of these
+    # matplotlib falls back to DejaVu Serif, which it embeds as Type 3 by
+    # default, and the camera-ready rules reject Type 3 fonts. fonttype 42
+    # embeds TrueType instead, which the rules accept.
+    "font.serif": ["Liberation Serif", "DejaVu Serif"],
+    "mathtext.fontset": "stix",
+    "pdf.fonttype": 42,
+    "ps.fonttype": 42,
     "font.size": 9,
     "axes.edgecolor": MUTE,
     "axes.labelcolor": INK,
@@ -56,6 +68,13 @@ plt.rcParams.update({
     "figure.dpi": 200,
 })
 
+try:  # the committed figures were drawn with Liberation Serif; say so if it is missing
+    matplotlib.font_manager.findfont("Liberation Serif", fallback_to_default=False)
+except ValueError:
+    print("WARNING: Liberation Serif not found (install fonts-liberation); figures will "
+          "fall back to DejaVu Serif and will not be byte-identical to the committed ones.",
+          file=sys.stderr)
+
 
 def load():
     if not ATTEMPTS.exists():
@@ -63,9 +82,18 @@ def load():
     return [json.loads(l) for l in ATTEMPTS.open()]
 
 
+# Regeneration must be byte-stable so that `git diff` after a rerun is empty.
+# Matplotlib stamps every PDF with the current time (/CreationDate); setting it
+# to None drops the field. /Creator and /Producer name the matplotlib version,
+# which requirements.txt pins, so they are stable and kept as provenance. PNG
+# output carries no timestamp and was already byte-stable.
+SAVE_METADATA = {"pdf": {"CreationDate": None}, "png": None}
+
+
 def save(fig, name):
     for ext in ("pdf", "png"):
-        fig.savefig(HERE / f"{name}.{ext}", bbox_inches="tight")
+        fig.savefig(HERE / f"{name}.{ext}", bbox_inches="tight",
+                    metadata=SAVE_METADATA[ext])
     plt.close(fig)
     print(f"  wrote {name}.pdf / .png")
 
@@ -87,36 +115,25 @@ def fig_uncertainty(rows):
     because the 20 counterexamples are shared across conditions and each cell is
     attempted three times.
     """
-    by_cert = collections.defaultdict(list)
-    for r in rows:
-        by_cert[r["certificate_id"].split("_")[0]].append(r)
-    certs = sorted(by_cert)
-    k = len(certs)
-    rng = np.random.default_rng(0)
-
-    def rate(rs, c, pred):
-        v = [r for r in rs if r["condition"] == c]
-        return 100.0 * sum(1 for r in v if pred(r)) / len(v) if v else float("nan")
-
+    # Intervals are READ from data/results/uncertainty.json (scripts/uncertainty.py,
+    # 10,000 resamples, seed 0) rather than recomputed here. Until Oct 2026 this
+    # function ran its own 4,000-resample bootstrap, which gave one endpoint
+    # (F2 - F3, structural edit) of +13.3 where the text and JSON say +11.7.
+    # One bootstrap, one set of numbers.
+    unc = json.loads((REPO / "data" / "results" / "uncertainty.json").read_text())
     panels = [
-        ("repair success\n(pre-registered)", lambda r: bool(r.get("resolved"))),
-        ("repair success\n(refusals excluded)",
-         lambda r: bool(r.get("resolved")) and not r.get("resolved_by_refusal")),
-        ("structural edit", lambda r: r.get("patch_type") == "skeleton_edit"),
+        ("S: contracts satisfied\n(pre-specified)", "resolved"),
+        ("S and entered\n(refusals excluded)", "resolved_ex_refusal"),
+        ("structural edit", "skeleton_edit"),
     ]
     others = ["F1", "F2", "F4a", "F4b"]
 
-    fig, axes = plt.subplots(1, 3, figsize=(7.4, 2.9), sharey=True)
-    for ax, (title, pred) in zip(axes, panels):
-        pts, los, his = [], [], []
-        for c in others:
-            d = []
-            for _ in range(4000):
-                s = [r for i in rng.integers(0, k, k) for r in by_cert[certs[i]]]
-                d.append(rate(s, c, pred) - rate(s, "F3", pred))
-            pts.append(rate(rows, c, pred) - rate(rows, "F3", pred))
-            los.append(np.percentile(d, 2.5))
-            his.append(np.percentile(d, 97.5))
+    fig, axes = plt.subplots(1, 3, figsize=(6.4, 2.5), sharey=True)
+    for ax, (title, key) in zip(axes, panels):
+        dv = unc[key]["diff_vs_F3"]
+        pts = [dv[c]["point"] for c in others]
+        los = [dv[c]["ci"][0] for c in others]
+        his = [dv[c]["ci"][1] for c in others]
         y = np.arange(len(others))
         for i, (pt, lo, hi) in enumerate(zip(pts, los, his)):
             excl = lo > 0 or hi < 0
@@ -130,11 +147,11 @@ def fig_uncertainty(rows):
         ax.set_yticks(y)
         ax.set_yticklabels(others, fontsize=8.5)
         ax.set_title(title, fontsize=8.5, pad=7)
-        ax.tick_params(labelsize=7.5)
+        ax.tick_params(labelsize=8.5)
         ax.invert_yaxis()
     axes[0].set_ylabel("vs F3", fontsize=8.5)
     fig.supxlabel("difference from F3, percentage points (95% CI, bootstrap clustered on certificate)",
-                  fontsize=8, y=-0.04)
+                  fontsize=8.5, y=-0.04)
     save(fig, "fig2_uncertainty")
 
 
@@ -176,12 +193,16 @@ def fig_funnel(rows):
                 and (r.get("regression_failures") or 0) == 0)
 
     stages = [("attempts", n, MUTE),
-              ("satisfied the contract", resolved, ACCENT),
-              ("not by refusing to drive", genuine, "#8A5A00"),
+              ("satisfied the contracts", resolved, ACCENT),
+              ("and entered the conflict zone", genuine, "#8A5A00"),
               ("and completed the turn", completed, POS),
-              ("and broke nothing", clean, POS)]
+              ("and regression suite intact", clean, POS)]
 
-    fig, ax = plt.subplots(figsize=(6.2, 2.5))
+    # Printed at 0.64 linewidth (about 3.5 in). bbox_inches="tight" widens the
+    # saved PDF to fit the y labels, so it is the TIGHT box, labels included,
+    # that must come out near that width for 8.5 pt text to print near 8 pt.
+    # The message that used to be the title is in the LaTeX caption.
+    fig, ax = plt.subplots(figsize=(3.2, 1.4))
     for i, (lab, v, col) in enumerate(stages):
         ax.barh([i], [v], color=col, alpha=0.55, height=0.6)
         ax.annotate(f"{v}", (v, i), textcoords="offset points", xytext=(6, 0),
@@ -191,9 +212,6 @@ def fig_funnel(rows):
     ax.set_xlim(0, n * 1.08)
     ax.set_xlabel("attempts")
     ax.invert_yaxis()
-    ax.set_title(f"{refusals} of {resolved} apparent repairs "
-                 f"({100*refusals/max(1,resolved):.0f}%) were refusals to drive",
-                 fontsize=9, color=NEG, pad=10)
     save(fig, "fig4_funnel")
 
 
@@ -203,7 +221,8 @@ def main() -> int:
     fig_uncertainty(rows)
     fig_patch_type(rows)
     fig_funnel(rows)
-    print("done. Figures 1 and 5 are conceptual -- see FIGURES.md")
+    print("done. Figure 1 (fig1_pipeline.png) is a static schematic and is "
+          "not generated here.")
     return 0
 
 
